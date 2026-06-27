@@ -1,8 +1,9 @@
 import "./App.css"
 import { useState } from "react";
-import { FlowerLotusIcon, XIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
 import { columns, tasks as initialTasks } from "./data/boardData";
+import CreateTaskModal from "./CreateTaskModal";
 
 function App() {
     const [tasks, setTasks] = useState(initialTasks)
@@ -45,41 +46,12 @@ function App() {
             </div>
 
             {isNewTaskModalOpen &&
-                <div className="create-task-modal-overlay">
-                    <div className="create-task-modal">
-                        <h2>Новая задача</h2>
-                        <h5>Добавь то, что нужно не забыть</h5>
-                        <div className="create-task-form">
-                            <input
-                                className="create-task-input"
-                                type="text"
-                                value={newTaskTitle}
-                                onChange={e => setNewTaskTitle(e.target.value)}
-                                onKeyDown={e => {
-                                    if (e.key === 'Enter') {
-                                        handleCreateTask()
-                                    }
-                                    if (e.key === 'Escape') {
-                                        handleCloseTaskModal()
-                                    }
-                                }}
-                            />
-                            <button
-                                className="create-task-button"
-                                onClick={handleCreateTask}
-                            >
-                                Создать
-                            </button>
-                        </div>
-                        <button
-                            className="close-modal-button"
-                            aria-label="Закрыть окно создания задачи"
-                            onClick={handleCloseTaskModal}
-                        >
-                            <XIcon />
-                        </button>
-                    </div>
-                </div>
+                <CreateTaskModal
+                    newTaskTitle={newTaskTitle}
+                    setNewTaskTitle={setNewTaskTitle}
+                    onCreateTask={handleCreateTask}
+                    onClose={handleCloseTaskModal}
+                />
             }
 
 
