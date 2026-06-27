@@ -21,6 +21,11 @@ function App() {
         setNewTaskTitle('')
     }
 
+    function handleCloseTaskModal() {
+        setIsNewTaskModalOpen(false)
+        setNewTaskTitle('')
+    }
+
     return (
         <div className="app">
 
@@ -54,6 +59,9 @@ function App() {
                                     if (e.key === 'Enter') {
                                         handleCreateTask()
                                     }
+                                    if (e.key === 'Escape') {
+                                        handleCloseTaskModal()
+                                    }
                                 }}
                             />
                             <button
@@ -66,10 +74,9 @@ function App() {
                         <button
                             className="close-modal-button"
                             aria-label="Закрыть окно создания задачи"
-                            onClick={() => {
-                                setIsNewTaskModalOpen(false)
-                                setNewTaskTitle('')
-                            }}><XIcon />
+                            onClick={handleCloseTaskModal}
+                        >
+                            <XIcon />
                         </button>
                     </div>
                 </div>
