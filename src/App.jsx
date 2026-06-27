@@ -1,5 +1,6 @@
 import "./App.css"
 import { DotsThreeOutlineIcon, FlowerLotusIcon, LeafIcon, TreeIcon, PottedPlantIcon } from "@phosphor-icons/react";
+import TaskCard from "./TaskCard";
 
 const columns = [
     {
@@ -92,12 +93,7 @@ function App() {
                                 {
                                     columnTasks.map(task => {
                                         return (
-                                            <div className="task" key={task.id}>
-                                                <button className="task-title">
-                                                    {task.title}
-                                                </button>
-                                                <div className="task-description">{task.description}</div>
-                                            </div>
+                                            <TaskCard task={task} />
                                         )
                                     })
                                 }
