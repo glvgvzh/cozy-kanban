@@ -1,7 +1,10 @@
-function TaskCard({ task }) {
+function TaskCard({ task, setSelectedTaskId }) {
+    
     return (
-        <div className="task">
-            <button className="task-title">
+        <div className="task" onClick={() => setSelectedTaskId(task.id)}>
+            <button
+                className="task-title"
+            >
                 {task.title}
             </button>
             <div className="task-description">{task.description}</div>

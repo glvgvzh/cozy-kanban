@@ -4,11 +4,13 @@ import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
 import { columns, tasks as initialTasks } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
+import TaskDetailsModal from "./TaskDetailsModal";
 
 function App() {
     const [tasks, setTasks] = useState(initialTasks)
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [selectedTaskId, setSelectedTaskId] = useState(null)
 
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
@@ -45,6 +47,14 @@ function App() {
                 </button>
             </div>
 
+            {selectedTaskId !== null &&
+                <TaskDetailsModal
+                    tasks={tasks}
+                    selectedTaskId={selectedTaskId}
+                    setSelectedTaskId={setSelectedTaskId}
+                />
+            }
+
             {isNewTaskModalOpen &&
                 <CreateTaskModal
                     newTaskTitle={newTaskTitle}
@@ -62,6 +72,7 @@ function App() {
                             key={column.id}
                             column={column}
                             tasks={tasks}
+                            setSelectedTaskId={setSelectedTaskId}
                         />
                     )
                 })}

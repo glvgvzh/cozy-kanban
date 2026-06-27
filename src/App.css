@@ -86,10 +86,10 @@ input {
 }
 
 /* ==========================================================================================
-        New Task modal
+        Modals
  ========================================================================================== */
 
-.create-task-modal-overlay {
+.modal-overlay {
     position: fixed;
     inset: 0;
 
@@ -101,7 +101,7 @@ input {
     background-color: rgba(0, 0, 0, 0.55);
 }
 
-.create-task-modal {
+.modal {
     position: relative;
 
     display: flex;
@@ -113,11 +113,6 @@ input {
     background-color: var(--app-bgc);
     border: var(--border);
     border-radius: 20px;
-}
-
-.create-task-modal h2,
-.create-task-modal h5 {
-    margin: 0;
 }
 
 .close-modal-button {
@@ -142,6 +137,14 @@ input {
     background-color: rgba(214, 210, 191, 0.08);
 }
 
+.modal-title,
+.modal-subtitle {
+    margin: 0;
+}
+
+/* ==========================================================================================
+        New Task modal
+ ========================================================================================== */
 
 .create-task-form {
     height: 40px;
@@ -177,6 +180,12 @@ input {
     border: none;
     cursor: pointer;
 }
+
+/* ==========================================================================================
+        View Task modal
+ ========================================================================================== */
+
+
 
 /* ==========================================================================================
         Board

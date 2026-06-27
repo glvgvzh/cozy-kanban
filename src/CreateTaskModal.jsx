@@ -8,10 +8,10 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose 
     }, [])
 
     return (
-        <div className="create-task-modal-overlay">
-            <div className="create-task-modal">
-                <h2>Новая задача</h2>
-                <h5>Добавь то, что нужно не забыть</h5>
+        <div className="modal-overlay">
+            <div className="modal">
+                <h2 className="modal-title">Новая задача</h2>
+                <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
                 <div className="create-task-form">
                     <input
                         ref={inputRef}
