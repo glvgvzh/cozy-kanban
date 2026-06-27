@@ -24,26 +24,31 @@ const tasks = [
         id: 1,
         status: 'todo',
         title: 'задача один',
+        description: 'сделать это',
     },
     {
         id: 2,
         status: 'inProgress',
         title: 'задача два',
+        description: 'сделать то',
     },
     {
         id: 3,
         status: 'todo',
         title: 'задача три',
+        description: 'пятое',
     },
     {
         id: 4,
         status: 'todo',
         title: 'задача четыре',
+        description: 'десятое',
     },
     {
         id: 5,
         status: 'todo',
         title: 'задача пять',
+        description: 'че сделать-то...',
     },
 ]
 
@@ -79,8 +84,8 @@ function App() {
                                     <div className="tasks-counter">
                                         {columnTasks.length}
                                     </div>
-                                    <button className="column-options">
-                                        <DotsThreeOutlineIcon weight="fill" />
+                                    <button className="column-options" aria-label="Открыть меню колонки">
+                                        <DotsThreeOutlineIcon weight="fill" size={20} />
                                     </button>
                                 </div>
 
@@ -91,7 +96,7 @@ function App() {
                                                 <button className="task-title">
                                                     {task.title}
                                                 </button>
-                                                <div className="task-description">описание задачи</div>
+                                                <div className="task-description">{task.description}</div>
                                             </div>
                                         )
                                     })
