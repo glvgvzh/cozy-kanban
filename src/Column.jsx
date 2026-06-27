@@ -5,7 +5,7 @@ function Column({ column, tasks }) {
     const columnTasks = tasks.filter(task => task.status === column.id)
     const Icon = column.Icon
     return (
-        <div className="column" key={column.id}>
+        <div className="column">
             <div className="column-header">
                 <div className="column-icon">
                     <Icon size={30} />

@@ -1,6 +1,6 @@
 function TaskCard({ task }) {
     return (
-        <div className="task" key={task.id}>
+        <div className="task">
             <button className="task-title">
                 {task.title}
             </button>

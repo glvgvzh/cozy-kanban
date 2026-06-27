@@ -1,10 +1,12 @@
 import "./App.css"
+import { useState } from "react";
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
-import { columns, tasks } from "./data/boardData";
-
+import { columns, tasks as initialTasks } from "./data/boardData";
 
 function App() {
+
+    const [tasks, setTasks] = useState(initialTasks)
 
     return (
         <div className="app">
