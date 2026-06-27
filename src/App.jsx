@@ -50,6 +50,11 @@ function App() {
                                 type="text"
                                 value={newTaskTitle}
                                 onChange={e => setNewTaskTitle(e.target.value)}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        handleCreateTask()
+                                    }
+                                }}
                             />
                             <button
                                 className="create-task-button"
