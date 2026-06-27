@@ -6,23 +6,49 @@ const columns = [
         id: 'todo',
         title: 'Запланировано',
         Icon: LeafIcon,
-        tasksCount: 4,
     },
     {
         id: 'inProgress',
         title: 'В работе',
         Icon: PottedPlantIcon,
-        tasksCount: 10,
     },
     {
         id: 'done',
         title: 'Готово',
         Icon: TreeIcon,
-        tasksCount: 50,
     }
 ]
 
+const tasks = [
+    {
+        id: 1,
+        status: 'todo',
+        title: 'задача один',
+    },
+    {
+        id: 2,
+        status: 'inProgress',
+        title: 'задача два',
+    },
+    {
+        id: 3,
+        status: 'todo',
+        title: 'задача три',
+    },
+    {
+        id: 4,
+        status: 'todo',
+        title: 'задача четыре',
+    },
+    {
+        id: 5,
+        status: 'todo',
+        title: 'задача пять',
+    },
+]
+
 function App() {
+
     return (
         <div className="app">
 
@@ -39,28 +65,37 @@ function App() {
             <div className="board">
                 {
                     columns.map(column => {
+                        const columnTasks = tasks.filter(task => task.status === column.id)
                         const Icon = column.Icon
                         return (
                             <div className="column" key={column.id}>
                                 <div className="column-header">
                                     <div className="column-icon">
-                                        <Icon size={30}/>
+                                        <Icon size={30} />
                                     </div>
                                     <div className="column-title">
                                         {column.title}
                                     </div>
                                     <div className="tasks-counter">
-                                        {column.tasksCount}
+                                        {columnTasks.length}
                                     </div>
                                     <button className="column-options">
                                         <DotsThreeOutlineIcon weight="fill" />
                                     </button>
                                 </div>
 
-                                <div className="task">
-                                    <button className="task-title">Название задачи</button>
-                                    <div className="task-description">описание задачи</div>
-                                </div>
+                                {
+                                    columnTasks.map(task => {
+                                        return (
+                                            <div className="task" key={task.id}>
+                                                <button className="task-title">
+                                                    {task.title}
+                                                </button>
+                                                <div className="task-description">описание задачи</div>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         )
                     })
