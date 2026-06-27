@@ -16,7 +16,7 @@ function Column({ column, tasks }) {
                 <div className="tasks-counter">
                     {columnTasks.length}
                 </div>
-                <button className="column-options" aria-label="Открыть меню колонки">
+                <button className="column-options-button" aria-label="Открыть меню колонки">
                     <DotsThreeOutlineIcon weight="fill" size={20} />
                 </button>
             </div>

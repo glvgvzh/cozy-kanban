@@ -40,20 +40,24 @@ function App() {
             </div>
 
             {isNewTaskModalOpen &&
-                <div className="create-new-task-modal-overlay">
-                    <div className="create-new-task-modal">
-                        <input
-                            className="create-new-task-input"
-                            type="text"
-                            value={newTaskTitle}
-                            onChange={e => setNewTaskTitle(e.target.value)}
-                        />
-                        <button
-                            className="create-new-task-button"
-                            onClick={handleCreateTask}
-                        >
-                            Создать
-                        </button>
+                <div className="create-task-modal-overlay">
+                    <div className="create-task-modal">
+                        <h2>Новая задача</h2>
+                        <h5>Добавь то, что нужно не забыть</h5>
+                        <div className="create-task-form">
+                            <input
+                                className="create-task-input"
+                                type="text"
+                                value={newTaskTitle}
+                                onChange={e => setNewTaskTitle(e.target.value)}
+                            />
+                            <button
+                                className="create-task-button"
+                                onClick={handleCreateTask}
+                            >
+                                Создать
+                            </button>
+                        </div>
                         <button
                             className="close-modal-button"
                             aria-label="Закрыть окно создания задачи"

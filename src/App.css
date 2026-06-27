@@ -12,19 +12,19 @@
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: sans-serif;
-  background-color: var(--body-bgc);
-  color: var(--text-color);
+    margin: 0;
+    font-family: sans-serif;
+    background-color: var(--body-bgc);
+    color: var(--text-color);
 }
 
 button,
 input {
-  font: inherit;
+    font: inherit;
 }
 
 .app {
@@ -86,6 +86,99 @@ input {
 }
 
 /* ==========================================================================================
+        New Task modal
+ ========================================================================================== */
+
+.create-task-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.create-task-modal {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(90vw, 520px);
+    padding: 24px;
+
+    background-color: var(--app-bgc);
+    border: var(--border);
+    border-radius: 20px;
+}
+
+.create-task-modal h2,
+.create-task-modal h5 {
+    margin: 0;
+}
+
+.close-modal-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.close-modal-button:hover {
+    background-color: rgba(214, 210, 191, 0.08);
+}
+
+
+.create-task-form {
+    height: 40px;
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.create-task-input {
+    flex: 1;
+    min-width: 0;
+    border: var(--border);
+    border-radius: 30px;
+    height: 40px;
+    background-color: #242927;
+    padding: 0 20px;
+    color: var(--text-color);
+    transition: 0.5s;
+}
+
+.create-task-input:focus {
+    box-shadow: 0 0 3px #f2ba6f;
+    outline: none;
+}
+
+.create-task-button {
+    outline: none;
+    background-color: #f2ba6f;
+    color: #232c25;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ==========================================================================================
         Board
  ========================================================================================== */
 
@@ -127,7 +220,7 @@ input {
     font-size: 12px;
 }
 
-.column-options {
+.column-options-button {
     width: 32px;
     height: 32px;
     display: flex;
@@ -142,7 +235,7 @@ input {
     margin-left: auto;
 }
 
-.column-options:hover {
+.column-options-button:hover {
     background-color: rgba(214, 210, 191, 0.08);
 }
 
@@ -174,7 +267,6 @@ input {
 
 .task-description {
     margin-top: 8px;
-    opacity: 0.7;
     font-size: 12px;
 }
 
