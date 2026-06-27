@@ -1,57 +1,8 @@
 import "./App.css"
-import { FlowerLotusIcon, LeafIcon, TreeIcon, PottedPlantIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
+import { columns, tasks } from "./data/boardData";
 
-const columns = [
-    {
-        id: 'todo',
-        title: 'Запланировано',
-        Icon: LeafIcon,
-    },
-    {
-        id: 'inProgress',
-        title: 'В работе',
-        Icon: PottedPlantIcon,
-    },
-    {
-        id: 'done',
-        title: 'Готово',
-        Icon: TreeIcon,
-    }
-]
-
-const tasks = [
-    {
-        id: 1,
-        status: 'todo',
-        title: 'задача один',
-        description: 'сделать это',
-    },
-    {
-        id: 2,
-        status: 'inProgress',
-        title: 'задача два',
-        description: 'сделать то',
-    },
-    {
-        id: 3,
-        status: 'todo',
-        title: 'задача три',
-        description: 'пятое',
-    },
-    {
-        id: 4,
-        status: 'todo',
-        title: 'задача четыре',
-        description: 'десятое',
-    },
-    {
-        id: 5,
-        status: 'todo',
-        title: 'задача пять',
-        description: 'че сделать-то...',
-    },
-]
 
 function App() {
 
