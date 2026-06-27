@@ -1,6 +1,12 @@
 import { XIcon } from "@phosphor-icons/react";
+import { useEffect, useRef } from "react";
 
 function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose }) {
+    const inputRef = useRef(null)
+    useEffect(() => {
+        inputRef.current?.focus()
+    }, [])
+
     return (
         <div className="create-task-modal-overlay">
             <div className="create-task-modal">
@@ -8,6 +14,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose 
                 <h5>Добавь то, что нужно не забыть</h5>
                 <div className="create-task-form">
                     <input
+                        ref={inputRef}
                         className="create-task-input"
                         type="text"
                         value={newTaskTitle}
