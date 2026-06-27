@@ -1,0 +1,186 @@
+/* ==========================================================================================
+        Base
+ ========================================================================================== */
+
+
+:root {
+    --body-bgc: #1c2326;
+    --app-bgc: #101a1e;
+    --column-bgc: #1f2a28;
+    --text-color: #d6d2bf;
+    --border: 1px solid #383c36;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: var(--body-bgc);
+  color: var(--text-color);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    background-color: var(--app-bgc);
+    border: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.header,
+.footer {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #161f1e;
+}
+
+/* ==========================================================================================
+        Header
+ ========================================================================================== */
+
+.header {
+    border-bottom: var(--border);
+}
+
+.focus-input {
+    flex: 1;
+    border: var(--border);
+    border-radius: 30px;
+    height: 40px;
+    background-color: #242927;
+    padding: 0 20px;
+    color: var(--text-color);
+    transition: 0.5s;
+}
+
+.focus-input:focus {
+    box-shadow: 0 0 3px #f2ba6f;
+    outline: none;
+}
+
+.new-task-button {
+    outline: none;
+    background-color: #f2ba6f;
+    color: #232c25;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ==========================================================================================
+        Board
+ ========================================================================================== */
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 20px;
+}
+
+/* ==========================================================================================
+        Column
+ ========================================================================================== */
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: var(--border);
+    min-height: 500px;
+    padding: 20px;
+    background-color: var(--column-bgc);
+
+    border-radius: 10px;
+}
+
+.column-header {
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 10px;
+    align-items: center;
+}
+
+.tasks-counter {
+    background-color: #26332f;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin: 0 16px;
+    font-size: 12px;
+}
+
+.column-options {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.5s;
+    margin-left: auto;
+}
+
+.column-options:hover {
+    background-color: rgba(214, 210, 191, 0.08);
+}
+
+/* ==========================================================================================
+        Task
+ ========================================================================================== */
+
+.task {
+    padding: 16px;
+    border-radius: 18px;
+    background-color: #26332f;
+    border: 1px solid rgba(214, 210, 191, 0.08);
+    transition: 0.5s;
+}
+
+.task:hover {
+    box-shadow: 0 0 3px #f2ba6f;
+}
+
+.task-title {
+    text-align: left;
+    padding: 0;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.task-description {
+    margin-top: 8px;
+    opacity: 0.7;
+}
+
+/* ==========================================================================================
+        Footer
+ ========================================================================================== */
+
+.footer {
+    border-top: var(--border);
+}
