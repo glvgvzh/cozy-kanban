@@ -22,14 +22,16 @@ function Column({ column, tasks }) {
             </div>
 
             {
-                columnTasks.map(task => {
-                    return (
-                        <TaskCard
-                            key={task.id}
-                            task={task} 
-                        />
-                    )
-                })
+                columnTasks.length === 0
+                    ? <div className="empty-column-message">Пока тут тихо</div>
+                    : columnTasks.map(task => {
+                        return (
+                            <TaskCard
+                                key={task.id}
+                                task={task}
+                            />
+                        )
+                    })
             }
         </div>
     )
