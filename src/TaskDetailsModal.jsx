@@ -27,6 +27,14 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                             В работу
                         </button>
                     }
+                    {selectedTask.status === 'inProgress' &&
+                        <button
+                            className="modal-button done"
+                            onClick={onMoveStatus}
+                        >
+                            Готово
+                        </button>
+                    }
                     <button
                         className="modal-button delete-button"
                         onClick={() => setConfirmDeletionModalOpen(true)}

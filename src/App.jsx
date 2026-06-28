@@ -45,7 +45,12 @@ function App() {
     function handleMoveTaskStatus() {
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === selectedTaskId) {
-                return ({ ...task, status: 'inProgress' })
+                if (task.status === 'todo') {
+                    return ({ ...task, status: 'inProgress' })
+                }
+                if (task.status === 'inProgress') {
+                    return ({ ...task, status: 'done' })
+                }
             }
             return task
         }))
