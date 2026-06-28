@@ -106,7 +106,7 @@ input {
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     width: min(90vw, 520px);
     padding: 24px;
 
@@ -205,7 +205,18 @@ input {
         View Task modal
  ========================================================================================== */
 
-
+.delete-task-button {
+    width: fit-content;
+    outline: none;
+    background-color: #f2816f;
+    color: #232c25;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
 
 /* ==========================================================================================
         Board

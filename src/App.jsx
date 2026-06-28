@@ -32,6 +32,11 @@ function App() {
         setNewTaskDescription('')
     }
 
+    function handleDeleteTask() {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId))
+        setSelectedTaskId(null)
+    }
+
     return (
         <div className="app">
 
@@ -55,6 +60,7 @@ function App() {
                     tasks={tasks}
                     selectedTaskId={selectedTaskId}
                     setSelectedTaskId={setSelectedTaskId}
+                    onDelete={handleDeleteTask}
                 />
             }
 
