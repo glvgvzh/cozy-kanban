@@ -3,7 +3,7 @@ import { useState } from "react";
 import useTasksStorage from "./hooks/useTasksStorage";
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
-import { columns } from "./data/boardData";
+import { columns, tasks as initialTasks } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
@@ -54,6 +54,15 @@ function App() {
         }))
     }
 
+    function handleResetTasks() {
+        setTasks(initialTasks)
+        setIsNewTaskModalOpen(false)
+        setConfirmDeletionModalOpen(false)
+        setNewTaskTitle('')
+        setNewTaskDescription('')
+        setSelectedTaskId(null)
+    }
+
     return (
         <div className="app">
 
@@ -64,6 +73,12 @@ function App() {
                     className="focus-input"
                     type="text"
                 />
+                <button 
+                    className="reset-board-button"
+                    onClick={handleResetTasks}
+                >
+                    Сбросить доску
+                </button>
                 <button
                     className="new-task-button"
                     onClick={() => setIsNewTaskModalOpen(true)}

@@ -75,13 +75,14 @@ input {
     outline: none;
 }
 
-.new-task-button {
+.new-task-button,
+.reset-board-button {
     outline: none;
     background-color: var(--accent-color);
     color: #232c25;
     height: 40px;
     border-radius: 40px;
-    padding: 0 20px;
+    padding: 0 10px;
     border: none;
     cursor: pointer;
 }
