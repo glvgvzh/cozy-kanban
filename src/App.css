@@ -9,6 +9,7 @@
     --column-bgc: #1f2a28;
     --text-color: #d6d2bf;
     --border: 1px solid #383c36;
+    --accent-color: #f2ba6f;
 }
 
 * {
@@ -70,13 +71,13 @@ input {
 }
 
 .focus-input:focus {
-    box-shadow: 0 0 3px #f2ba6f;
+    box-shadow: 0 0 3px var(--accent-color);
     outline: none;
 }
 
 .new-task-button {
     outline: none;
-    background-color: #f2ba6f;
+    background-color: var(--accent-color);
     color: #232c25;
     height: 40px;
     border-radius: 40px;
@@ -115,6 +116,19 @@ input {
     border-radius: 20px;
 }
 
+.modal-button {
+    width: fit-content;
+    outline: none;
+    background-color: var(--accent-color);
+    color: #232c25;
+    height: 30px;
+    border-radius: 10px;
+    padding: 0 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
 .close-modal-button {
     position: absolute;
     right: 20px;
@@ -131,6 +145,11 @@ input {
     cursor: pointer;
     border-radius: 50%;
     transition: 0.5s;
+}
+
+.close-modal-button svg {
+    width: 32px;
+    height: 32px;
 }
 
 .close-modal-button:hover {
@@ -166,19 +185,12 @@ input {
 }
 
 .create-task-input:focus {
-    box-shadow: 0 0 3px #f2ba6f;
+    box-shadow: 0 0 3px var(--accent-color);
     outline: none;
 }
 
 .create-task-button {
-    outline: none;
-    background-color: #f2ba6f;
-    color: #232c25;
-    height: 40px;
-    border-radius: 40px;
     padding: 0 20px;
-    border: none;
-    cursor: pointer;
     width: fit-content;
     margin-left: auto;
 }
@@ -198,7 +210,7 @@ input {
 }
 
 #task-description-textarea:focus {
-    box-shadow: 0 0 3px #f2ba6f;
+    box-shadow: 0 0 3px var(--accent-color);
     outline: none;
 }
 
@@ -206,17 +218,13 @@ input {
         View Task modal
  ========================================================================================== */
 
-.delete-task-button {
-    width: fit-content;
-    outline: none;
+.task-actions-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.delete-button {
     background-color: #f2816f;
-    color: #232c25;
-    height: 40px;
-    border-radius: 40px;
-    padding: 0 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
 }
 
 /* ==========================================================================================
@@ -229,24 +237,8 @@ input {
     justify-content: space-around;
 }
 
-.confirmation-action-buttons button {
-    width: fit-content;
-    outline: none;
-    color: #232c25;
-    height: 40px;
-    border-radius: 10px;
-    padding: 0 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-}
-
 .confirm-deletion-button {
     background-color: #f2816f;
-}
-
-.cancel-deletion-button {
-    background-color: #f2ba6f;
 }
 
 /* ==========================================================================================
@@ -323,7 +315,7 @@ input {
 }
 
 .task:hover {
-    box-shadow: 0 0 3px #f2ba6f;
+    box-shadow: 0 0 3px var(--accent-color);
 }
 
 .task-title {

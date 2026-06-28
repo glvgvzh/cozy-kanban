@@ -5,13 +5,13 @@ function DeleteTaskConfirmationModal({ taskTitle, setConfirmDeletionModalOpen, o
                 <h2 className="modal-title">Удалить задачу "{taskTitle}"?</h2>
                 <div className="confirmation-action-buttons">
                     <button
-                        className="cancel-deletion-button"
+                        className="modal-button cancel-deletion-button"
                         onClick={() => setConfirmDeletionModalOpen(false)}
                     >
                         Отмена
                     </button>
                     <button
-                        className="confirm-deletion-button"
+                        className="modal-button confirm-deletion-button"
                         onClick={onDelete}
                     >
                         Удалить

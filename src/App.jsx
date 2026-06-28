@@ -40,6 +40,15 @@ function App() {
         setSelectedTaskId(null)
     }
 
+    function handleMoveTaskStatus() {
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === selectedTaskId) {
+                return ({ ...task, status: 'inProgress' })
+            }
+            return task
+        }))
+    }
+
     return (
         <div className="app">
 
@@ -64,12 +73,13 @@ function App() {
                     selectedTaskId={selectedTaskId}
                     setSelectedTaskId={setSelectedTaskId}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
+                    onMoveStatus={handleMoveTaskStatus}
                 />
             }
 
             {isConfirmDeletionModalOpen &&
                 <DeleteTaskConfirmationModal
-                    taskTitle={tasks.find(task => task.id === selectedTaskId)?.title} 
+                    taskTitle={tasks.find(task => task.id === selectedTaskId)?.title}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
                     onDelete={handleDeleteTask}
                 />

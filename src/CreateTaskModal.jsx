@@ -37,7 +37,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                         onChange={e => setNewTaskDescription(e.target.value)}
                     />
                     <button
-                        className="create-task-button"
+                        className="modal-button create-task-button"
                         onClick={onCreateTask}
                     >
                         Создать

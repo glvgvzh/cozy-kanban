@@ -1,14 +1,17 @@
 import { XIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, setConfirmDeletionModalOpen }) {
+function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatus }) {
+    const selectedTask = tasks.find(task => task.id === selectedTaskId)
+    if (!selectedTask) return null
+
     return (
         <div className="modal-overlay">
             <div className="modal">
                 <h2 className="modal-title">
-                    {(tasks.find(task => task.id === selectedTaskId)).title}
+                    {selectedTask.title}
                 </h2>
                 <div className="view-task-modal-description">
-                    {(tasks.find(task => task.id === selectedTaskId)).description}
+                    {selectedTask.description}
                 </div>
                 <button
                     className="close-modal-button"
@@ -16,12 +19,22 @@ function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, setConfirm
                 >
                     <XIcon />
                 </button>
-                <button
-                    className="delete-task-button"
-                    onClick={() => setConfirmDeletionModalOpen(true)}
-                >
-                    Удалить
-                </button>
+                <div className="task-actions-buttons">
+                    {selectedTask.status === 'todo' &&
+                        <button
+                            className="modal-button in-progress"
+                            onClick={onMoveStatus}
+                        >
+                            В работу
+                        </button>
+                    }
+                    <button
+                        className="modal-button delete-button"
+                        onClick={() => setConfirmDeletionModalOpen(true)}
+                    >
+                        Удалить
+                    </button>
+                </div>
             </div>
         </div>
     )
