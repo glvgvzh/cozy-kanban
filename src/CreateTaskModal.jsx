@@ -7,6 +7,8 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
         inputRef.current?.focus()
     }, [])
 
+    const isCreateDisabled = newTaskTitle.trim() === ''
+
     return (
         <div className="modal-overlay">
             <div className="modal">
@@ -38,6 +40,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     />
                     <button
                         className="modal-button create-task-button"
+                        disabled={isCreateDisabled}
                         onClick={onCreateTask}
                     >
                         Создать
