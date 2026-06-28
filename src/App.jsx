@@ -15,6 +15,8 @@ function App() {
     const [newTaskDescription, setNewTaskDescription] = useState('')
     const [isConfirmDeletionModalOpen, setConfirmDeletionModalOpen] = useState(false)
 
+    const selectedTask = tasks.find(task => task.id === selectedTaskId)
+
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
         setTasks(prevTasks => [...prevTasks, {
@@ -67,10 +69,9 @@ function App() {
                 </button>
             </div>
 
-            {selectedTaskId !== null &&
+            {selectedTask &&
                 <TaskDetailsModal
-                    tasks={tasks}
-                    selectedTaskId={selectedTaskId}
+                    selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
                     onMoveStatus={handleMoveTaskStatus}
@@ -79,7 +80,7 @@ function App() {
 
             {isConfirmDeletionModalOpen &&
                 <DeleteTaskConfirmationModal
-                    taskTitle={tasks.find(task => task.id === selectedTaskId)?.title}
+                    taskTitle={selectedTask?.title}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
                     onDelete={handleDeleteTask}
                 />

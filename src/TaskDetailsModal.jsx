@@ -1,7 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatus }) {
-    const selectedTask = tasks.find(task => task.id === selectedTaskId)
+function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatus }) {
     if (!selectedTask) return null
 
     return (
