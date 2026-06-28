@@ -43,29 +43,10 @@ function App() {
         setSelectedTaskId(null)
     }
 
-    function handleMoveTaskStatusForward() {
+    function handleUpdateTaskStatus(taskId, updatedStatus) {
         setTasks(prevTasks => prevTasks.map(task => {
-            if (task.id === selectedTaskId) {
-                if (task.status === 'todo') {
-                    return ({ ...task, status: 'inProgress' })
-                }
-                if (task.status === 'inProgress') {
-                    return ({ ...task, status: 'done' })
-                }
-            }
-            return task
-        }))
-    }
-
-    function handleMoveTaskStatusBackward() {
-        setTasks(prevTasks => prevTasks.map(task => {
-            if (task.id === selectedTaskId) {
-                if (task.status === 'inProgress') {
-                    return ({ ...task, status: 'todo' })
-                }
-                if (task.status === 'done') {
-                    return ({ ...task, status: 'inProgress' })
-                }
+            if (task.id === taskId) {
+                return ({ ...task, status: updatedStatus })
             }
             return task
         }))
@@ -94,8 +75,7 @@ function App() {
                     selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
-                    onMoveStatusForward={handleMoveTaskStatusForward}
-                    onMoveStatusBackward={handleMoveTaskStatusBackward}
+                    onUpdateTaskStatus={handleUpdateTaskStatus}
                     statusName={statusName}
                 />
             }

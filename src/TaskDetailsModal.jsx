@@ -1,6 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatusForward, onMoveStatusBackward, statusName }) {
+function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onUpdateTaskStatus, statusName }) {
     if (!selectedTask) return null
 
     return (
@@ -23,7 +23,7 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                     {selectedTask.status === 'todo' &&
                         <button
                             className="modal-button in-progress"
-                            onClick={onMoveStatusForward}
+                            onClick={() => onUpdateTaskStatus(selectedTask.id, 'inProgress')}
                         >
                             В работу
                         </button>
@@ -32,13 +32,13 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                         <>
                             <button
                                 className="modal-button"
-                                onClick={onMoveStatusBackward}
+                                onClick={() => onUpdateTaskStatus(selectedTask.id, 'todo')}
                             >
                                 Вернуть назад
                             </button>
                             <button
                                 className="modal-button"
-                                onClick={onMoveStatusForward}
+                                onClick={() => onUpdateTaskStatus(selectedTask.id, 'done')}
                             >
                                 Готово
                             </button>
@@ -47,7 +47,7 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                     {selectedTask.status === 'done' &&
                         <button
                             className="modal-button"
-                            onClick={onMoveStatusBackward}
+                            onClick={() => onUpdateTaskStatus(selectedTask.id, 'inProgress')}
                         >
                             Вернуть назад
                         </button>
