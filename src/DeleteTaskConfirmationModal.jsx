@@ -1,4 +1,4 @@
-function DeleteTaskConfirmationModal({ taskTitle, setConfirmDeletionModalOpen, onDelete }) {
+function DeleteTaskConfirmationModal({ taskTitle, setIsConfirmDeletionModalOpen, onDelete }) {
     return (
         <div className="modal-overlay">
             <div className="modal">
@@ -6,7 +6,7 @@ function DeleteTaskConfirmationModal({ taskTitle, setConfirmDeletionModalOpen, o
                 <div className="confirmation-action-buttons">
                     <button
                         className="modal-button cancel-deletion-button"
-                        onClick={() => setConfirmDeletionModalOpen(false)}
+                        onClick={() => setIsConfirmDeletionModalOpen(false)}
                     >
                         Отмена
                     </button>

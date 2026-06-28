@@ -7,15 +7,18 @@ import { columns, tasks as initialTasks } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
+import EditTaskModal from "./EditTaskModal";
 
 function App() {
     const { tasks, setTasks } = useTasksStorage()
 
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
+    const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
+    const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
+
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
-    const [isConfirmDeletionModalOpen, setConfirmDeletionModalOpen] = useState(false)
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
@@ -41,7 +44,7 @@ function App() {
 
     function handleDeleteTask() {
         setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId))
-        setConfirmDeletionModalOpen(false)
+        setIsConfirmDeletionModalOpen(false)
         setSelectedTaskId(null)
     }
 
@@ -57,10 +60,11 @@ function App() {
     function handleResetTasks() {
         setTasks(initialTasks)
         setIsNewTaskModalOpen(false)
-        setConfirmDeletionModalOpen(false)
+        setIsConfirmDeletionModalOpen(false)
         setNewTaskTitle('')
         setNewTaskDescription('')
         setSelectedTaskId(null)
+        setIsEditTaskModalOpen(false)
     }
 
     return (
@@ -73,7 +77,7 @@ function App() {
                     className="focus-input"
                     type="text"
                 />
-                <button 
+                <button
                     className="reset-board-button"
                     onClick={handleResetTasks}
                 >
@@ -91,16 +95,17 @@ function App() {
                 <TaskDetailsModal
                     selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
-                    setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
+                    setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
                     onUpdateTaskStatus={handleUpdateTaskStatus}
                     statusName={statusName}
+                    setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                 />
             }
 
             {isConfirmDeletionModalOpen &&
                 <DeleteTaskConfirmationModal
                     taskTitle={selectedTask?.title}
-                    setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
+                    setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
                     onDelete={handleDeleteTask}
                 />
             }
@@ -113,6 +118,13 @@ function App() {
                     onClose={handleCloseTaskModal}
                     newTaskDescription={newTaskDescription}
                     setNewTaskDescription={setNewTaskDescription}
+                />
+            }
+
+            {isEditTaskModalOpen && selectedTask &&
+                <EditTaskModal
+                    setIsEditTaskModalOpen={setIsEditTaskModalOpen}
+                    selectedTask={selectedTask}
                 />
             }
 

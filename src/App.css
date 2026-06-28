@@ -59,6 +59,10 @@ input {
     border-bottom: var(--border);
 }
 
+.header-icon svg {
+    color: var(--accent-color);
+}
+
 .focus-input {
     flex: 1;
     border: var(--border);
@@ -68,6 +72,11 @@ input {
     padding: 0 20px;
     color: var(--text-color);
     transition: 0.5s;
+}
+
+.focus-input::placeholder {
+    font-size: 13px;
+    text-align: center;
 }
 
 .focus-input:focus {
@@ -239,6 +248,30 @@ input {
     background-color: #f2816f;
 }
 
+.status-edit-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.edit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--accent-color);
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.edit-button:hover {
+    border-bottom: 1px solid var(--accent-color);
+}
+
 /* ==========================================================================================
         Confirmation Delete modal
  ========================================================================================== */
@@ -285,6 +318,8 @@ input {
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
+    color: var(--accent-color);
+    opacity: 0.7;
 }
 
 .tasks-counter {
@@ -312,6 +347,13 @@ input {
 
 .column-options-button:hover {
     background-color: rgba(214, 210, 191, 0.08);
+}
+
+.empty-column-message {
+    font-size: 13px;
+    opacity: 0.3;
+    text-align: center;
+    margin: 50% 0;
 }
 
 /* ==========================================================================================

@@ -1,6 +1,15 @@
-import { XIcon } from "@phosphor-icons/react";
+import { XIcon, PenIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onUpdateTaskStatus, statusName }) {
+function TaskDetailsModal(
+    {
+        selectedTask,
+        setSelectedTaskId,
+        setIsConfirmDeletionModalOpen,
+        onUpdateTaskStatus,
+        statusName,
+        setIsEditTaskModalOpen,
+    }
+) {
     if (!selectedTask) return null
 
     return (
@@ -9,7 +18,15 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                 <h2 className="modal-title">
                     {selectedTask.title}
                 </h2>
-                <div className="modal-status">Статус: {statusName}</div>
+                <div className="status-edit-line">
+                    <div className="modal-status">Статус: {statusName}</div>
+                    <button 
+                        className="edit-button"
+                        onClick={() => setIsEditTaskModalOpen(true)}
+                    >
+                        <PenIcon />Редактировать
+                    </button>
+                </div>
                 {selectedTask.description &&
                     <div className="view-task-modal-description">
                         {selectedTask.description}
@@ -55,7 +72,7 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                     }
                     <button
                         className="modal-button delete-button"
-                        onClick={() => setConfirmDeletionModalOpen(true)}
+                        onClick={() => setIsConfirmDeletionModalOpen(true)}
                     >
                         Удалить
                     </button>
