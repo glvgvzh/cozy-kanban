@@ -11,6 +11,7 @@ function App() {
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
+    const [newTaskDescription, setNewTaskDescription] = useState('')
 
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
@@ -18,15 +19,17 @@ function App() {
             id: Date.now(),
             status: 'todo',
             title: newTaskTitle.trim(),
-            description: ''
+            description: newTaskDescription.trim()
         }])
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
+        setNewTaskDescription('')
     }
 
     function handleCloseTaskModal() {
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
+        setNewTaskDescription('')
     }
 
     return (
@@ -61,9 +64,10 @@ function App() {
                     setNewTaskTitle={setNewTaskTitle}
                     onCreateTask={handleCreateTask}
                     onClose={handleCloseTaskModal}
+                    newTaskDescription={newTaskDescription}
+                    setNewTaskDescription={setNewTaskDescription}
                 />
             }
-
 
             <div className="board">
                 {columns.map(column => {

@@ -1,7 +1,7 @@
 import { XIcon } from "@phosphor-icons/react";
 import { useEffect, useRef } from "react";
 
-function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose }) {
+function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, setNewTaskDescription }) {
     const inputRef = useRef(null)
     useEffect(() => {
         inputRef.current?.focus()
@@ -17,6 +17,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose 
                         ref={inputRef}
                         className="create-task-input"
                         type="text"
+                        placeholder="Заголовок задачи"
                         value={newTaskTitle}
                         onChange={e => setNewTaskTitle(e.target.value)}
                         onKeyDown={e => {
@@ -27,6 +28,13 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose 
                                 onClose()
                             }
                         }}
+                    />
+                    <textarea
+                        name="task-description-textarea"
+                        id="task-description-textarea"
+                        placeholder="Описание задачи"
+                        value={newTaskDescription}
+                        onChange={e => setNewTaskDescription(e.target.value)}
                     />
                     <button
                         className="create-task-button"
