@@ -10,9 +10,10 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                     {selectedTask.title}
                 </h2>
                 <div className="modal-status">Статус: {statusName}</div>
-                <div className="view-task-modal-description">
-                    {selectedTask.description}
-                </div>
+                {selectedTask.description &&
+                    <div className="view-task-modal-description">
+                        {selectedTask.description}
+                    </div>}
                 <button
                     className="close-modal-button"
                     onClick={() => setSelectedTaskId(null)}
