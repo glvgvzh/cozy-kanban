@@ -1,6 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, onDelete }) {
+function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, setConfirmDeletionModalOpen }) {
     return (
         <div className="modal-overlay">
             <div className="modal">
@@ -18,7 +18,7 @@ function TaskDetailsModal({ tasks, selectedTaskId, setSelectedTaskId, onDelete }
                 </button>
                 <button
                     className="delete-task-button"
-                    onClick={onDelete}
+                    onClick={() => setConfirmDeletionModalOpen(true)}
                 >
                     Удалить
                 </button>

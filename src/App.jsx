@@ -5,6 +5,7 @@ import Column from "./Column";
 import { columns, tasks as initialTasks } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
+import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 
 function App() {
     const [tasks, setTasks] = useState(initialTasks)
@@ -12,6 +13,7 @@ function App() {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
+    const [isConfirmDeletionModalOpen, setConfirmDeletionModalOpen] = useState(false)
 
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
@@ -34,6 +36,7 @@ function App() {
 
     function handleDeleteTask() {
         setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId))
+        setConfirmDeletionModalOpen(false)
         setSelectedTaskId(null)
     }
 
@@ -60,6 +63,14 @@ function App() {
                     tasks={tasks}
                     selectedTaskId={selectedTaskId}
                     setSelectedTaskId={setSelectedTaskId}
+                    setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
+                />
+            }
+
+            {isConfirmDeletionModalOpen &&
+                <DeleteTaskConfirmationModal
+                    taskTitle={tasks.find(task => task.id === selectedTaskId)?.title} 
+                    setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
                     onDelete={handleDeleteTask}
                 />
             }

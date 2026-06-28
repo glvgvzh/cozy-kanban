@@ -140,6 +140,7 @@ input {
 .modal-title,
 .modal-subtitle {
     margin: 0;
+    text-align: center;
 }
 
 /* ==========================================================================================
@@ -216,6 +217,36 @@ input {
     border: none;
     cursor: pointer;
     font-size: 14px;
+}
+
+/* ==========================================================================================
+        Confirmation Delete modal
+ ========================================================================================== */
+
+.confirmation-action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.confirmation-action-buttons button {
+    width: fit-content;
+    outline: none;
+    color: #232c25;
+    height: 40px;
+    border-radius: 10px;
+    padding: 0 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.confirm-deletion-button {
+    background-color: #f2816f;
+}
+
+.cancel-deletion-button {
+    background-color: #f2ba6f;
 }
 
 /* ==========================================================================================
