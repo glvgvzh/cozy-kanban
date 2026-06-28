@@ -1,20 +1,16 @@
 import "./App.css"
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useTasksStorage from "./hooks/useTasksStorage";
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
-import { columns, tasks as initialTasks } from "./data/boardData";
+import { columns } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 
 function App() {
-    const [tasks, setTasks] = useState(() => {
-        const localStorageTasks = JSON.parse(localStorage.getItem('tasks'))
-        if (localStorageTasks) {
-            return localStorageTasks
-        }
-        return initialTasks
-    })
+    const { tasks, setTasks } = useTasksStorage()
+
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
@@ -23,10 +19,6 @@ function App() {
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
-    
-    useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks))
-    }, [tasks])
 
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
