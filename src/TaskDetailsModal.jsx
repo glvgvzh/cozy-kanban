@@ -1,6 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 
-function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatus }) {
+function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionModalOpen, onMoveStatusForward, onMoveStatusBackward, statusName }) {
     if (!selectedTask) return null
 
     return (
@@ -9,6 +9,7 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                 <h2 className="modal-title">
                     {selectedTask.title}
                 </h2>
+                <div className="modal-status">Статус: {statusName}</div>
                 <div className="view-task-modal-description">
                     {selectedTask.description}
                 </div>
@@ -22,17 +23,33 @@ function TaskDetailsModal({ selectedTask, setSelectedTaskId, setConfirmDeletionM
                     {selectedTask.status === 'todo' &&
                         <button
                             className="modal-button in-progress"
-                            onClick={onMoveStatus}
+                            onClick={onMoveStatusForward}
                         >
                             В работу
                         </button>
                     }
                     {selectedTask.status === 'inProgress' &&
+                        <>
+                            <button
+                                className="modal-button"
+                                onClick={onMoveStatusBackward}
+                            >
+                                Вернуть назад
+                            </button>
+                            <button
+                                className="modal-button"
+                                onClick={onMoveStatusForward}
+                            >
+                                Готово
+                            </button>
+                        </>
+                    }
+                    {selectedTask.status === 'done' &&
                         <button
-                            className="modal-button done"
-                            onClick={onMoveStatus}
+                            className="modal-button"
+                            onClick={onMoveStatusBackward}
                         >
-                            Готово
+                            Вернуть назад
                         </button>
                     }
                     <button

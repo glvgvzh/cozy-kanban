@@ -16,6 +16,7 @@ function App() {
     const [isConfirmDeletionModalOpen, setConfirmDeletionModalOpen] = useState(false)
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
+    const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
 
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
@@ -42,7 +43,7 @@ function App() {
         setSelectedTaskId(null)
     }
 
-    function handleMoveTaskStatus() {
+    function handleMoveTaskStatusForward() {
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === selectedTaskId) {
                 if (task.status === 'todo') {
@@ -50,6 +51,20 @@ function App() {
                 }
                 if (task.status === 'inProgress') {
                     return ({ ...task, status: 'done' })
+                }
+            }
+            return task
+        }))
+    }
+
+    function handleMoveTaskStatusBackward() {
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === selectedTaskId) {
+                if (task.status === 'inProgress') {
+                    return ({ ...task, status: 'todo' })
+                }
+                if (task.status === 'done') {
+                    return ({ ...task, status: 'inProgress' })
                 }
             }
             return task
@@ -79,7 +94,9 @@ function App() {
                     selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
                     setConfirmDeletionModalOpen={setConfirmDeletionModalOpen}
-                    onMoveStatus={handleMoveTaskStatus}
+                    onMoveStatusForward={handleMoveTaskStatusForward}
+                    onMoveStatusBackward={handleMoveTaskStatusBackward}
+                    statusName={statusName}
                 />
             }
 

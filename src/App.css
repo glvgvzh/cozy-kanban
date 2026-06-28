@@ -218,9 +218,15 @@ input {
         View Task modal
  ========================================================================================== */
 
+.modal-status {
+    text-align: center;
+    padding: 0;
+}
+
 .task-actions-buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
 .delete-button {
