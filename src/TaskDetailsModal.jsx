@@ -5,7 +5,7 @@ function TaskDetailsModal(
         selectedTask,
         setSelectedTaskId,
         setIsConfirmDeletionModalOpen,
-        onUpdateTaskStatus,
+        onUpdateTask,
         statusName,
         setIsEditTaskModalOpen,
     }
@@ -20,7 +20,7 @@ function TaskDetailsModal(
                 </h2>
                 <div className="status-edit-line">
                     <div className="modal-status">Статус: {statusName}</div>
-                    <button 
+                    <button
                         className="edit-button"
                         onClick={() => setIsEditTaskModalOpen(true)}
                     >
@@ -41,7 +41,7 @@ function TaskDetailsModal(
                     {selectedTask.status === 'todo' &&
                         <button
                             className="modal-button in-progress"
-                            onClick={() => onUpdateTaskStatus(selectedTask.id, 'inProgress')}
+                            onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
                         >
                             В работу
                         </button>
@@ -50,13 +50,13 @@ function TaskDetailsModal(
                         <>
                             <button
                                 className="modal-button"
-                                onClick={() => onUpdateTaskStatus(selectedTask.id, 'todo')}
+                                onClick={() => onUpdateTask(selectedTask.id, { status: 'todo' })}
                             >
                                 Вернуть назад
                             </button>
                             <button
                                 className="modal-button"
-                                onClick={() => onUpdateTaskStatus(selectedTask.id, 'done')}
+                                onClick={() => onUpdateTask(selectedTask.id, { status: 'done' })}
                             >
                                 Готово
                             </button>
@@ -65,7 +65,7 @@ function TaskDetailsModal(
                     {selectedTask.status === 'done' &&
                         <button
                             className="modal-button"
-                            onClick={() => onUpdateTaskStatus(selectedTask.id, 'inProgress')}
+                            onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
                         >
                             Вернуть назад
                         </button>

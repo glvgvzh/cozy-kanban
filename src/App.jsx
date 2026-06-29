@@ -48,28 +48,13 @@ function App() {
         setSelectedTaskId(null)
     }
 
-    function handleUpdateTaskStatus(taskId, updatedStatus) {
+    function handleUpdateTask(taskId, updates) {
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === taskId) {
-                return ({ ...task, status: updatedStatus })
+                return ({ ...task, ...updates })
             }
             return task
         }))
-    }
-
-    function handleUpdateTask(editedTask) {
-        if (editedTask.title.trim() === '') return
-        setTasks(prevTasks => prevTasks.map(task => {
-            if (task.id === editedTask.id) {
-                return {
-                    ...task,
-                    title: editedTask.title,
-                    description: editedTask.description,
-                }
-            }
-            return task
-        }))
-        setIsEditTaskModalOpen(false)
     }
 
     function handleResetTasks() {
@@ -111,7 +96,7 @@ function App() {
                     selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
                     setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
-                    onUpdateTaskStatus={handleUpdateTaskStatus}
+                    onUpdateTask={handleUpdateTask}
                     statusName={statusName}
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                 />
@@ -140,7 +125,7 @@ function App() {
                 <EditTaskModal
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                     selectedTask={selectedTask}
-                    onUpdate={handleUpdateTask}
+                    onUpdateTask={handleUpdateTask}
                 />
             }
 

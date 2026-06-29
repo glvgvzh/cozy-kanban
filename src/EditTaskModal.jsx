@@ -1,10 +1,9 @@
 import { XIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 
-function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdate }) {
+function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
     const [editedTask, setEditedTask] = useState(
         {
-            id: selectedTask.id,
             title: selectedTask.title,
             description: selectedTask.description,
         }
@@ -41,7 +40,11 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdate }) {
                         <button
                             className="modal-button primary-modal-button"
                             disabled={isSaveDisabled}
-                            onClick={() => onUpdate(editedTask)}
+                            onClick={() => {
+                                if (editedTask.title.trim() === '') return
+                                onUpdateTask(selectedTask.id, { title: editedTask.title, description: editedTask.description })
+                                setIsEditTaskModalOpen(false)
+                            }}
                         >
                             Сохранить
                         </button>
