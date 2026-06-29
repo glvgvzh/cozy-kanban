@@ -1,13 +1,16 @@
 import { XIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 
-function EditTaskModal({ setIsEditTaskModalOpen, selectedTask }) {
+function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdate }) {
     const [editedTask, setEditedTask] = useState(
         {
+            id: selectedTask.id,
             title: selectedTask.title,
             description: selectedTask.description,
         }
     )
+
+    const isSaveDisabled = editedTask.title.trim() === ''
 
     return (
         <div className="modal-overlay">
@@ -28,11 +31,21 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask }) {
                         value={editedTask.description}
                         onChange={e => setEditedTask(prev => ({ ...prev, description: e.target.value }))}
                     />
-                    <button
-                        className="modal-button create-task-button"
-                    >
-                        Сохранить
-                    </button>
+                    <div className="task-actions-buttons">
+                        <button
+                            className="modal-button"
+                            onClick={() => setIsEditTaskModalOpen(false)}
+                        >
+                            Отмена
+                        </button>
+                        <button
+                            className="modal-button primary-modal-button"
+                            disabled={isSaveDisabled}
+                            onClick={() => onUpdate(editedTask)}
+                        >
+                            Сохранить
+                        </button>
+                    </div>
                 </div>
                 <button
                     className="close-modal-button"

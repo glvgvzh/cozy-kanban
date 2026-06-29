@@ -57,6 +57,21 @@ function App() {
         }))
     }
 
+    function handleUpdateTask(editedTask) {
+        if (editedTask.title.trim() === '') return
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === editedTask.id) {
+                return {
+                    ...task,
+                    title: editedTask.title,
+                    description: editedTask.description,
+                }
+            }
+            return task
+        }))
+        setIsEditTaskModalOpen(false)
+    }
+
     function handleResetTasks() {
         setTasks(initialTasks)
         setIsNewTaskModalOpen(false)
@@ -125,6 +140,7 @@ function App() {
                 <EditTaskModal
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                     selectedTask={selectedTask}
+                    onUpdate={handleUpdateTask}
                 />
             }
 

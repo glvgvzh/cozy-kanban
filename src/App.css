@@ -199,13 +199,12 @@ input {
     outline: none;
 }
 
-.create-task-button {
-    padding: 0 20px;
+.primary-modal-button {
     width: fit-content;
     margin-left: auto;
 }
 
-.create-task-button:disabled {
+.primary-modal-button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
 }
