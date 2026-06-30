@@ -95,9 +95,11 @@ function App() {
                 <TaskDetailsModal
                     selectedTask={selectedTask}
                     setSelectedTaskId={setSelectedTaskId}
+                    isConfirmDeletionModalOpen={isConfirmDeletionModalOpen}
                     setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
                     onUpdateTask={handleUpdateTask}
                     statusName={statusName}
+                    isEditTaskModalOpen={isEditTaskModalOpen}
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                 />
             }

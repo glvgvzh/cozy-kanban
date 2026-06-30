@@ -1,4 +1,14 @@
+import { useEffect } from "react"
+
 function DeleteTaskConfirmationModal({ taskTitle, setIsConfirmDeletionModalOpen, onDelete }) {
+    useEffect(() => {
+        function handleEsc(e) {
+            if (e.key === 'Escape') setIsConfirmDeletionModalOpen(false)
+        }
+        document.addEventListener('keydown', handleEsc)
+        return () => document.removeEventListener('keydown', handleEsc)
+    }, [setIsConfirmDeletionModalOpen])
+
     return (
         <div className="modal-overlay">
             <div className="modal">

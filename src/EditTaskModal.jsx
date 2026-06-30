@@ -1,5 +1,5 @@
 import { XIcon } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
     const [editedTask, setEditedTask] = useState(
@@ -10,6 +10,14 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
     )
 
     const isSaveDisabled = editedTask.title.trim() === ''
+
+    useEffect(() => {
+        function handleEsc(e) {
+            if (e.key === 'Escape') setIsEditTaskModalOpen(false)
+        }
+        document.addEventListener('keydown', handleEsc)
+        return () => document.removeEventListener('keydown', handleEsc)
+    }, [setIsEditTaskModalOpen])
 
     return (
         <div className="modal-overlay">

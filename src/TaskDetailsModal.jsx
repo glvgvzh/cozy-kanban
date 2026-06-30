@@ -1,16 +1,30 @@
 import { XIcon, PenIcon } from "@phosphor-icons/react";
+import { useEffect } from "react";
 
 function TaskDetailsModal(
     {
         selectedTask,
         setSelectedTaskId,
+        isConfirmDeletionModalOpen,
         setIsConfirmDeletionModalOpen,
         onUpdateTask,
         statusName,
+        isEditTaskModalOpen,
         setIsEditTaskModalOpen,
     }
 ) {
-    if (!selectedTask) return null
+    useEffect(() => {
+        function handleEsc(e) {
+            if (e.key === 'Escape') {
+                if (isConfirmDeletionModalOpen || isEditTaskModalOpen) {
+                    return
+                }
+                setSelectedTaskId(null)
+            }
+        }
+        document.addEventListener('keydown', handleEsc)
+        return () => document.removeEventListener('keydown', handleEsc)
+    }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditTaskModalOpen])
 
     return (
         <div className="modal-overlay">
@@ -33,7 +47,11 @@ function TaskDetailsModal(
                     </div>}
                 <button
                     className="close-modal-button"
-                    onClick={() => setSelectedTaskId(null)}
+                    onClick={() => {
+                        setSelectedTaskId(null)
+                        setIsConfirmDeletionModalOpen(false)
+                        setIsEditTaskModalOpen(false)
+                    }}
                 >
                     <XIcon />
                 </button>

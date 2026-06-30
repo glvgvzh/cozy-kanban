@@ -9,6 +9,14 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
 
     const isCreateDisabled = newTaskTitle.trim() === ''
 
+    useEffect(() => {
+        function handleEsc(e) {
+            if (e.key === 'Escape') onClose()
+        }
+        document.addEventListener('keydown', handleEsc)
+        return () => document.removeEventListener('keydown', handleEsc)
+    }, [onClose])
+
     return (
         <div className="modal-overlay">
             <div className="modal">
@@ -25,9 +33,6 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                         onKeyDown={e => {
                             if (e.key === 'Enter') {
                                 onCreateTask()
-                            }
-                            if (e.key === 'Escape') {
-                                onClose()
                             }
                         }}
                     />
