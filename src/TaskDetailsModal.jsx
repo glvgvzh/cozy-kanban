@@ -1,5 +1,6 @@
 import { XIcon, PenIcon, NutIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
+import Modal from "./Modal"
 
 function TaskDetailsModal(
     {
@@ -27,76 +28,72 @@ function TaskDetailsModal(
     }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditTaskModalOpen])
 
     return (
-        <div className="modal-overlay" onClick={() => setSelectedTaskId(null)}>
-            <div className="modal" onClick={e => e.stopPropagation()}>
-                <h2 className="modal-title">
-                    {selectedTask.title}
-                </h2>
-                <div className="status-edit-line">
-                    <div className="modal-status">Статус: {statusName}</div>
-                    <button
-                        className="edit-button"
-                        onClick={() => setIsEditTaskModalOpen(true)}
-                    >
-                        <PenIcon />Редактировать
-                    </button>
-                </div>
-                {selectedTask.description &&
-                    <div className="view-task-modal-description">
-                        {selectedTask.description}
-                    </div>}
+        <Modal onClose={() => setSelectedTaskId(null)}>
+            <h2 className="modal-title">{selectedTask.title}</h2>
+            <div className="status-edit-line">
+                <div className="modal-status">Статус: {statusName}</div>
                 <button
-                    className="close-modal-button"
-                    onClick={() => {
-                        setSelectedTaskId(null)
-                        setIsConfirmDeletionModalOpen(false)
-                        setIsEditTaskModalOpen(false)
-                    }}
+                    className="edit-button"
+                    onClick={() => setIsEditTaskModalOpen(true)}
                 >
-                    <XIcon />
+                    <PenIcon />Редактировать
                 </button>
-                <div className="task-actions-buttons">
-                    {selectedTask.status === 'todo' &&
-                        <button
-                            className="modal-button in-progress"
-                            onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
-                        >
-                            В работу
-                        </button>
-                    }
-                    {selectedTask.status === 'inProgress' &&
-                        <>
-                            <button
-                                className="modal-button"
-                                onClick={() => onUpdateTask(selectedTask.id, { status: 'todo' })}
-                            >
-                                Вернуть назад
-                            </button>
-                            <button
-                                className="modal-button"
-                                onClick={() => onUpdateTask(selectedTask.id, { status: 'done' })}
-                            >
-                                Готово
-                            </button>
-                        </>
-                    }
-                    {selectedTask.status === 'done' &&
+            </div>
+            {selectedTask.description &&
+                <div className="view-task-modal-description">
+                    {selectedTask.description}
+                </div>}
+            <button
+                className="close-modal-button"
+                onClick={() => {
+                    setSelectedTaskId(null)
+                    setIsConfirmDeletionModalOpen(false)
+                    setIsEditTaskModalOpen(false)
+                }}
+            >
+                <XIcon />
+            </button>
+            <div className="task-actions-buttons">
+                {selectedTask.status === 'todo' &&
+                    <button
+                        className="modal-button in-progress"
+                        onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
+                    >
+                        В работу
+                    </button>
+                }
+                {selectedTask.status === 'inProgress' &&
+                    <>
                         <button
                             className="modal-button"
-                            onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
+                            onClick={() => onUpdateTask(selectedTask.id, { status: 'todo' })}
                         >
                             Вернуть назад
                         </button>
-                    }
+                        <button
+                            className="modal-button"
+                            onClick={() => onUpdateTask(selectedTask.id, { status: 'done' })}
+                        >
+                            Готово
+                        </button>
+                    </>
+                }
+                {selectedTask.status === 'done' &&
                     <button
-                        className="modal-button delete-button"
-                        onClick={() => setIsConfirmDeletionModalOpen(true)}
+                        className="modal-button"
+                        onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
                     >
-                        Удалить
+                        Вернуть назад
                     </button>
-                </div>
+                }
+                <button
+                    className="modal-button delete-button"
+                    onClick={() => setIsConfirmDeletionModalOpen(true)}
+                >
+                    Удалить
+                </button>
             </div>
-        </div>
+        </Modal>
     )
 }
 

@@ -1,5 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 import { useEffect, useRef } from "react";
+import Modal from "./Modal"
 
 function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, setNewTaskDescription }) {
     const inputRef = useRef(null)
@@ -18,48 +19,46 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
     }, [onClose])
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal" onClick={e => e.stopPropagation()}>
-                <h2 className="modal-title">Новая задача</h2>
-                <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
-                <div className="create-task-form">
-                    <input
-                        ref={inputRef}
-                        className="create-task-input"
-                        type="text"
-                        placeholder="Заголовок задачи"
-                        value={newTaskTitle}
-                        onChange={e => setNewTaskTitle(e.target.value)}
-                        onKeyDown={e => {
-                            if (e.key === 'Enter') {
-                                onCreateTask()
-                            }
-                        }}
-                    />
-                    <textarea
-                        name="task-description-textarea"
-                        id="task-description-textarea"
-                        placeholder="Описание задачи"
-                        value={newTaskDescription}
-                        onChange={e => setNewTaskDescription(e.target.value)}
-                    />
-                    <button
-                        className="modal-button primary-modal-button"
-                        disabled={isCreateDisabled}
-                        onClick={onCreateTask}
-                    >
-                        Создать
-                    </button>
-                </div>
+        <Modal onClose={onClose}>
+            <h2 className="modal-title">Новая задача</h2>
+            <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
+            <div className="create-task-form">
+                <input
+                    ref={inputRef}
+                    className="create-task-input"
+                    type="text"
+                    placeholder="Заголовок задачи"
+                    value={newTaskTitle}
+                    onChange={e => setNewTaskTitle(e.target.value)}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            onCreateTask()
+                        }
+                    }}
+                />
+                <textarea
+                    name="task-description-textarea"
+                    id="task-description-textarea"
+                    placeholder="Описание задачи"
+                    value={newTaskDescription}
+                    onChange={e => setNewTaskDescription(e.target.value)}
+                />
                 <button
-                    className="close-modal-button"
-                    aria-label="Закрыть окно создания задачи"
-                    onClick={onClose}
+                    className="modal-button primary-modal-button"
+                    disabled={isCreateDisabled}
+                    onClick={onCreateTask}
                 >
-                    <XIcon />
+                    Создать
                 </button>
             </div>
-        </div>
+            <button
+                className="close-modal-button"
+                aria-label="Закрыть окно создания задачи"
+                onClick={onClose}
+            >
+                <XIcon />
+            </button>
+        </Modal>
     )
 }
 
