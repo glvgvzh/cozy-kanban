@@ -1,4 +1,4 @@
-import { XIcon, PenIcon } from "@phosphor-icons/react";
+import { XIcon, PenIcon, NutIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 
 function TaskDetailsModal(
@@ -27,8 +27,8 @@ function TaskDetailsModal(
     }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditTaskModalOpen])
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <div className="modal-overlay" onClick={() => setSelectedTaskId(null)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
                 <h2 className="modal-title">
                     {selectedTask.title}
                 </h2>

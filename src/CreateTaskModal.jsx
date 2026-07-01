@@ -18,8 +18,8 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
     }, [onClose])
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
                 <h2 className="modal-title">Новая задача</h2>
                 <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
                 <div className="create-task-form">

@@ -10,8 +10,8 @@ function DeleteTaskConfirmationModal({ taskTitle, setIsConfirmDeletionModalOpen,
     }, [setIsConfirmDeletionModalOpen])
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <div className="modal-overlay" onClick={() => setIsConfirmDeletionModalOpen(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
                 <h2 className="modal-title">Удалить задачу "{taskTitle}"?</h2>
                 <div className="confirmation-action-buttons">
                     <button

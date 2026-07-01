@@ -20,8 +20,8 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
     }, [setIsEditTaskModalOpen])
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <div className="modal-overlay" onClick={() => setIsEditTaskModalOpen(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
                 <h2 className="modal-title">Редактирование задачи</h2>
                 <div className="create-task-form">
                     <input
