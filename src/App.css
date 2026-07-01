@@ -247,6 +247,11 @@ input {
     background-color: #f2816f;
 }
 
+.date-created-at {
+    color: grey;
+    font-size: 13px;
+}
+
 .status-edit-line {
     display: flex;
     flex-direction: row;

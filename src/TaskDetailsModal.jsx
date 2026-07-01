@@ -28,16 +28,23 @@ function TaskDetailsModal(
         return () => document.removeEventListener('keydown', handleEsc)
     }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditTaskModalOpen])
 
+    function convertTime(timestamp) {
+        return `${new Date(timestamp).toLocaleDateString()} в ${new Date(timestamp).toLocaleTimeString()}`
+    }
+
     return (
         <Modal onClose={() => setSelectedTaskId(null)}>
             <h2 className="modal-title">{selectedTask.title}</h2>
+            <div className="date-created-at">
+                {convertTime(selectedTask.createdAt)}
+            </div>
             <div className="status-edit-line">
                 <div className="modal-status">Статус: {statusName}</div>
                 <button
                     className="edit-button"
                     onClick={() => setIsEditTaskModalOpen(true)}
                 >
-                    <PenIcon />Редактировать
+                    <PenIcon />Редактировать задачу
                 </button>
             </div>
             {selectedTask.description &&

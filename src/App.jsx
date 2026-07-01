@@ -29,7 +29,8 @@ function App() {
             id: Date.now(),
             status: 'todo',
             title: newTaskTitle.trim(),
-            description: newTaskDescription.trim()
+            description: newTaskDescription.trim(),
+            createdAt: Date.now()
         }])
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
