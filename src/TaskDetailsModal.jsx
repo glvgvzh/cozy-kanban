@@ -1,5 +1,6 @@
-import { XIcon, PenIcon, NutIcon } from "@phosphor-icons/react";
+import { XIcon, PenIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
+import TaskActions from "./TaskActions";
 import Modal from "./Modal"
 
 function TaskDetailsModal(
@@ -53,46 +54,11 @@ function TaskDetailsModal(
             >
                 <XIcon />
             </button>
-            <div className="task-actions-buttons">
-                {selectedTask.status === 'todo' &&
-                    <button
-                        className="modal-button in-progress"
-                        onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
-                    >
-                        В работу
-                    </button>
-                }
-                {selectedTask.status === 'inProgress' &&
-                    <>
-                        <button
-                            className="modal-button"
-                            onClick={() => onUpdateTask(selectedTask.id, { status: 'todo' })}
-                        >
-                            Вернуть назад
-                        </button>
-                        <button
-                            className="modal-button"
-                            onClick={() => onUpdateTask(selectedTask.id, { status: 'done' })}
-                        >
-                            Готово
-                        </button>
-                    </>
-                }
-                {selectedTask.status === 'done' &&
-                    <button
-                        className="modal-button"
-                        onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
-                    >
-                        Вернуть назад
-                    </button>
-                }
-                <button
-                    className="modal-button delete-button"
-                    onClick={() => setIsConfirmDeletionModalOpen(true)}
-                >
-                    Удалить
-                </button>
-            </div>
+            <TaskActions
+                selectedTask={selectedTask}
+                onUpdateTask={onUpdateTask}
+                onDelete={() => setIsConfirmDeletionModalOpen(true)}
+            />
         </Modal>
     )
 }
