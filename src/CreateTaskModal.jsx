@@ -1,8 +1,10 @@
 import { XIcon } from "@phosphor-icons/react";
-import { useEffect, useRef } from "react";
-import Modal from "./Modal"
+import { useEffect, useRef, useState } from "react";
+import Modal from "./Modal";
+import { priorities } from "./data/boardData";
 
-function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, setNewTaskDescription }) {
+function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, setNewTaskDescription, newTaskPriority, setNewTaskPriority }) {
+
     const inputRef = useRef(null)
     useEffect(() => {
         inputRef.current?.focus()
@@ -36,6 +38,31 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                         }
                     }}
                 />
+                <div className="deadline-and-priority-container">
+                    <div className="priority-container">
+                        <div className="label">Приоритет</div>
+                        <select
+                            className="create-priority"
+                            value={newTaskPriority}
+                            onChange={(e) => setNewTaskPriority(e.target.value)}
+                        >
+                            {priorities.map(priority => {
+                                return (
+                                    <option
+                                        key={priority.id}
+                                        value={priority.id}
+                                    >
+                                        {priority.label}
+                                    </option>
+                                )
+                            })}
+                        </select>
+                    </div>
+                    <div className="deadline-container">
+                        <div className="label">Срок выполнения</div>
+                        <div className="create-deadline">Выберите дату</div>
+                    </div>
+                </div>
                 <textarea
                     name="task-description-textarea"
                     id="task-description-textarea"

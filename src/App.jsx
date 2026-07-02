@@ -3,7 +3,7 @@ import { useState } from "react";
 import useTasksStorage from "./hooks/useTasksStorage";
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
-import { columns, tasks as initialTasks } from "./data/boardData";
+import { columns, tasks as initialTasks, priorities } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
@@ -17,6 +17,7 @@ function App() {
     const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [newTaskPriority, setNewTaskPriority] = useState('low')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
 
@@ -30,7 +31,8 @@ function App() {
             status: 'todo',
             title: newTaskTitle.trim(),
             description: newTaskDescription.trim(),
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            priority: newTaskPriority,
         }])
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
@@ -121,6 +123,8 @@ function App() {
                     onClose={handleCloseTaskModal}
                     newTaskDescription={newTaskDescription}
                     setNewTaskDescription={setNewTaskDescription}
+                    newTaskPriority={newTaskPriority}
+                    setNewTaskPriority={setNewTaskPriority}
                 />
             }
 
@@ -139,6 +143,7 @@ function App() {
                             key={column.id}
                             column={column}
                             tasks={tasks}
+                            priorities={priorities}
                             setSelectedTaskId={setSelectedTaskId}
                         />
                     )

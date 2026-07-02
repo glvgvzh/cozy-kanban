@@ -25,6 +25,7 @@ export const tasks = [
         title: 'задача один',
         description: 'сделать это',
         createdAt: new Date('2026-06-10').getTime(),
+        priority: 'low',
     },
     {
         id: 2,
@@ -32,6 +33,7 @@ export const tasks = [
         title: 'задача два',
         description: 'сделать то',
         createdAt: new Date('2026-06-18').getTime(),
+        priority: 'medium',
     },
     {
         id: 3,
@@ -39,6 +41,7 @@ export const tasks = [
         title: 'задача три',
         description: 'пятое',
         createdAt: new Date('2026-06-23').getTime(),
+        priority: 'high',
     },
     {
         id: 4,
@@ -46,6 +49,7 @@ export const tasks = [
         title: 'задача четыре',
         description: 'десятое',
         createdAt: new Date('2026-06-27').getTime(),
+        priority: 'critical',
     },
     {
         id: 5,
@@ -53,5 +57,29 @@ export const tasks = [
         title: 'задача пять',
         description: 'че сделать-то...',
         createdAt: new Date('2026-06-30').getTime(),
+        priority: 'high',
+    },
+]
+
+export const priorities = [
+    {
+        id: 'low',
+        label: 'Низкий',
+        color: '439620',
+    },
+    {
+        id: 'medium',
+        label: 'Средний',
+        color: 'e59f33',
+    },
+    {
+        id: 'high',
+        label: 'Высокий',
+        color: 'e56b33',
+    },
+    {
+        id: 'critical',
+        label: 'Критический',
+        color: 'aa2020',
     },
 ]

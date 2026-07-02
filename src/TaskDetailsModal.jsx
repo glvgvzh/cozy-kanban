@@ -2,6 +2,7 @@ import { XIcon, PenIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import TaskActions from "./TaskActions";
 import Modal from "./Modal"
+import { priorities } from "./data/boardData";
 
 function TaskDetailsModal(
     {
@@ -35,17 +36,33 @@ function TaskDetailsModal(
     return (
         <Modal onClose={() => setSelectedTaskId(null)}>
             <h2 className="modal-title">{selectedTask.title}</h2>
-            <div className="date-created-at">
-                {convertTime(selectedTask.createdAt)}
-            </div>
-            <div className="status-edit-line">
-                <div className="modal-status">Статус: {statusName}</div>
+            <div className="date-edit-line">
+                <div className="date-created-at">{convertTime(selectedTask.createdAt)}</div>
                 <button
                     className="edit-button"
                     onClick={() => setIsEditTaskModalOpen(true)}
                 >
                     <PenIcon />Редактировать задачу
                 </button>
+            </div>
+            <div className="status-priority-line">
+                <div className="modal-status">Статус: {statusName}</div>
+                <select
+                    className="priority"
+                    value={selectedTask.priority}
+                    onChange={(e) => onUpdateTask(selectedTask.id, { priority: e.target.value })}
+                >
+                    {priorities.map(priority => {
+                        return (
+                            <option
+                                key={priority.id}
+                                value={priority.id}
+                            >
+                                {priority.label}
+                            </option>
+                        )
+                    })}
+                </select>
             </div>
             {selectedTask.description &&
                 <div className="view-task-modal-description">

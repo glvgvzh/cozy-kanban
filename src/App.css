@@ -173,7 +173,7 @@ input {
 }
 
 /* ==========================================================================================
-        New Task modal
+        Create Task modal
  ========================================================================================== */
 
 .create-task-form {
@@ -196,6 +196,36 @@ input {
 
 .create-task-input:focus {
     box-shadow: 0 0 3px var(--accent-color);
+    outline: none;
+}
+
+.deadline-and-priority-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.deadline-container,
+.priority-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 50%;
+    align-items: start;
+}
+
+.create-priority,
+.create-deadline {
+    color: inherit;
+    background-color: transparent;
+    border: var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    width: 100%;
+    font-size: 13px;
+}
+
+.create-priority:focus {
     outline: none;
 }
 
@@ -229,7 +259,7 @@ input {
 }
 
 /* ==========================================================================================
-        View Task modal
+        Task Details modal
  ========================================================================================== */
 
 .modal-status {
@@ -252,11 +282,23 @@ input {
     font-size: 13px;
 }
 
-.status-edit-line {
+.status-priority-line,
+.date-edit-line {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: 13px;
+}
+
+.priority {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: inherit;
+    text-align: right;
+}
+
+.priority:focus {
+    outline: none;
 }
 
 .edit-button {
@@ -376,6 +418,11 @@ input {
     box-shadow: 0 0 3px var(--accent-color);
 }
 
+.task-card-info {
+    display: flex;
+    flex-direction: column;
+}
+
 .task-title {
     text-align: left;
     padding: 0;
@@ -383,12 +430,19 @@ input {
     background-color: transparent;
     border: none;
     color: var(--text-color);
-    cursor: pointer;
 }
 
-.task-description {
+.task-description,
+.task-priority {
     margin-top: 8px;
     font-size: 12px;
+}
+
+.task-priority {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
 }
 
 /* ==========================================================================================
