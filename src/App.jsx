@@ -3,7 +3,7 @@ import { useState } from "react";
 import useTasksStorage from "./hooks/useTasksStorage";
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 import Column from "./Column";
-import { columns, tasks as initialTasks, priorities } from "./data/boardData";
+import { columns, tasks as initialTasks } from "./data/boardData";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
@@ -37,6 +37,7 @@ function App() {
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
         setNewTaskDescription('')
+        setNewTaskPriority('low')
     }
 
     function handleCloseTaskModal() {
@@ -143,7 +144,6 @@ function App() {
                             key={column.id}
                             column={column}
                             tasks={tasks}
-                            priorities={priorities}
                             setSelectedTaskId={setSelectedTaskId}
                         />
                     )
