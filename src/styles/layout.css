@@ -1,0 +1,71 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    background-color: var(--app-bgc);
+    border: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.header,
+.footer {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #161f1e;
+}
+
+/* ==========================================================================================
+        Header
+ ========================================================================================== */
+
+.header {
+    border-bottom: var(--border);
+}
+
+.header-icon svg {
+    color: var(--accent-color);
+}
+
+.focus-input {
+    flex: 1;
+    border: var(--border);
+    border-radius: 30px;
+    height: 40px;
+    background-color: #242927;
+    padding: 0 20px;
+    color: var(--text-color);
+    transition: 0.5s;
+}
+
+.focus-input::placeholder {
+    font-size: 13px;
+    text-align: center;
+}
+
+.focus-input:focus {
+    box-shadow: 0 0 3px var(--accent-color);
+    outline: none;
+}
+
+.new-task-button,
+.reset-board-button {
+    outline: none;
+    background-color: var(--accent-color);
+    color: #232c25;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.footer {
+    border-top: var(--border);
+}

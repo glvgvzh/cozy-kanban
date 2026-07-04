@@ -1,9 +1,13 @@
-import "./App.css"
-import { useState } from "react";
-import useTasksStorage from "./hooks/useTasksStorage";
+import "./styles/index.css"
+
 import { FlowerLotusIcon } from "@phosphor-icons/react";
-import Column from "./Column";
+
+import { useState } from "react";
+
 import { columns, tasks as initialTasks } from "./data/boardData";
+
+import useTasksStorage from "./hooks/useTasksStorage";
+import Column from "./Column";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
