@@ -17,12 +17,11 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border: var(--border);
+    border: 1px solid var(--border-color);
     min-height: 500px;
     padding: 20px;
-    background-color: var(--column-bgc);
-
-    border-radius: 10px;
+    background-color: var(--surface-column);
+    border-radius: var(--radius-lg);
 }
 
 .column-header {
@@ -30,16 +29,15 @@
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
-    color: var(--accent-color);
-    opacity: 0.7;
+    color: var(--accent);
 }
 
 .tasks-counter {
-    background-color: #26332f;
+    background-color: var(--surface-hover);
     padding: 5px 10px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     margin: 0 16px;
-    font-size: 12px;
+    font-size: var(--font-size-xs);
 }
 
 .column-options-button {
@@ -50,19 +48,19 @@
     justify-content: center;
     background-color: transparent;
     border: none;
-    color: var(--text-color);
+    color: var(--text-primary);
     cursor: pointer;
-    border-radius: 50%;
-    transition: 0.5s;
+    border-radius: var(--radius-pill);
+    transition: var(--transition-fast);
     margin-left: auto;
 }
 
 .column-options-button:hover {
-    background-color: rgba(214, 210, 191, 0.08);
+    background-color: var(--surface-hover);
 }
 
 .empty-column-message {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
     opacity: 0.3;
     text-align: center;
     margin: 50% 0;

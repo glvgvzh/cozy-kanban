@@ -16,29 +16,29 @@
 
 .modal {
     position: relative;
-
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: min(90vw, 520px);
     padding: 24px;
 
-    background-color: var(--app-bgc);
-    border: var(--border);
-    border-radius: 20px;
+    background-color: var(--surface-panel);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .modal-button {
     width: fit-content;
     outline: none;
-    background-color: var(--accent-color);
-    color: #232c25;
+    background-color: var(--accent);
+    color: var(--accent-foreground);
     height: 30px;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     padding: 0 10px;
-    border: none;
+    border: 1px solid var(--border-color);
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--font-size-md);
 }
 
 .close-modal-button {
@@ -53,10 +53,10 @@
     justify-content: center;
     background-color: transparent;
     border: none;
-    color: var(--text-color);
+    color: var(--text-primary);
     cursor: pointer;
-    border-radius: 50%;
-    transition: 0.5s;
+    border-radius: var(--radius-pill);
+    transition: var(--transition-fast);
 }
 
 .close-modal-button svg {
@@ -65,7 +65,7 @@
 }
 
 .close-modal-button:hover {
-    background-color: rgba(214, 210, 191, 0.08);
+    background-color: var(--surface-hover);
 }
 
 .modal-title,
@@ -88,16 +88,16 @@
 .create-task-input {
     height: 40px;
     min-width: 0;
-    border: var(--border);
-    border-radius: 30px;
-    background-color: #242927;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-input);
     padding: 0 20px;
-    color: var(--text-color);
-    transition: 0.5s;
+    color: var(--text-primary);
+    transition: var(--transition-fast);
 }
 
 .create-task-input:focus {
-    box-shadow: 0 0 3px var(--accent-color);
+    box-shadow: var(--focus-ring);
     outline: none;
 }
 
@@ -120,11 +120,11 @@
 .create-deadline {
     color: inherit;
     background-color: transparent;
-    border: var(--border);
-    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 14px;
     width: 100%;
-    font-size: 13px;
+    font-size: var(--font-size-sm);
 }
 
 .create-priority:focus {
@@ -142,21 +142,21 @@
 }
 
 #task-description-textarea {
-    background-color: #242927;
+    background-color: var(--surface-input);
     resize: none;
     height: 250px;
-    border-radius: 20px;
-    border: var(--border);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
 
     font-family: inherit;
     color: inherit;
 
     padding: 20px;
-    font-size: 16px;
+    font-size: var(--font-size-md);
 }
 
 #task-description-textarea:focus {
-    box-shadow: 0 0 3px var(--accent-color);
+    box-shadow: var(--focus-ring);
     outline: none;
 }
 
@@ -176,12 +176,12 @@
 }
 
 .delete-button {
-    background-color: #f2816f;
+    background-color: var(--danger);
 }
 
 .date-created-at {
-    color: grey;
-    font-size: 13px;
+    color: var(--text-muted);
+    font-size: var(--font-size-xs);
 }
 
 .status-priority-line,
@@ -189,7 +189,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 13px;
+    font-size: var(--font-size-xs);
 }
 
 .priority {
@@ -210,14 +210,14 @@
     gap: 3px;
     background-color: transparent;
     border: 1px solid transparent;
-    color: var(--accent-color);
+    color: var(--accent);
     text-align: center;
     cursor: pointer;
     padding: 0;
 }
 
 .edit-button:hover {
-    border-bottom: 1px solid var(--accent-color);
+    color: var(--accent-active);
 }
 
 /* ==========================================================================================
@@ -231,5 +231,5 @@
 }
 
 .confirm-deletion-button {
-    background-color: #f2816f;
+    background-color: var(--danger);
 }

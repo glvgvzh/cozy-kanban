@@ -5,8 +5,8 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    background-color: var(--body-bgc);
-    color: var(--text-color);
+    background-color: var(--bg-body);
+    color: var(--text-primary);
 }
 
 button,
