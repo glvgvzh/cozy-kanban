@@ -36,7 +36,7 @@
 
 .task-priority {
     font-family: var(--font-mono);
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: .5px;
     display: flex;
     align-items: center;
