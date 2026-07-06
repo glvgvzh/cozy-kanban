@@ -39,7 +39,7 @@ function TaskDetailsModal(
             <div className="date-edit-line">
                 <div className="date-created-at">{convertTime(selectedTask.createdAt)}</div>
                 <button
-                    className="edit-button"
+                    className="button button-ghost edit-button"
                     onClick={() => setIsEditTaskModalOpen(true)}
                 >
                     <PenIcon />Редактировать задачу
@@ -69,7 +69,7 @@ function TaskDetailsModal(
                     {selectedTask.description}
                 </div>}
             <button
-                className="close-modal-button"
+                className="button button-icon close-modal-button"
                 onClick={() => {
                     setSelectedTaskId(null)
                     setIsConfirmDeletionModalOpen(false)

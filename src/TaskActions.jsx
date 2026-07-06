@@ -3,7 +3,7 @@ function TaskActions({ selectedTask, onUpdateTask, onDelete }) {
         <div className="task-actions-buttons">
             {selectedTask.status === 'todo' &&
                 <button
-                    className="modal-button in-progress"
+                    className="button button-primary modal-button in-progress"
                     onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
                 >
                     В работу
@@ -12,13 +12,13 @@ function TaskActions({ selectedTask, onUpdateTask, onDelete }) {
             {selectedTask.status === 'inProgress' &&
                 <>
                     <button
-                        className="modal-button"
+                        className="button button-primary modal-button"
                         onClick={() => onUpdateTask(selectedTask.id, { status: 'todo' })}
                     >
                         Вернуть назад
                     </button>
                     <button
-                        className="modal-button"
+                        className="button button-primary modal-button"
                         onClick={() => onUpdateTask(selectedTask.id, { status: 'done' })}
                     >
                         Готово
@@ -27,14 +27,14 @@ function TaskActions({ selectedTask, onUpdateTask, onDelete }) {
             }
             {selectedTask.status === 'done' &&
                 <button
-                    className="modal-button"
+                    className="button button-primary modal-button"
                     onClick={() => onUpdateTask(selectedTask.id, { status: 'inProgress' })}
                 >
                     Вернуть назад
                 </button>
             }
             <button
-                className="modal-button delete-button"
+                className="button button-danger"
                 onClick={onDelete}
             >
                 Удалить

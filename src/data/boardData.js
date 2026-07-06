@@ -65,21 +65,21 @@ export const priorities = [
     {
         id: 'low',
         label: 'Низкий',
-        color: '7cc88a',
+        color: '6b7a3f',
     },
     {
         id: 'medium',
         label: 'Средний',
-        color: 'e3b341',
+        color: 'd9a13a',
     },
     {
         id: 'high',
         label: 'Высокий',
-        color: 'e06c75',
+        color: 'b5502f',
     },
     {
         id: 'critical',
         label: 'Критический',
-        color: 'aa2020',
+        color: '8f2d20',
     },
 ]

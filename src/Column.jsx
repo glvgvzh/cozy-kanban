@@ -8,7 +8,7 @@ function Column({ column, tasks, setSelectedTaskId }) {
         <div className="column">
             <div className="column-header">
                 <div className="column-icon">
-                    <Icon size={30} />
+                    <Icon size={35} />
                 </div>
                 <div className="column-title">
                     {column.title}
@@ -17,7 +17,7 @@ function Column({ column, tasks, setSelectedTaskId }) {
                     {columnTasks.length}
                 </div>
                 <button className="column-options-button" aria-label="Открыть меню колонки">
-                    <DotsThreeOutlineIcon weight="fill" size={20} />
+                    <DotsThreeOutlineIcon weight="fill" size={23} />
                 </button>
             </div>
 

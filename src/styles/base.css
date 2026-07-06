@@ -1,17 +1,13 @@
 * {
     box-sizing: border-box;
+    font: inherit;
 }
 
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-normal);
     background-color: var(--bg-body);
     color: var(--text-primary);
-}
-
-button,
-input,
-textarea,
-select {
-    font: inherit;
 }

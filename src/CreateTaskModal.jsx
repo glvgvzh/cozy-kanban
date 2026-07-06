@@ -71,7 +71,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     onChange={e => setNewTaskDescription(e.target.value)}
                 />
                 <button
-                    className="modal-button primary-modal-button"
+                    className="button button-primary modal-button"
                     disabled={isCreateDisabled}
                     onClick={onCreateTask}
                 >
@@ -79,7 +79,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                 </button>
             </div>
             <button
-                className="close-modal-button"
+                className="button button-icon close-modal-button"
                 aria-label="Закрыть окно создания задачи"
                 onClick={onClose}
             >

@@ -1,66 +1,86 @@
 :root {
-
-    /* Backgrounds */
-    --bg-body: #1c2326;
-    --bg-app: #101a1e;
+    /* Backgrounds — тёплая кремовая шкала, без цветных заливок */
+    --bg-body: #e2d5b0;
+    --bg-app: #f7f0dd;
 
     /* Surfaces */
-    --surface-panel: #182220;
-    --surface-column: #202c29;
-    --surface-card: #293633;
-    --surface-input: #34433d;
-    --surface-hover: #3b4b45;
+    --surface-panel: #f7f0dd;
+    --surface-column: #eee2c4;
+    --surface-card: #fdf7e8;
+    --surface-input: #fbf6ea;
+    --surface-hover: #e7dabd;
 
     /* Text */
-    --text-primary: #e7e4d7;
-    --text-secondary: #b8b4a3;
-    --text-muted: #8b9087;
-    --text-disabled: #5e625d;
+    --text-primary: #221c14;
+    --text-secondary: #4b4535;
+    --text-muted: #8a8168;
+    --text-disabled: #b8ae95;
 
     /* Typography */
-    --font-size-xs: 12px; /* подписи, счетчики */
-    --font-size-sm: 14px; /* вторичный текст */
-    --font-size-md: 16px; /* основной текст */
-    --font-size-lg: 20px; /* заголовки колонок */
-    --font-size-xl: 24px; /* крупные заголовки модалок */
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+    --font-size-xs: 12px;
+    --font-size-sm: 13px;
+    --font-size-md: 15px;
+    --font-size-lg: 19px;
+    --font-size-xl: 26px;
 
     --font-weight-regular: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
 
-    /* Accent */
-    --accent: #f2ba6f;
-    --accent-hover: #f6c782;
-    --accent-active: #e09f45;
-    --accent-foreground: #1c2326;
+    --line-height-normal: 1.5;
+
+    /* Spacing scale */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+
+    /* Border hierarchy */
+    --border-width-app: 2px;
+    --border-width-column: 1.5px;
+    --border-width-card: 1px;
+
+    /* Interactive accent — тёмно-зелёный, единственное цветное пятно */
+    --accent: #3f4f2e;
+    --accent-hover: #4c5e38;
+    --accent-active: #303c22;
+    --accent-foreground: #f7f0dd;
+
+    /* Приоритеты */
+    --priority-low: #6b7a3f;
+    --priority-medium: #d9a13a;
+    --priority-high: #b5502f;
+    --priority-critical: #8f2d20;
 
     /* Borders */
-    --border-color: #383c36;
-    --border-muted: #2b302c;
-
+    --border-color: #221c14;
+    --border-muted: #c9bd9c;
 
     /* Status */
-    --success: #7cc88a;
-    --warning: #e3b341;
-    --danger: #e06c75;
-    --info: #6aa9e6;
+    --success: #6b7a3f;
+    --warning: #d9a13a;
+    --danger: #8f2d20;
+    --danger-hover: #a63b2c;
+    --info: #29405c;
 
     /* Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-pill: 9999px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
 
     /* Focus */
-    --focus-ring: 0 0 3px var(--accent-active);
-
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.45);
+    --focus-ring: 0 0 0 3px rgba(63, 79, 46, .35);
 
     /* Transition */
-    --transition-fast: 150ms ease;
-    --transition-base: 300ms ease;
+    --transition-fast: 140ms ease;
 }

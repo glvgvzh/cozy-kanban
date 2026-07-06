@@ -1,0 +1,94 @@
+/* ==========================================================================
+   Base button
+========================================================================== */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+
+    font: inherit;
+    font-weight: var(--font-weight-medium);
+
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.button:focus-visible {
+    box-shadow: var(--focus-ring);
+}
+
+.button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Variants
+========================================================================== */
+
+.button-primary {
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border-radius: var(--radius-md);
+}
+
+.button-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+}
+
+.button-primary:active:not(:disabled) {
+    background: var(--accent-active);
+}
+
+.button-danger {
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    background: var(--danger);
+    color: var(--accent-foreground);
+    border-radius: var(--radius-md);
+}
+
+.button-danger:hover:not(:disabled) {
+    background: var(--danger-hover);
+}
+
+.button-ghost {
+    padding: 0;
+    background: transparent;
+    color: var(--accent);
+    border: none;
+}
+
+.button-ghost:hover {
+    color: var(--accent-active);
+}
+
+.button-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    color: var(--text-primary);
+
+    border: none;
+    border-radius: var(--radius-pill);
+}
+
+.button-icon:hover {
+    background: var(--surface-hover);
+}

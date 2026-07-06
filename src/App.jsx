@@ -86,13 +86,13 @@ function App() {
                     type="text"
                 />
                 <button
-                    className="reset-board-button"
+                    className="button button-primary"
                     onClick={handleResetTasks}
                 >
                     Сбросить доску
                 </button>
                 <button
-                    className="new-task-button"
+                    className="button button-primary"
                     onClick={() => setIsNewTaskModalOpen(true)}
                 >
                     Новая задача

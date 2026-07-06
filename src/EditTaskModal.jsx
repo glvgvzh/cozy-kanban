@@ -40,13 +40,13 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
                 />
                 <div className="task-actions-buttons">
                     <button
-                        className="modal-button"
+                        className="button button-primary modal-button"
                         onClick={() => setIsEditTaskModalOpen(false)}
                     >
                         Отмена
                     </button>
                     <button
-                        className="modal-button primary-modal-button"
+                        className="button button-primary primary-modal-button"
                         disabled={isSaveDisabled}
                         onClick={() => {
                             if (editedTask.title.trim() === '') return
@@ -59,7 +59,7 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
                 </div>
             </div>
             <button
-                className="close-modal-button"
+                className="button button-icon close-modal-button"
                 aria-label="Закрыть окно редактирования задачи"
                 onClick={() => setIsEditTaskModalOpen(false)}
             >

@@ -3,10 +3,10 @@
     flex-direction: column;
     width: 90%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: var(--space-7) auto;
 
     background-color: var(--bg-app);
-    border: 1px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
 }
@@ -14,34 +14,37 @@
 .header,
 .footer {
     display: flex;
-    gap: 50px;
+    gap: var(--space-8);
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: var(--space-3) var(--space-5);
     background-color: var(--surface-panel);
 }
 
-/* ==========================================================================================
-        Header
- ========================================================================================== */
-
 .header {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: var(--border-width-column) solid var(--border-color);
 }
 
 .header-icon svg {
     color: var(--accent);
 }
 
+.app-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+}
+
 .focus-input {
     flex: 1;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-pill);
+    border: var(--border-width-column) solid var(--border-color);
+    border-radius: var(--radius-md);
     height: 40px;
     background-color: var(--surface-input);
-    padding: 0 20px;
+    padding: 0 var(--space-5);
     color: var(--text-primary);
-    transition: var(--transition-fast);
+    transition: box-shadow var(--transition-fast);
 }
 
 .focus-input::placeholder {
@@ -55,23 +58,6 @@
     outline: none;
 }
 
-.new-task-button,
-.reset-board-button {
-    outline: none;
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-    height: 40px;
-    border-radius: var(--radius-pill);
-    padding: 0 10px;
-    border: 1px solid var(--border-color);
-    cursor: pointer;
-}
-
-.new-task-button:hover,
-.reset-board-button:hover {
-    background-color: var(--accent-hover);
-}
-
 .footer {
-    border-top: 1px solid var(--border-color);
+    border-top: var(--border-width-column) solid var(--border-color);
 }
