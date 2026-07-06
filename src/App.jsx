@@ -2,7 +2,7 @@ import "./styles/index.css"
 
 import { FlowerLotusIcon } from "@phosphor-icons/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { columns, tasks as initialTasks, priorities } from "./data/boardData";
 
@@ -25,7 +25,7 @@ function App() {
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
-    const [selectedPriorityFilter, setSelectedPriorityFilter] = useState('')
+    const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
 
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -40,6 +40,10 @@ function App() {
 
         return matchesSearch && matchesPriority
     }))
+
+    useEffect(() => {
+        localStorage.setItem('priority', selectedPriorityFilter)
+    }, [selectedPriorityFilter])
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
