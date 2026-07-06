@@ -1,7 +1,7 @@
 import { DotsThreeOutlineIcon } from "@phosphor-icons/react";
 import TaskCard from "./TaskCard";
 
-function Column({ column, tasks, setSelectedTaskId }) {
+function Column({ column, tasks, setSelectedTaskId, searchQuery }) {
     const columnTasks = tasks.filter(task => task.status === column.id)
     const Icon = column.Icon
     return (
@@ -23,7 +23,7 @@ function Column({ column, tasks, setSelectedTaskId }) {
 
             {
                 columnTasks.length === 0
-                    ? <div className="empty-column-message">Пока тут тихо</div>
+                    ? searchQuery.trim() === '' ? <div className="empty-column-message">Пока тут тихо</div> : <div className="empty-column-message">Ничего не найдено</div>
                     : columnTasks.map(task => {
                         return (
                             <TaskCard

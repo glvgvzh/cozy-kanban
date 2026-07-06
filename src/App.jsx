@@ -24,6 +24,9 @@ function App() {
     const [newTaskPriority, setNewTaskPriority] = useState('low')
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(searchQuery.toLowerCase().trim()) || task.description.toLowerCase().includes(searchQuery.toLowerCase().trim()))
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
@@ -84,6 +87,8 @@ function App() {
                     placeholder="Что в фокусе сегодня?"
                     className="focus-input"
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button
                     className="button button-primary"
@@ -147,8 +152,9 @@ function App() {
                         <Column
                             key={column.id}
                             column={column}
-                            tasks={tasks}
+                            tasks={filteredTasks}
                             setSelectedTaskId={setSelectedTaskId}
+                            searchQuery={searchQuery}
                         />
                     )
                 })}
