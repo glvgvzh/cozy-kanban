@@ -61,3 +61,28 @@
 .footer {
     border-top: var(--border-width-column) solid var(--border-color);
 }
+
+.footer-filter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-label {
+    margin: 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-1);
+}
+
+.filter-button {
+    padding: var(--space-2) !important;
+}

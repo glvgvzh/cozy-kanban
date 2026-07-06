@@ -42,7 +42,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     <div className="priority-container">
                         <div className="label">Приоритет</div>
                         <select
-                            className="create-priority"
+                            className="select"
                             value={newTaskPriority}
                             onChange={(e) => setNewTaskPriority(e.target.value)}
                         >
@@ -60,7 +60,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     </div>
                     <div className="deadline-container">
                         <div className="label">Срок выполнения</div>
-                        <div className="create-deadline">Выберите дату</div>
+                        <div className="select">Выберите дату</div>
                     </div>
                 </div>
                 <textarea

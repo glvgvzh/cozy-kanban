@@ -147,23 +147,6 @@
     color: var(--text-muted);
 }
 
-.create-priority,
-.create-deadline {
-    font-family: var(--font-mono);
-    color: inherit;
-    background-color: var(--surface-input);
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    width: 100%;
-    font-size: var(--font-size-sm);
-}
-
-.create-priority:focus {
-    outline: none;
-    box-shadow: var(--focus-ring);
-}
-
 #task-description-textarea {
     background-color: var(--surface-input);
     resize: none;

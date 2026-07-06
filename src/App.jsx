@@ -4,7 +4,7 @@ import { FlowerLotusIcon } from "@phosphor-icons/react";
 
 import { useState } from "react";
 
-import { columns, tasks as initialTasks } from "./data/boardData";
+import { columns, tasks as initialTasks, priorities } from "./data/boardData";
 
 import useTasksStorage from "./hooks/useTasksStorage";
 import Column from "./Column";
@@ -25,8 +25,21 @@ function App() {
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
+    const [selectedPriorityFilter, setSelectedPriorityFilter] = useState('')
 
-    const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(searchQuery.toLowerCase().trim()) || task.description.toLowerCase().includes(searchQuery.toLowerCase().trim()))
+    const normalizedQuery = searchQuery.toLowerCase().trim()
+
+    const filteredTasks = (tasks.filter(task => {
+        const matchesSearch =
+            task.title.toLowerCase().includes(normalizedQuery) ||
+            task.description.toLowerCase().includes(normalizedQuery)
+
+        const matchesPriority =
+            selectedPriorityFilter === '' ||
+            task.priority === selectedPriorityFilter
+
+        return matchesSearch && matchesPriority
+    }))
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
@@ -162,7 +175,23 @@ function App() {
 
             <div className="footer">
                 <div className="footer-info">info</div>
-                <div className="footer-filter">footer-filter</div>
+                <div className="footer-filter">
+                    <div className="filter-label">Фильтр по приоритету:</div>
+                    <div className="filter">
+                        <select
+                            className="select filter-select"
+                            value={selectedPriorityFilter}
+                            onChange={e => setSelectedPriorityFilter(e.target.value)}
+                        >
+                            <option value={''}>Все</option>
+                            {priorities.map(priority => {
+                                return (
+                                    <option key={priority.id} value={priority.id}>{priority.label}</option>
+                                )
+                            })}
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     )
