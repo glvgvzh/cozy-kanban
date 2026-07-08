@@ -164,7 +164,13 @@ function App() {
                 />
             }
 
-            <DragDropProvider>
+            <DragDropProvider
+                onDragEnd={e => {
+                    if (e.canceled) return
+                    const { target, source } = e.operation
+                    if (!target) return
+                    handleUpdateTask(source.id, { status: target.id })
+                }}>
                 <div className="board">
                     {columns.map(column => {
                         const columnTasks = filteredTasks.filter(task => task.status === column.id)
