@@ -4,7 +4,7 @@ import { useDroppable } from "@dnd-kit/react";
 
 function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, Icon }) {
 
-    const {ref} = useDroppable({ 
+    const { ref } = useDroppable({ 
         id: columnId,
      })
     
