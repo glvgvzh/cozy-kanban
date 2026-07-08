@@ -1,6 +1,7 @@
 import "./styles/index.css"
 
 import { FlowerLotusIcon } from "@phosphor-icons/react";
+import {DragDropProvider} from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
 
@@ -163,21 +164,23 @@ function App() {
                 />
             }
 
-            <div className="board">
-                {columns.map(column => {
-                    const columnTasks = filteredTasks.filter(task => task.status === column.id)
-                    return (
-                        <Column
-                            key={column.id}
-                            columnTitle={column.title}
-                            tasks={columnTasks}
-                            setSelectedTaskId={setSelectedTaskId}
-                            searchQuery={searchQuery}
-                            Icon={column.Icon}
-                        />
-                    )
-                })}
-            </div>
+            <DragDropProvider>
+                <div className="board">
+                    {columns.map(column => {
+                        const columnTasks = filteredTasks.filter(task => task.status === column.id)
+                        return (
+                            <Column
+                                key={column.id}
+                                columnTitle={column.title}
+                                tasks={columnTasks}
+                                setSelectedTaskId={setSelectedTaskId}
+                                searchQuery={searchQuery}
+                                Icon={column.Icon}
+                            />
+                        )
+                    })}
+                </div>
+            </DragDropProvider>
 
             <div className="footer">
                 <div className="footer-info">info</div>
