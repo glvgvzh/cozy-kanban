@@ -1,10 +1,15 @@
 import { DotsThreeOutlineIcon } from "@phosphor-icons/react";
 import TaskCard from "./TaskCard";
+import { useDroppable } from "@dnd-kit/react";
 
-function Column({ columnTitle, tasks, setSelectedTaskId, searchQuery, Icon }) {
+function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, Icon }) {
+
+    const {ref} = useDroppable({ 
+        id: columnId,
+     })
     
     return (
-        <div className="column">
+        <div className="column" ref={ref}>
             <div className="column-header">
                 <div className="column-icon">
                     <Icon size={35} />

@@ -1,7 +1,7 @@
 import "./styles/index.css"
 
 import { FlowerLotusIcon } from "@phosphor-icons/react";
-import {DragDropProvider} from '@dnd-kit/react';
+import { DragDropProvider } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
 
@@ -171,6 +171,7 @@ function App() {
                         return (
                             <Column
                                 key={column.id}
+                                columnId={column.id}
                                 columnTitle={column.title}
                                 tasks={columnTasks}
                                 setSelectedTaskId={setSelectedTaskId}
