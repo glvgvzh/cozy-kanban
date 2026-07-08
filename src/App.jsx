@@ -165,13 +165,15 @@ function App() {
 
             <div className="board">
                 {columns.map(column => {
+                    const columnTasks = filteredTasks.filter(task => task.status === column.id)
                     return (
                         <Column
                             key={column.id}
-                            column={column}
-                            tasks={filteredTasks}
+                            columnTitle={column.title}
+                            tasks={columnTasks}
                             setSelectedTaskId={setSelectedTaskId}
                             searchQuery={searchQuery}
+                            Icon={column.Icon}
                         />
                     )
                 })}
