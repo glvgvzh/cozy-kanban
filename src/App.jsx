@@ -170,7 +170,8 @@ function App() {
                     const { target, source } = e.operation
                     if (!target) return
                     handleUpdateTask(source.id, { status: target.id })
-                }}>
+                }}
+            >
                 <div className="board">
                     {columns.map(column => {
                         const columnTasks = filteredTasks.filter(task => task.status === column.id)
