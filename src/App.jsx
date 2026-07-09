@@ -1,7 +1,7 @@
 import "./styles/index.css"
 
 import { FlowerLotusIcon } from "@phosphor-icons/react";
-import { DragDropProvider } from '@dnd-kit/react';
+import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
 
@@ -13,6 +13,7 @@ import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 import EditTaskModal from "./EditTaskModal";
+import TaskCardContent from "./TaskCardContent";
 
 function App() {
     const { tasks, setTasks } = useTasksStorage()
@@ -188,6 +189,17 @@ function App() {
                         )
                     })}
                 </div>
+                <DragOverlay>
+                    {source => {
+                        const task = tasks.find(task => task.id === source.id)
+                        if (!task) return null
+                        return (
+                            <div className="drag-overlay">
+                                <TaskCardContent task={task}/>
+                            </div>
+                        )
+                    }}
+                </DragOverlay>
             </DragDropProvider>
 
             <div className="footer">

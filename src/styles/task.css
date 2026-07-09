@@ -7,6 +7,10 @@
     transition: background-color var(--transition-fast);
 }
 
+.drag-overlay {
+    opacity: .5;
+}
+
 .task[data-priority="low"]      { border-top-color: var(--priority-low); }
 .task[data-priority="medium"]   { border-top-color: var(--priority-medium); }
 .task[data-priority="high"]     { border-top-color: var(--priority-high); }
