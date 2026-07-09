@@ -6,6 +6,9 @@ function TaskCard({ task, setSelectedTaskId }) {
     
     const { ref } = useDraggable({
         id: task.id,
+        data: {
+            status: task.status,
+        },
     })
 
     return (

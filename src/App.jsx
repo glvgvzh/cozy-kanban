@@ -170,6 +170,7 @@ function App() {
                     if (e.canceled) return
                     const { target, source } = e.operation
                     if (!target) return
+                    if (source.data.status === target.id) return
                     handleUpdateTask(source.id, { status: target.id })
                 }}
             >
