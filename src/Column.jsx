@@ -4,12 +4,12 @@ import { useDroppable } from "@dnd-kit/react";
 
 function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, Icon }) {
 
-    const { ref } = useDroppable({ 
+    const { ref, isDropTarget } = useDroppable({ 
         id: columnId,
      })
     
     return (
-        <div className="column" ref={ref}>
+        <div className={`column ${isDropTarget ? 'column-active' : ''}`} ref={ref}>
             <div className="column-header">
                 <div className="column-icon">
                     <Icon size={35} />
