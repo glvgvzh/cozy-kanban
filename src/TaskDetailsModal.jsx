@@ -14,7 +14,7 @@ function TaskDetailsModal(
         statusName,
         isEditTaskModalOpen,
         setIsEditTaskModalOpen,
-        formatDateForInput,
+        formatDate,
     }
 ) {
     useEffect(() => {
@@ -70,7 +70,7 @@ function TaskDetailsModal(
                 <input
                     type="date"
                     className="select"
-                    value={formatDateForInput(selectedTask.deadline)}
+                    value={formatDate(selectedTask.deadline)}
                     onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
                 />
             </div>

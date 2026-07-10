@@ -21,7 +21,7 @@ export const columns = [
 export const tasks = [
     {
         id: 1,
-        status: 'todo',
+        status: 'done',
         title: 'задача один',
         description: 'сделать это',
         createdAt: new Date('2026-06-10').getTime(),
