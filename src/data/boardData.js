@@ -26,6 +26,7 @@ export const tasks = [
         description: 'сделать это',
         createdAt: new Date('2026-06-10').getTime(),
         priority: 'low',
+        deadline: new Date('2026-07-01').getTime(),
     },
     {
         id: 2,
@@ -34,6 +35,7 @@ export const tasks = [
         description: 'сделать то',
         createdAt: new Date('2026-06-18').getTime(),
         priority: 'medium',
+        deadline: new Date('2026-07-03').getTime(),
     },
     {
         id: 3,
@@ -42,6 +44,7 @@ export const tasks = [
         description: 'пятое',
         createdAt: new Date('2026-06-23').getTime(),
         priority: 'high',
+        deadline: new Date('2026-07-09').getTime(),
     },
     {
         id: 4,
@@ -50,6 +53,7 @@ export const tasks = [
         description: 'десятое',
         createdAt: new Date('2026-06-27').getTime(),
         priority: 'critical',
+        deadline: new Date('2026-07-10').getTime(),
     },
     {
         id: 5,
@@ -58,6 +62,7 @@ export const tasks = [
         description: 'че сделать-то...',
         createdAt: new Date('2026-06-30').getTime(),
         priority: 'high',
+        deadline: new Date('2026-07-11').getTime(),
     },
 ]
 
