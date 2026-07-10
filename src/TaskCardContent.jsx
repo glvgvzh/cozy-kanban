@@ -1,7 +1,7 @@
 import { BookmarkSimpleIcon } from "@phosphor-icons/react"
 import { priorities } from "./data/boardData"
 
-function TaskCardContent({ task }) {
+function TaskCardContent({ task, isOverdue }) {
     const priority = priorities.find(priority => priority.id === task.priority)
     
     return (
@@ -16,7 +16,7 @@ function TaskCardContent({ task }) {
                     <BookmarkSimpleIcon size={21} weight="duotone" color={`#${priority.color}`} />{priority.label}
                 </div>
                 {task.deadline &&
-                    <div className="task-deadline">срок: {new Date(task.deadline).toLocaleDateString()}</div> }
+                    <div className={`task-deadline ${isOverdue ? 'overdue' : ''}`}>срок: {new Date(task.deadline).toLocaleDateString()}</div> }
             </div>
         </div>
     )

@@ -2,7 +2,7 @@
 import { useDraggable } from "@dnd-kit/react"
 import TaskCardContent from "./TaskCardContent"
 
-function TaskCard({ task, setSelectedTaskId }) {
+function TaskCard({ task, setSelectedTaskId, isOverdue }) {
     
     const { ref } = useDraggable({
         id: task.id,
@@ -13,7 +13,10 @@ function TaskCard({ task, setSelectedTaskId }) {
 
     return (
         <div ref={ref} onClick={() => setSelectedTaskId(task.id)}>
-            <TaskCardContent task={task} />
+            <TaskCardContent 
+                task={task}
+                isOverdue={isOverdue}
+            />
         </div>
     )
 }

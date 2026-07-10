@@ -53,3 +53,7 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
 }
+
+.overdue {
+    color: var(--danger);
+}

@@ -2,7 +2,7 @@ import { DotsThreeOutlineIcon } from "@phosphor-icons/react";
 import TaskCard from "./TaskCard";
 import { useDroppable } from "@dnd-kit/react";
 
-function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, Icon }) {
+function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, Icon, isTaskOverdue }) {
 
     const { ref, isDropTarget } = useDroppable({ 
         id: columnId,
@@ -29,11 +29,13 @@ function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, 
                 tasks.length === 0
                     ? searchQuery.trim() === '' ? <div className="empty-column-message">Пока тут тихо</div> : <div className="empty-column-message">Ничего не найдено</div>
                     : tasks.map(task => {
+                        const isOverdue = isTaskOverdue(task)
                         return (
                             <TaskCard
                                 key={task.id}
                                 task={task}
                                 setSelectedTaskId={setSelectedTaskId}
+                                isOverdue={isOverdue}
                             />
                         )
                     })

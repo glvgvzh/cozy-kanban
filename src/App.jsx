@@ -101,12 +101,16 @@ function App() {
         setIsEditTaskModalOpen(false)
     }
 
-    function formatDateForInput(timestamp) {
+    function formatDate(timestamp) {
         const date = new Date(timestamp)
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
         const day = String(date.getDate()).padStart(2, '0')
         return `${year}-${month}-${day}`
+    }
+
+    function isTaskOverdue(task) {
+        return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline) < formatDate(Date.now())
     }
 
     return (
@@ -145,7 +149,7 @@ function App() {
                     statusName={statusName}
                     isEditTaskModalOpen={isEditTaskModalOpen}
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
-                    formatDateForInput={formatDateForInput}
+                    formatDate={formatDate}
                 />
             }
 
@@ -201,6 +205,7 @@ function App() {
                                 setSelectedTaskId={setSelectedTaskId}
                                 searchQuery={searchQuery}
                                 Icon={column.Icon}
+                                isTaskOverdue={isTaskOverdue}
                             />
                         )
                     })}
@@ -208,10 +213,14 @@ function App() {
                 <DragOverlay>
                     {source => {
                         const task = tasks.find(task => task.id === source.id)
+                        const isOverdue = isTaskOverdue(task)
                         if (!task) return null
                         return (
                             <div className="drag-overlay">
-                                <TaskCardContent task={task}/>
+                                <TaskCardContent 
+                                    task={task}
+                                    isOverdue={isOverdue}
+                                />
                             </div>
                         )
                     }}
