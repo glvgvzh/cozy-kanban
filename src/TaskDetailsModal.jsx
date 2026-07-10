@@ -14,6 +14,7 @@ function TaskDetailsModal(
         statusName,
         isEditTaskModalOpen,
         setIsEditTaskModalOpen,
+        formatDateForInput,
     }
 ) {
     useEffect(() => {
@@ -63,6 +64,15 @@ function TaskDetailsModal(
                         )
                     })}
                 </select>
+            </div>
+            <div className="deadline-container">
+                <div className="label">Срок выполнения</div>
+                <input
+                    type="date"
+                    className="select"
+                    value={formatDateForInput(selectedTask.deadline)}
+                    onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
+                />
             </div>
             {selectedTask.description &&
                 <div className="view-task-modal-description">

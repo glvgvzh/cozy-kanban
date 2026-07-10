@@ -23,9 +23,11 @@ function App() {
     const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [newTaskPriority, setNewTaskPriority] = useState('low')
-    const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [newTaskDescription, setNewTaskDescription] = useState('')
+    const [newTaskPriority, setNewTaskPriority] = useState('low')
+    const [newTaskDeadline, setNewTaskDeadline] = useState('')
+
+    const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
 
@@ -59,11 +61,13 @@ function App() {
             description: newTaskDescription.trim(),
             createdAt: Date.now(),
             priority: newTaskPriority,
+            deadline: newTaskDeadline === '' ? '' : Date.parse(newTaskDeadline),
         }])
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
         setNewTaskDescription('')
         setNewTaskPriority('low')
+        setNewTaskDeadline('')
     }
 
     function handleCloseTaskModal() {
@@ -95,6 +99,14 @@ function App() {
         setNewTaskDescription('')
         setSelectedTaskId(null)
         setIsEditTaskModalOpen(false)
+    }
+
+    function formatDateForInput(timestamp) {
+        const date = new Date(timestamp)
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
     }
 
     return (
@@ -133,6 +145,7 @@ function App() {
                     statusName={statusName}
                     isEditTaskModalOpen={isEditTaskModalOpen}
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
+                    formatDateForInput={formatDateForInput}
                 />
             }
 
@@ -154,6 +167,8 @@ function App() {
                     setNewTaskDescription={setNewTaskDescription}
                     newTaskPriority={newTaskPriority}
                     setNewTaskPriority={setNewTaskPriority}
+                    newTaskDeadline={newTaskDeadline}
+                    setNewTaskDeadline={setNewTaskDeadline}
                 />
             }
 

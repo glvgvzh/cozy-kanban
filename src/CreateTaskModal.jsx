@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import { priorities } from "./data/boardData";
 
-function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, setNewTaskDescription, newTaskPriority, setNewTaskPriority }) {
+function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, 
+    setNewTaskDescription, newTaskPriority, setNewTaskPriority, newTaskDeadline, setNewTaskDeadline }) {
 
     const inputRef = useRef(null)
     useEffect(() => {
@@ -60,7 +61,12 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     </div>
                     <div className="deadline-container">
                         <div className="label">Срок выполнения</div>
-                        <div className="select">Выберите дату</div>
+                        <input 
+                            type="date" 
+                            className="select"
+                            value={newTaskDeadline}
+                            onChange={e => setNewTaskDeadline(e.target.value)}
+                        />
                     </div>
                 </div>
                 <textarea
