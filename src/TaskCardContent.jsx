@@ -15,6 +15,8 @@ function TaskCardContent({ task }) {
                 <div className="task-priority">
                     <BookmarkSimpleIcon size={21} weight="duotone" color={`#${priority.color}`} />{priority.label}
                 </div>
+                {task.deadline &&
+                    <div className="task-deadline">срок: {new Date(task.deadline).toLocaleDateString()}</div> }
             </div>
         </div>
     )
