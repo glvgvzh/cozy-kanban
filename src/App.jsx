@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon, CalendarXIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -114,6 +114,8 @@ function App() {
         return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline) < formatDate(Date.now())
     }
 
+    const overdueTasks = tasks.filter(task => isTaskOverdue(task))
+
     return (
         <div className="app">
 
@@ -149,18 +151,35 @@ function App() {
             {isNotificationCenterOpen &&
                 <div className="modal-overlay" onClick={() => setIsNotificationCenterOpen(false)}>
                     <div className="modal notification-center" onClick={e => e.stopPropagation()}>
-                    <div className="notification-center-header">
-                        <div className="notification-center-title"><BellIcon size={32} weight="duotone" /> Уведомления</div>
-                        <button className="button button-ghost mark-as-read">Отметить все как прочитанное</button>
+                        <div className="notification-center-header">
+                            <div className="notification-center-title"><BellIcon size={32} weight="duotone" /> Уведомления</div>
+                            <button className="button button-ghost mark-as-read">Отметить все как прочитанное</button>
+                        </div>
+                        <div className="notification-center-filter">
+                            <button className="button button-ghost">Все</button>
+                            <button className="button button-ghost">Непрочитанные</button>
+                        </div>
+                        <div className="notification-center-body">
+                            {overdueTasks.length === 0
+                                ? <div className="empty-column-message">Пока тут тихо</div>
+                                : overdueTasks.map(task => {
+                                    return (
+                                        <div
+                                            key={task.id}
+                                            className="overdue-notification-card task"
+                                            onClick={() => setSelectedTaskId(task.id)}
+                                        >
+                                            <div><CalendarXIcon size={40} weight="duotone" color='var(--danger)' /></div>
+                                            <div>
+                                                <div className="modal-subtitle notification-type">Просрочена задача</div>
+                                                <div className="task-title">{task.title}</div>
+                                                <div className="task-deadline">срок был {new Date(task.deadline).toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                        </div>
                     </div>
-                    <div className="notification-center-filter">
-                        <button className="button button-ghost">Все</button>
-                        <button className="button button-ghost">Непрочитанные</button>
-                    </div>
-                    <div className="notification-center-body empty-column-message">
-                        Нет уведомлений
-                    </div>
-                </div>
                 </div>
             }
 

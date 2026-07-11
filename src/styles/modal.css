@@ -137,6 +137,25 @@
     color: var(--text-muted) !important;
 }
 
+.notification-center-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.overdue-notification-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+    border-color: var(--accent) !important;
+    border-top: 1px solid var(--accent) !important;
+}
+
+.notification-type {
+    text-align: start;
+}
+
 /* ==========================================================================================
         Create Task modal
  ========================================================================================== */
