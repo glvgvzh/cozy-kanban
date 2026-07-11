@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ function App() {
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
     const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
+    const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [newTaskDescription, setNewTaskDescription] = useState('')
@@ -137,7 +138,31 @@ function App() {
                 >
                     Новая задача
                 </button>
+                <button
+                    className="button button-icon"
+                    onClick={() => setIsNotificationCenterOpen(prev => !prev)}
+                >
+                    <BellIcon size={32} weight="duotone" />
+                </button>
             </div>
+
+            {isNotificationCenterOpen &&
+                <div className="modal-overlay" onClick={() => setIsNotificationCenterOpen(false)}>
+                    <div className="modal notification-center" onClick={e => e.stopPropagation()}>
+                    <div className="notification-center-header">
+                        <div className="notification-center-title"><BellIcon size={32} weight="duotone" /> Уведомления</div>
+                        <button className="button button-ghost mark-as-read">Отметить все как прочитанное</button>
+                    </div>
+                    <div className="notification-center-filter">
+                        <button className="button button-ghost">Все</button>
+                        <button className="button button-ghost">Непрочитанные</button>
+                    </div>
+                    <div className="notification-center-body empty-column-message">
+                        Нет уведомлений
+                    </div>
+                </div>
+                </div>
+            }
 
             {selectedTask &&
                 <TaskDetailsModal
@@ -217,7 +242,7 @@ function App() {
                         if (!task) return null
                         return (
                             <div className="drag-overlay">
-                                <TaskCardContent 
+                                <TaskCardContent
                                     task={task}
                                     isOverdue={isOverdue}
                                 />
