@@ -101,6 +101,43 @@
 }
 
 /* ==========================================================================================
+        Notification Center
+ ========================================================================================== */
+
+.notification-center {
+    position: fixed;
+    right: var(--space-3);
+    top: 100px;
+    width: min(50vw, 400px);
+}
+
+.notification-center-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification-center-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+.notification-center-filter {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: space-around;
+}
+
+
+.mark-as-read {
+    font-size: var(--font-size-sm) !important;
+    color: var(--text-muted) !important;
+}
+
+/* ==========================================================================================
         Create Task modal
  ========================================================================================== */
 
