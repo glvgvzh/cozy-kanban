@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon, CalendarXIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon, CalendarXIcon, CalendarHeartIcon, CalendarStarIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -114,7 +114,19 @@ function App() {
         return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline) < formatDate(Date.now())
     }
 
+    function isTaskDueToday(task) {
+        return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline) === formatDate(Date.now())
+    }
+
+    const DAY_IN_MS = 60 * 60 * 24 * 1000
+
+    function isTaskDueTomorrow(task) {
+        return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline - DAY_IN_MS) === formatDate(Date.now())
+    }
+
     const overdueTasks = tasks.filter(task => isTaskOverdue(task))
+    const todayDeadlineTasks = tasks.filter(task => isTaskDueToday(task))
+    const tomorrowDeadlineTasks = tasks.filter(task => isTaskDueTomorrow(task))
 
     return (
         <div className="app">
@@ -161,8 +173,12 @@ function App() {
                         </div>
                         <div className="notification-center-body">
                             {overdueTasks.length === 0
-                                ? <div className="empty-column-message">Пока тут тихо</div>
-                                : overdueTasks.map(task => {
+                                && todayDeadlineTasks.length === 0
+                                && tomorrowDeadlineTasks.length === 0
+                                && <div className="empty-column-message">Пока тут тихо</div>}
+
+                            {overdueTasks.length !== 0 &&
+                                overdueTasks.map(task => {
                                     return (
                                         <div
                                             key={task.id}
@@ -177,7 +193,44 @@ function App() {
                                             </div>
                                         </div>
                                     )
-                                })}
+                                })
+                            }
+                            {todayDeadlineTasks.length !== 0 &&
+                                todayDeadlineTasks.map(task => {
+                                    return (
+                                        <div
+                                            key={task.id}
+                                            className="overdue-notification-card task"
+                                            onClick={() => setSelectedTaskId(task.id)}
+                                        >
+                                            <div><CalendarHeartIcon size={40} weight="duotone" color='var(--warning)' /></div>
+                                            <div>
+                                                <div className="modal-subtitle notification-type">Дедлайн сегодня</div>
+                                                <div className="task-title">{task.title}</div>
+                                                <div className="task-deadline">{new Date(task.deadline).toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            {tomorrowDeadlineTasks.length !== 0 &&
+                                tomorrowDeadlineTasks.map(task => {
+                                    return (
+                                        <div
+                                            key={task.id}
+                                            className="overdue-notification-card task"
+                                            onClick={() => setSelectedTaskId(task.id)}
+                                        >
+                                            <div><CalendarStarIcon size={40} weight="duotone" color='var(--success)' /></div>
+                                            <div>
+                                                <div className="modal-subtitle notification-type">Дедлайн завтра</div>
+                                                <div className="task-title">{task.title}</div>
+                                                <div className="task-deadline">{new Date(task.deadline).toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
