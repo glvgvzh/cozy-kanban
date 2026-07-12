@@ -1,4 +1,5 @@
-import { LeafIcon, TreeIcon, PottedPlantIcon } from "@phosphor-icons/react";
+import { LeafIcon, TreeIcon, PottedPlantIcon,
+         CalendarXIcon, CalendarHeartIcon, CalendarStarIcon } from "@phosphor-icons/react";
 
 export const columns = [
     {
@@ -44,7 +45,7 @@ export const tasks = [
         description: 'пятое',
         createdAt: new Date('2026-06-23').getTime(),
         priority: 'high',
-        deadline: new Date('2026-07-09').getTime(),
+        deadline: new Date('2026-07-12').getTime(),
     },
     {
         id: 4,
@@ -88,3 +89,21 @@ export const priorities = [
         color: '8f2d20',
     },
 ]
+
+export const notificationTypes = {
+    deadlineToday: {
+        message: 'Дедлайн сегодня',
+        Icon: CalendarHeartIcon,
+        color: 'var(--warning)',
+    },
+    deadlineTomorrow: {
+        message: 'Дедлайн завтра',
+        Icon: CalendarStarIcon,
+        color: 'var(--info)',
+    },
+    overdue: {
+        message: 'Задача просрочена',
+        Icon: CalendarXIcon,
+        color: 'var(--danger)',
+    },
+}

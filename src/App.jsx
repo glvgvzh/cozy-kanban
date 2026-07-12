@@ -1,11 +1,11 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon, CalendarXIcon, CalendarHeartIcon, CalendarStarIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
 
-import { columns, tasks as initialTasks, priorities } from "./data/boardData";
+import { columns, tasks as initialTasks, priorities, notificationTypes } from "./data/boardData";
 
 import useTasksStorage from "./hooks/useTasksStorage";
 import Column from "./Column";
@@ -53,17 +53,78 @@ function App() {
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
     const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
 
+    const [notifications, setNotifications] = useState(() => JSON.parse(localStorage.getItem('notifications')) || [])
+    useEffect(() => localStorage.setItem('notifications', JSON.stringify(notifications)), [notifications])
+
+    function checkDeadlineNotifications(tasks, notifications) {
+        const dueToday = tasks.filter(task => isTaskDueToday(task))
+        const dueTomorrow = tasks.filter(task => isTaskDueTomorrow(task))
+        const overdueTasks = tasks.filter(task => isTaskOverdue(task))
+        const dueTodayTasksWithoutNotifications = dueToday.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'deadlineToday'))
+        const dueTomorrowTasksWithoutNotifications = dueTomorrow.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'deadlineTomorrow'))
+        const overdueTasksWithoutNotifications = overdueTasks.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'overdue'))
+        const dueTodayNewNotifications = dueTodayTasksWithoutNotifications.map(task => {
+            return {
+                id: crypto.randomUUID(),
+                taskId: task.id,
+                type: 'deadlineToday',
+                createdAt: Date.now(),
+                isRead: false,
+            }
+        })
+        const dueTomorrowNewNotifications = dueTomorrowTasksWithoutNotifications.map(task => {
+            return {
+                id: crypto.randomUUID(),
+                taskId: task.id,
+                type: 'deadlineTomorrow',
+                createdAt: Date.now(),
+                isRead: false,
+            }
+        })
+        const overdueTasksNewNotifications = overdueTasksWithoutNotifications.map(task => {
+            return {
+                id: crypto.randomUUID(),
+                taskId: task.id,
+                type: 'overdue',
+                createdAt: Date.now(),
+                isRead: false,
+            }
+        })
+        return [...overdueTasksNewNotifications, ...dueTodayNewNotifications, ...dueTomorrowNewNotifications]
+    }
+
+    function getActualNotifications(tasks, notifications) {
+        return notifications.filter(notification => {
+            const task = tasks.find(task => task.id === notification.taskId)
+            if (!task) return false
+            if (notification.type === 'deadlineToday') return isTaskDueToday(task)
+            if (notification.type === 'deadlineTomorrow') return isTaskDueTomorrow(task)
+            if (notification.type === 'overdue') return isTaskOverdue(task)
+            return false
+        })
+    }
+
+    useEffect(() => {
+        setNotifications(prev => {
+            const actualNotifications = getActualNotifications(tasks, prev)
+            const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
+            return [...newNotifications, ...actualNotifications]
+        })
+    }, [tasks])
+
     function handleCreateTask() {
         if (newTaskTitle.trim() === '') return
-        setTasks(prevTasks => [...prevTasks, {
-            id: Date.now(),
+        const now = Date.now()
+        const newTask = {
+            id: crypto.randomUUID(),
             status: 'todo',
             title: newTaskTitle.trim(),
             description: newTaskDescription.trim(),
-            createdAt: Date.now(),
+            createdAt: now,
             priority: newTaskPriority,
             deadline: newTaskDeadline === '' ? '' : Date.parse(newTaskDeadline),
-        }])
+        }
+        setTasks(prevTasks => [...prevTasks, newTask])
         setIsNewTaskModalOpen(false)
         setNewTaskTitle('')
         setNewTaskDescription('')
@@ -100,6 +161,7 @@ function App() {
         setNewTaskDescription('')
         setSelectedTaskId(null)
         setIsEditTaskModalOpen(false)
+        setSelectedPriorityFilter('')
     }
 
     function formatDate(timestamp) {
@@ -123,10 +185,6 @@ function App() {
     function isTaskDueTomorrow(task) {
         return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline - DAY_IN_MS) === formatDate(Date.now())
     }
-
-    const overdueTasks = tasks.filter(task => isTaskOverdue(task))
-    const todayDeadlineTasks = tasks.filter(task => isTaskDueToday(task))
-    const tomorrowDeadlineTasks = tasks.filter(task => isTaskDueTomorrow(task))
 
     return (
         <div className="app">
@@ -172,60 +230,26 @@ function App() {
                             <button className="button button-ghost">Непрочитанные</button>
                         </div>
                         <div className="notification-center-body">
-                            {overdueTasks.length === 0
-                                && todayDeadlineTasks.length === 0
-                                && tomorrowDeadlineTasks.length === 0
-                                && <div className="empty-column-message">Пока тут тихо</div>}
-
-                            {overdueTasks.length !== 0 &&
-                                overdueTasks.map(task => {
+                            {notifications.length === 0
+                                ? <div className="empty-column-message">Пока тут тихо</div>
+                                : notifications.map(notification => {
+                                    const task = tasks.find(task => task.id === notification.taskId)
+                                    const notificationConfig = notificationTypes[notification.type]
                                     return (
                                         <div
-                                            key={task.id}
+                                            key={notification.id}
                                             className="overdue-notification-card task"
-                                            onClick={() => setSelectedTaskId(task.id)}
+                                            onClick={() => {
+                                                setSelectedTaskId(notification.taskId)
+                                            }}
                                         >
-                                            <div><CalendarXIcon size={40} weight="duotone" color='var(--danger)' /></div>
+                                            <div><notificationConfig.Icon size={40} weight="duotone" color={notificationConfig.color} /></div>
                                             <div>
-                                                <div className="modal-subtitle notification-type">Просрочена задача</div>
+                                                <div className="modal-subtitle notification-type">
+                                                    {notificationConfig.message}
+                                                </div>
                                                 <div className="task-title">{task.title}</div>
-                                                <div className="task-deadline">срок был {new Date(task.deadline).toLocaleDateString()}</div>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                            {todayDeadlineTasks.length !== 0 &&
-                                todayDeadlineTasks.map(task => {
-                                    return (
-                                        <div
-                                            key={task.id}
-                                            className="overdue-notification-card task"
-                                            onClick={() => setSelectedTaskId(task.id)}
-                                        >
-                                            <div><CalendarHeartIcon size={40} weight="duotone" color='var(--warning)' /></div>
-                                            <div>
-                                                <div className="modal-subtitle notification-type">Дедлайн сегодня</div>
-                                                <div className="task-title">{task.title}</div>
-                                                <div className="task-deadline">{new Date(task.deadline).toLocaleDateString()}</div>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                            {tomorrowDeadlineTasks.length !== 0 &&
-                                tomorrowDeadlineTasks.map(task => {
-                                    return (
-                                        <div
-                                            key={task.id}
-                                            className="overdue-notification-card task"
-                                            onClick={() => setSelectedTaskId(task.id)}
-                                        >
-                                            <div><CalendarStarIcon size={40} weight="duotone" color='var(--success)' /></div>
-                                            <div>
-                                                <div className="modal-subtitle notification-type">Дедлайн завтра</div>
-                                                <div className="task-title">{task.title}</div>
-                                                <div className="task-deadline">{new Date(task.deadline).toLocaleDateString()}</div>
+                                                <div className="task-deadline">{`${task.deadline === '' ? 'без срока' : `срок до ${new Date(task.deadline).toLocaleDateString()}`}`}</div>
                                             </div>
                                         </div>
                                     )
