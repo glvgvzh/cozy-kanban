@@ -76,7 +76,7 @@
     padding: 0 var(--space-4);
     background-color: var(--accent);
     color: var(--accent-foreground);
-    border: 2px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
     border-radius: var(--radius-md);
     cursor: pointer;
     font-size: var(--font-size-md);
@@ -109,12 +109,13 @@
     right: var(--space-3);
     width: min(50vw, 400px);
     height: 90vh;
+    gap: var(--space-2);
 }
 
 .notification-center-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .notification-center-title {
@@ -123,6 +124,8 @@
     color: var(--text-primary);
     display: flex;
     align-items: center;
+    gap: var(--space-1);
+    font-size: larger;
 }
 
 .notification-center-filter {
@@ -131,10 +134,37 @@
     justify-content: space-around;
 }
 
+.has-badge {
+    position: relative;
+}
+
+.unread-mark {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: var(--border-width-app) solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background-color: var(--danger-hover);
+    width: 12px;
+    height: 12px;
+}
+
+.badge-icon {
+    transform: translate(-20%, 20%);
+}
+
+.badge-text {
+    transform: translate(50%, -50%);
+}
+
+.badge-card {
+    transform: translate(-50%, 50%);
+}
 
 .mark-as-read {
     font-size: var(--font-size-sm) !important;
     color: var(--text-muted) !important;
+    margin-left: auto;
 }
 
 .notification-center-body {
@@ -144,7 +174,7 @@
     overflow-y: auto;
 }
 
-.overdue-notification-card {
+.notification-card {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -171,7 +201,7 @@
 .create-task-input {
     height: 40px;
     min-width: 0;
-    border: 2px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
     border-radius: var(--radius-md);
     background-color: var(--surface-input);
     padding: 0 var(--space-5);
@@ -209,7 +239,7 @@
     resize: none;
     height: 220px;
     border-radius: var(--radius-lg);
-    border: 2px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
 
     font-family: inherit;
     color: inherit;

@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon, ListChecksIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -22,6 +22,8 @@ function App() {
     const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
     const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
     const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
+
+    const [activeNotificationFilter, setActiveNotificationFilter] = useState('all')
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [newTaskDescription, setNewTaskDescription] = useState('')
@@ -55,6 +57,9 @@ function App() {
 
     const [notifications, setNotifications] = useState(() => JSON.parse(localStorage.getItem('notifications')) || [])
     useEffect(() => localStorage.setItem('notifications', JSON.stringify(notifications)), [notifications])
+
+    const unreadNotifications = notifications.filter(notification => !notification.isRead)
+    const displayedNotifications = activeNotificationFilter === 'all' ? notifications : unreadNotifications
 
     function checkDeadlineNotifications(tasks, notifications) {
         const dueToday = tasks.filter(task => isTaskDueToday(task))
@@ -211,10 +216,11 @@ function App() {
                     Новая задача
                 </button>
                 <button
-                    className="button button-icon"
+                    className="button button-icon bell-icon has-badge"
                     onClick={() => setIsNotificationCenterOpen(prev => !prev)}
                 >
                     <BellIcon size={32} weight="duotone" />
+                    {unreadNotifications.length !== 0 && (<span className="unread-mark badge-icon"></span>)}
                 </button>
             </div>
 
@@ -222,27 +228,55 @@ function App() {
                 <div className="modal-overlay" onClick={() => setIsNotificationCenterOpen(false)}>
                     <div className="modal notification-center" onClick={e => e.stopPropagation()}>
                         <div className="notification-center-header">
-                            <div className="notification-center-title"><BellIcon size={32} weight="duotone" /> Уведомления</div>
-                            <button className="button button-ghost mark-as-read">Отметить все как прочитанное</button>
+                            <div className="notification-center-title"><BellIcon size={32} weight="duotone" />Уведомления</div>
+                            <button
+                                className="button button-icon mark-as-read"
+                                onClick={() => setNotifications(prev => prev.map(notification => {
+                                    return { ...notification, isRead: true }
+                                }))}
+                                title="Отметить все прочитанным"
+                            >
+                                <ListChecksIcon size={32} weight="duotone" />
+                            </button>
                         </div>
                         <div className="notification-center-filter">
-                            <button className="button button-ghost">Все</button>
-                            <button className="button button-ghost">Непрочитанные</button>
+                            <button
+                                className={`button-filter ${activeNotificationFilter === 'all' ? 'active' : ''}`}
+                                onClick={() => setActiveNotificationFilter('all')}
+                            >
+                                Все
+                            </button>
+                            <button
+                                className={`button-filter ${activeNotificationFilter === 'unread' ? 'active' : ''} has-badge`}
+                                onClick={() => {
+                                    setActiveNotificationFilter('unread')
+                                }}
+                            >
+                                Непрочитанные
+                                {unreadNotifications.length !== 0 && (<span className="unread-mark badge-text"></span>)}
+                            </button>
                         </div>
                         <div className="notification-center-body">
-                            {notifications.length === 0
+                            {displayedNotifications.length === 0
                                 ? <div className="empty-column-message">Пока тут тихо</div>
-                                : notifications.map(notification => {
+                                : displayedNotifications.map(notification => {
                                     const task = tasks.find(task => task.id === notification.taskId)
                                     const notificationConfig = notificationTypes[notification.type]
                                     return (
                                         <div
                                             key={notification.id}
-                                            className="overdue-notification-card task"
+                                            className={`notification-card task ${!notification.isRead ? 'has-badge' : ''}`}
                                             onClick={() => {
                                                 setSelectedTaskId(notification.taskId)
+                                                setNotifications(prev => prev.map(notif => {
+                                                    if (notification.id === notif.id) {
+                                                        return { ...notif, isRead: true }
+                                                    }
+                                                    return notif
+                                                }))
                                             }}
                                         >
+                                            {!notification.isRead && (<span className="unread-mark badge-card"></span>)}
                                             <div><notificationConfig.Icon size={40} weight="duotone" color={notificationConfig.color} /></div>
                                             <div>
                                                 <div className="modal-subtitle notification-type">
