@@ -11,7 +11,7 @@
     font: inherit;
     font-weight: var(--font-weight-medium);
 
-    border: 2px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
     cursor: pointer;
     user-select: none;
     outline: none;
@@ -63,7 +63,7 @@
 }
 
 .button-ghost {
-    padding: 0;
+    padding: var(--space-2);
     background: transparent;
     color: var(--accent);
     border: none;
@@ -93,14 +93,37 @@
     background: var(--surface-hover);
 }
 
+.button-filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
 
+    width: 150px;
 
+    padding: var(--space-1) var(--space-3);
+
+    border: var(--border-width-app) solid transparent;
+    border-radius: var(--radius-md);
+
+    background-color: transparent;
+    color: var(--text-secondary);
+
+    font: inherit;
+    cursor: pointer;
+}
+
+.button-filter.active {
+    border: var(--border-width-app) solid var(--border-color);
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
 
 .select {
     font-family: var(--font-mono);
     color: inherit;
     background-color: var(--surface-input);
-    border: 2px solid var(--border-color);
+    border: var(--border-width-app) solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--space-1);
     width: 100%;
