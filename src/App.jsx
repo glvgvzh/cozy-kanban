@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon, ListChecksIcon } from "@phosphor-icons/react";
+import { FlowerLotusIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -262,6 +262,7 @@ function App() {
                                 : displayedNotifications.map(notification => {
                                     const task = tasks.find(task => task.id === notification.taskId)
                                     const notificationConfig = notificationTypes[notification.type]
+                                    const ButtonReadIcon = notification.isRead ? EnvelopeIcon : EnvelopeOpenIcon
                                     return (
                                         <div
                                             key={notification.id}
@@ -283,6 +284,23 @@ function App() {
                                                 </div>
                                                 <div className="notification-task-title">{task.title}</div>
                                                 <div className="task-deadline">{`${task.deadline === '' ? 'без срока' : `срок до ${new Date(task.deadline).toLocaleDateString()}`}`}</div>
+                                            </div>
+                                            <div className="notification-actions">
+                                                <button
+                                                    className="button button-icon"
+                                                    title={`Отметить ${notification.isRead ? 'непрочитанным' : 'прочитанным'}`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setNotifications(prev => prev.map(notif => {
+                                                            if (notification.id === notif.id) {
+                                                                return { ...notif, isRead: !notif.isRead }
+                                                            }
+                                                            return notif
+                                                        }))}
+                                                    }
+                                                >
+                                                    <ButtonReadIcon size={24} weight="duotone" />
+                                                </button>
                                             </div>
                                         </div>
                                     )

@@ -207,6 +207,14 @@
     text-align: start;
 }
 
+.notification-actions {
+    display: inline-flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: var(--space-2);
+}
+
 /* ==========================================================================================
         Create Task modal
  ========================================================================================== */
