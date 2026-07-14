@@ -220,7 +220,7 @@ function App() {
                     onClick={() => setIsNotificationCenterOpen(prev => !prev)}
                 >
                     <BellIcon size={32} weight="duotone" />
-                    {unreadNotifications.length !== 0 && (<span className="unread-mark badge-icon"></span>)}
+                    {unreadNotifications.length !== 0 && (<span className="badge badge-icon">{unreadNotifications.length}</span>)}
                 </button>
             </div>
 
@@ -253,7 +253,7 @@ function App() {
                                 }}
                             >
                                 Непрочитанные
-                                {unreadNotifications.length !== 0 && (<span className="unread-mark badge-text"></span>)}
+                                {unreadNotifications.length !== 0 && (<span className="badge">{unreadNotifications.length}</span>)}
                             </button>
                         </div>
                         <div className="notification-center-body">
@@ -265,7 +265,7 @@ function App() {
                                     return (
                                         <div
                                             key={notification.id}
-                                            className={`notification-card task ${!notification.isRead ? 'has-badge' : ''}`}
+                                            className={`notification-card ${!notification.isRead ? 'unread-card' : ''}`}
                                             onClick={() => {
                                                 setSelectedTaskId(notification.taskId)
                                                 setNotifications(prev => prev.map(notif => {
@@ -276,13 +276,12 @@ function App() {
                                                 }))
                                             }}
                                         >
-                                            {!notification.isRead && (<span className="unread-mark badge-card"></span>)}
                                             <div><notificationConfig.Icon size={40} weight="duotone" color={notificationConfig.color} /></div>
                                             <div>
                                                 <div className="modal-subtitle notification-type">
                                                     {notificationConfig.message}
                                                 </div>
-                                                <div className="task-title">{task.title}</div>
+                                                <div className="notification-task-title">{task.title}</div>
                                                 <div className="task-deadline">{`${task.deadline === '' ? 'без срока' : `срок до ${new Date(task.deadline).toLocaleDateString()}`}`}</div>
                                             </div>
                                         </div>
