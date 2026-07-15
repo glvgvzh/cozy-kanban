@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 90%;
     max-width: 1200px;
+    height: 90vh;
     margin: var(--space-7) auto;
 
     background-color: var(--bg-app);
@@ -19,6 +20,16 @@
     justify-content: space-between;
     padding: var(--space-3) var(--space-5);
     background-color: var(--surface-panel);
+    flex-shrink: 0;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin: var(--space-5);
+    flex: 1;
+    min-height: 0;
 }
 
 .header {
