@@ -21,7 +21,7 @@ function Column({ columnId, columnTitle, tasks, setSelectedTaskId, searchQuery, 
         <div className={`column ${isDropTarget ? 'column-active' : ''}`} ref={ref}>
             <div className="column-header">
                 <div className="column-icon">
-                    <Icon size={35} />
+                    <Icon size={28} weight="duotone" />
                 </div>
                 <div className="column-title">
                     {columnTitle}

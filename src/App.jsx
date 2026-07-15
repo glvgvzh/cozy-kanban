@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { FlowerLotusIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -195,7 +195,7 @@ function App() {
         <div className="app">
 
             <div className="header">
-                <div className="header-icon"><FlowerLotusIcon weight="duotone" size={50} /></div>
+                <div className="header-icon"><KanbanIcon size={50} weight="duotone" /></div>
                 <input
                     placeholder="Что в фокусе сегодня?"
                     className="focus-input"

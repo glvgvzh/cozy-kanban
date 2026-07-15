@@ -1,21 +1,21 @@
-import { LeafIcon, TreeIcon, PottedPlantIcon,
+import { NotePencilIcon, CalendarCheckIcon, HourglassHighIcon,
          CalendarXIcon, CalendarHeartIcon, CalendarStarIcon } from "@phosphor-icons/react";
 
 export const columns = [
     {
         id: 'todo',
         title: 'Запланировано',
-        Icon: LeafIcon,
+        Icon: NotePencilIcon,
     },
     {
         id: 'inProgress',
         title: 'В работе',
-        Icon: PottedPlantIcon,
+        Icon: HourglassHighIcon,
     },
     {
         id: 'done',
         title: 'Готово',
-        Icon: TreeIcon,
+        Icon: CalendarCheckIcon,
     }
 ]
 
