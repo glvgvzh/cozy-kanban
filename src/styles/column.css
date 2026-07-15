@@ -1,19 +1,12 @@
-.board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-5);
-    margin: var(--space-5);
-}
-
 .column {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
     border: var(--border-width-column) solid var(--border-color);
-    min-height: 500px;
     padding: var(--space-5);
     background-color: var(--surface-column);
     border-radius: var(--radius-lg);
+    overflow-y: auto;
 }
 
 .column-active {
@@ -39,6 +32,14 @@
     font-weight: var(--font-weight-medium);
 }
 
+.column-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+    overflow-y: auto;
+}
+
 .tasks-counter {
     font-family: var(--font-mono);
     background-color: var(--surface-hover);
@@ -47,25 +48,6 @@
     margin: 0 var(--space-4);
     font-size: var(--font-size-xs);
     color: var(--text-secondary);
-}
-
-.column-options-button {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    border: none;
-    color: var(--text-primary);
-    cursor: pointer;
-    border-radius: var(--radius-pill);
-    transition: background-color var(--transition-fast);
-    margin-left: auto;
-}
-
-.column-options-button:hover {
-    background-color: var(--surface-hover);
 }
 
 .empty-column-message {
