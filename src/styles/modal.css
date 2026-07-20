@@ -20,17 +20,20 @@
     flex-direction: column;
     gap: var(--space-5);
     width: min(90vw, 520px);
+    max-height: 80vh;
     padding: var(--space-6);
 
     background-color: var(--surface-panel);
     border: var(--border-width-column) solid var(--border-color);
     border-radius: var(--radius-lg);
+
+    overflow-y: auto;
 }
 
 .close-modal-button {
     position: absolute;
-    right: var(--space-5);
-    top: var(--space-5);
+    right: var(--space-2);
+    top: var(--space-2);
 
     width: 32px;
     height: 32px;
@@ -60,6 +63,8 @@
     font-family: var(--font-display);
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-semibold);
+
+    overflow-wrap: break-word;
 }
 
 .modal-subtitle {
@@ -69,8 +74,6 @@
     font-size: var(--font-size-sm);
 }
 
-
-/* Классы для обратной совместимости со старыми кнопками */
 .modal-button {
     min-height: 40px;
     padding: 0 var(--space-4);
@@ -315,7 +318,7 @@
 
 .priority {
     font-family: var(--font-mono);
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: .5px;
     background-color: transparent;
     border: 1px solid transparent;
@@ -340,6 +343,8 @@
     cursor: pointer;
     padding: 0;
     font-size: var(--font-size-sm);
+
+    vertical-align: top;
 }
 
 .edit-button:hover {
@@ -350,6 +355,8 @@
     color: var(--text-secondary);
     font-size: var(--font-size-md);
     line-height: var(--line-height-normal);
+
+    overflow-wrap: break-word;
 }
 
 /* ==========================================================================================

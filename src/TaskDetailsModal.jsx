@@ -1,4 +1,4 @@
-import { XIcon, PenIcon } from "@phosphor-icons/react";
+import { XIcon, PencilIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import TaskActions from "./TaskActions";
 import Modal from "./Modal"
@@ -36,15 +36,18 @@ function TaskDetailsModal(
 
     return (
         <Modal onClose={() => setSelectedTaskId(null)}>
-            <h2 className="modal-title">{selectedTask.title}</h2>
-            <div className="date-edit-line">
-                <div className="date-created-at">{convertTime(selectedTask.createdAt)}</div>
+            <h2 className="modal-title">{selectedTask.title}
                 <button
                     className="button button-ghost edit-button"
                     onClick={() => setIsEditTaskModalOpen(true)}
                 >
-                    <PenIcon />Редактировать задачу
+                    <PencilIcon size={24} weight="duotone" />
                 </button>
+            </h2>
+
+            <div className="date-edit-line">
+                <div className="date-created-at">{convertTime(selectedTask.createdAt)}</div>
+
             </div>
             <div className="status-priority-line">
                 <div className="modal-status">Статус: {statusName}</div>
