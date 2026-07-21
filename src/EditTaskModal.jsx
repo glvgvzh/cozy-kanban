@@ -24,6 +24,7 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
         <Modal onClose={() => setIsEditTaskModalOpen(false)}>
             <h2 className="modal-title">Редактирование задачи</h2>
             <div className="create-task-form">
+                <div>Заголовок:</div>
                 <input
                     className="create-task-input"
                     type="text"
@@ -31,6 +32,7 @@ function EditTaskModal({ setIsEditTaskModalOpen, selectedTask, onUpdateTask }) {
                     value={editedTask.title}
                     onChange={e => setEditedTask(prev => ({ ...prev, title: e.target.value }))}
                 />
+                <div>Описание:</div>
                 <textarea
                     name="task-description-textarea"
                     id="task-description-textarea"
