@@ -18,19 +18,22 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-6);
     width: min(90vw, 520px);
+    max-height: 80vh;
     padding: var(--space-6);
 
     background-color: var(--surface-panel);
     border: var(--border-width-column) solid var(--border-color);
     border-radius: var(--radius-lg);
+
+    overflow-y: auto;
 }
 
 .close-modal-button {
     position: absolute;
-    right: var(--space-5);
-    top: var(--space-5);
+    right: var(--space-2);
+    top: var(--space-2);
 
     width: 32px;
     height: 32px;
@@ -60,6 +63,8 @@
     font-family: var(--font-display);
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-semibold);
+
+    overflow-wrap: break-word;
 }
 
 .modal-subtitle {
@@ -69,8 +74,6 @@
     font-size: var(--font-size-sm);
 }
 
-
-/* Классы для обратной совместимости со старыми кнопками */
 .modal-button {
     min-height: 40px;
     padding: 0 var(--space-4);
@@ -95,7 +98,6 @@
     opacity: .5;
 }
 
-.delete-button,
 .confirm-deletion-button {
     background-color: var(--danger);
 }
@@ -172,6 +174,7 @@
     flex-direction: row;
     align-items: center;
     gap: var(--space-2);
+    min-height: fit-content;
 
     padding: var(--space-6);
     border-radius: var(--radius-lg);
@@ -193,6 +196,15 @@
 .notification-card:hover {
     background-color: var(--surface-hover);
     cursor: pointer;
+}
+
+.notification-task-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
 }
 
 .unread-card .notification-task-title {
@@ -222,8 +234,7 @@
 .create-task-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    margin: var(--space-3) 0;
+    gap: var(--space-3);
 }
 
 .create-task-input {
@@ -246,20 +257,39 @@
     display: flex;
     align-items: center;
     gap: var(--space-6);
+    justify-content: space-around;
+}
+
+.task-actions {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    gap: var(--space-2);
 }
 
 .deadline-container,
-.priority-container {
+.priority-container,
+.modal-status {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    width: 50%;
 }
 
 .label {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--text-muted);
+    text-align: center;
+}
+
+.delete-button {
+    padding: 0 !important;
+}
+
+.delete-button svg {
+    width: var(--space-7);
+    height: var(--space-7);
 }
 
 #task-description-textarea {
@@ -292,36 +322,22 @@
     color: var(--text-secondary);
 }
 
-.task-actions-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-top: var(--space-2);
-}
-
 .date-created-at {
     font-family: var(--font-mono);
     color: var(--text-muted);
     font-size: var(--font-size-xs);
 }
 
-.status-priority-line,
-.date-edit-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: var(--font-size-xs);
-}
-
 .priority {
     font-family: var(--font-mono);
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: .5px;
     background-color: transparent;
     border: 1px solid transparent;
     color: inherit;
-    text-align: right;
+    text-align: center;
     font-size: var(--font-size-sm);
+    height: var(--space-7);
 }
 
 .priority:focus {
@@ -340,6 +356,8 @@
     cursor: pointer;
     padding: 0;
     font-size: var(--font-size-sm);
+
+    vertical-align: top;
 }
 
 .edit-button:hover {
@@ -350,6 +368,8 @@
     color: var(--text-secondary);
     font-size: var(--font-size-md);
     line-height: var(--line-height-normal);
+
+    overflow-wrap: break-word;
 }
 
 /* ==========================================================================================

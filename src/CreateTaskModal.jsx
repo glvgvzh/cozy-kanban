@@ -23,8 +23,10 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
 
     return (
         <Modal onClose={onClose}>
-            <h2 className="modal-title">Новая задача</h2>
-            <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
+            <div className="modal-header">
+                <h2 className="modal-title">Новая задача</h2>
+                <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
+            </div>
             <div className="create-task-form">
                 <input
                     ref={inputRef}

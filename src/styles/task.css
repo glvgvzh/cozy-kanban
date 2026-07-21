@@ -31,11 +31,23 @@
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: break-word;
 }
 
 .task-description {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    overflow-wrap: break-word;
 }
 
 .task-priority {

@@ -53,7 +53,6 @@ function App() {
     }, [selectedPriorityFilter])
 
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
-    const statusName = selectedTask ? (columns.find(column => column.id === selectedTask.status))?.title : null
 
     const [notifications, setNotifications] = useState(() => JSON.parse(localStorage.getItem('notifications')) || [])
     useEffect(() => localStorage.setItem('notifications', JSON.stringify(notifications)), [notifications])
@@ -318,7 +317,6 @@ function App() {
                     isConfirmDeletionModalOpen={isConfirmDeletionModalOpen}
                     setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
                     onUpdateTask={handleUpdateTask}
-                    statusName={statusName}
                     isEditTaskModalOpen={isEditTaskModalOpen}
                     setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                     formatDate={formatDate}
