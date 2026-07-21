@@ -311,6 +311,12 @@
     outline: none;
 }
 
+.task-actions-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 /* ==========================================================================================
         Task Details modal
  ========================================================================================== */
