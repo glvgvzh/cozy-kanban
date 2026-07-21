@@ -198,6 +198,15 @@
     cursor: pointer;
 }
 
+.notification-task-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
 .unread-card .notification-task-title {
     font-weight: var(--font-weight-bold);
 }
