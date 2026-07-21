@@ -121,6 +121,7 @@
 
 .select {
     font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
     color: inherit;
     background-color: var(--surface-input);
     border: var(--border-width-app) solid var(--border-color);
@@ -128,7 +129,7 @@
     padding: var(--space-1);
     width: 100%;
     height: var(--space-7);
-    font-size: var(--font-size-sm);
+    text-align: center;
 }
 
 .select:focus {

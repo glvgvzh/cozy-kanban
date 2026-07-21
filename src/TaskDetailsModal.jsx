@@ -1,8 +1,7 @@
-import { XIcon, PencilIcon } from "@phosphor-icons/react";
+import { XIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react";
 import { useEffect } from "react";
-import TaskActions from "./TaskActions";
 import Modal from "./Modal"
-import { priorities } from "./data/boardData";
+import { columns, priorities } from "./data/boardData";
 
 function TaskDetailsModal(
     {
@@ -11,7 +10,6 @@ function TaskDetailsModal(
         isConfirmDeletionModalOpen,
         setIsConfirmDeletionModalOpen,
         onUpdateTask,
-        statusName,
         isEditTaskModalOpen,
         setIsEditTaskModalOpen,
         formatDate,
@@ -45,37 +43,59 @@ function TaskDetailsModal(
                 </button>
             </h2>
 
-            <div className="date-edit-line">
-                <div className="date-created-at">{convertTime(selectedTask.createdAt)}</div>
-
-            </div>
-            <div className="status-priority-line">
-                <div className="modal-status">Статус: {statusName}</div>
-                <select
-                    className="priority"
-                    value={selectedTask.priority}
-                    onChange={(e) => onUpdateTask(selectedTask.id, { priority: e.target.value })}
+            <div className="task-actions">
+                <div className="modal-status">
+                    <div className="label">Статус</div>
+                    <select
+                        className="select"
+                        value={selectedTask.status}
+                        onChange={(e) => onUpdateTask(selectedTask.id, { status: e.target.value })}
+                    >
+                        {columns.map(column => {
+                            return (
+                                <option 
+                                    key={column.id}
+                                    value={column.id}>
+                                    {column.title}
+                                </option>
+                            )
+                        })}
+                    </select>
+                </div>
+                <div className="deadline-container">
+                    <div className="label">Срок выполнения</div>
+                    <input
+                        type="date"
+                        className="select"
+                        value={formatDate(selectedTask.deadline)}
+                        onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
+                    />
+                </div>
+                <div className="priority-container">
+                    <div className="label">Приоритет</div>
+                    <select
+                        className="select"
+                        value={selectedTask.priority}
+                        onChange={(e) => onUpdateTask(selectedTask.id, { priority: e.target.value })}
+                    >
+                        {priorities.map(priority => {
+                            return (
+                                <option
+                                    key={priority.id}
+                                    value={priority.id}
+                                >
+                                    {priority.label}
+                                </option>
+                            )
+                        })}
+                    </select>
+                </div>
+                <button
+                    className="button button-ghost delete-button"
+                    onClick={() => setIsConfirmDeletionModalOpen(true)}
                 >
-                    {priorities.map(priority => {
-                        return (
-                            <option
-                                key={priority.id}
-                                value={priority.id}
-                            >
-                                {priority.label}
-                            </option>
-                        )
-                    })}
-                </select>
-            </div>
-            <div className="deadline-container">
-                <div className="label">Срок выполнения</div>
-                <input
-                    type="date"
-                    className="select"
-                    value={formatDate(selectedTask.deadline)}
-                    onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
-                />
+                    <TrashIcon weight="duotone" color='var(--danger)' />
+                </button>
             </div>
             {selectedTask.description &&
                 <div className="view-task-modal-description">
@@ -91,11 +111,7 @@ function TaskDetailsModal(
             >
                 <XIcon />
             </button>
-            <TaskActions
-                selectedTask={selectedTask}
-                onUpdateTask={onUpdateTask}
-                onDelete={() => setIsConfirmDeletionModalOpen(true)}
-            />
+            <div className="date-created-at">Дата создания: {convertTime(selectedTask.createdAt)}</div>
         </Modal>
     )
 }

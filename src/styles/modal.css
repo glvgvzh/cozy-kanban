@@ -18,7 +18,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-6);
     width: min(90vw, 520px);
     max-height: 80vh;
     padding: var(--space-6);
@@ -98,7 +98,6 @@
     opacity: .5;
 }
 
-.delete-button,
 .confirm-deletion-button {
     background-color: var(--danger);
 }
@@ -235,8 +234,7 @@
 .create-task-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    margin: var(--space-3) 0;
+    gap: var(--space-3);
 }
 
 .create-task-input {
@@ -259,20 +257,39 @@
     display: flex;
     align-items: center;
     gap: var(--space-6);
+    justify-content: space-around;
+}
+
+.task-actions {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    gap: var(--space-2);
 }
 
 .deadline-container,
-.priority-container {
+.priority-container,
+.modal-status {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    width: 50%;
 }
 
 .label {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--text-muted);
+    text-align: center;
+}
+
+.delete-button {
+    padding: 0 !important;
+}
+
+.delete-button svg {
+    width: var(--space-7);
+    height: var(--space-7);
 }
 
 #task-description-textarea {
@@ -305,24 +322,9 @@
     color: var(--text-secondary);
 }
 
-.task-actions-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-top: var(--space-2);
-}
-
 .date-created-at {
     font-family: var(--font-mono);
     color: var(--text-muted);
-    font-size: var(--font-size-xs);
-}
-
-.status-priority-line,
-.date-edit-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     font-size: var(--font-size-xs);
 }
 
@@ -333,8 +335,9 @@
     background-color: transparent;
     border: 1px solid transparent;
     color: inherit;
-    text-align: right;
+    text-align: center;
     font-size: var(--font-size-sm);
+    height: var(--space-7);
 }
 
 .priority:focus {
