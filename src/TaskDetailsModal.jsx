@@ -1,5 +1,5 @@
-import { XIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react";
-import { useEffect } from "react";
+import { XIcon, CheckIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal"
 import { columns, priorities } from "./data/boardData";
 
@@ -10,15 +10,25 @@ function TaskDetailsModal(
         isConfirmDeletionModalOpen,
         setIsConfirmDeletionModalOpen,
         onUpdateTask,
-        isEditTaskModalOpen,
-        setIsEditTaskModalOpen,
         formatDate,
     }
 ) {
+    const [isEditingTitle, setIsEditingTitle] = useState(false)
+    const [isEditingDescription, setIsEditingDescription] = useState(false)
+    const [editedTask, setEditedTask] = useState(
+        {
+            title: selectedTask.title,
+            description: selectedTask.description,
+        }
+    )
+
+    const isSaveDisabled = editedTask.title.trim() === ''
+
     useEffect(() => {
         function handleEsc(e) {
             if (e.key === 'Escape') {
-                if (isConfirmDeletionModalOpen || isEditTaskModalOpen) {
+                if (isConfirmDeletionModalOpen || isEditingTitle || isEditingDescription
+                ) {
                     return
                 }
                 setSelectedTaskId(null)
@@ -26,22 +36,62 @@ function TaskDetailsModal(
         }
         document.addEventListener('keydown', handleEsc)
         return () => document.removeEventListener('keydown', handleEsc)
-    }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditTaskModalOpen])
+    }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditingTitle, isEditingDescription])
 
     function convertTime(timestamp) {
         return `${new Date(timestamp).toLocaleDateString()} в ${new Date(timestamp).toLocaleTimeString()}`
     }
 
     return (
-        <Modal onClose={() => setSelectedTaskId(null)}>
-            <h2 className="modal-title">{selectedTask.title}
-                <button
-                    className="button button-ghost edit-button"
-                    onClick={() => setIsEditTaskModalOpen(true)}
-                >
-                    <PencilIcon size={24} weight="duotone" />
-                </button>
-            </h2>
+        <Modal onClose={() => {
+            setIsEditingTitle(false)
+            setIsEditingDescription(false)
+            setSelectedTaskId(null)
+        }
+        }>
+            {!isEditingTitle &&
+                <h2 className="modal-title">{selectedTask.title}
+                    <button
+                        className="button button-ghost edit-button"
+                        onClick={() => {
+                            setIsEditingTitle(true)
+                            setIsEditingDescription(false)
+                        }}
+                    >
+                        <PencilIcon size={24} weight="duotone" />
+                    </button>
+                </h2>
+            }
+
+            {isEditingTitle &&
+                <div className="edit-task-line">
+                    <input type="text"
+                        value={editedTask.title}
+                        onChange={e => setEditedTask(prev => ({ ...prev, title: e.target.value }))}
+                    />
+                    <button
+                        className="button button-ghost edit-button"
+                        onClick={() => {
+                            setEditedTask(prev => ({
+                                ...prev,
+                                title: selectedTask.title
+                            }))
+                            setIsEditingTitle(false)
+                        }}>
+                        <XIcon size={24} weight="bold" color="var(--danger)" />
+                    </button>
+                    <button
+                        className="button button-ghost edit-button"
+                        disabled={isSaveDisabled}
+                        onClick={() => {
+                            if (editedTask.title.trim() === '') return
+                            onUpdateTask(selectedTask.id, { title: editedTask.title })
+                            setIsEditingTitle(false)
+                        }}>
+                        <CheckIcon size={24} weight="bold" color="var(--success)" />
+                    </button>
+                </div>
+            }
 
             <div className="task-actions">
                 <div className="modal-status">
@@ -53,7 +103,7 @@ function TaskDetailsModal(
                     >
                         {columns.map(column => {
                             return (
-                                <option 
+                                <option
                                     key={column.id}
                                     value={column.id}>
                                     {column.title}
@@ -98,15 +148,63 @@ function TaskDetailsModal(
                 </button>
             </div>
             {selectedTask.description &&
-                <div className="view-task-modal-description">
-                    {selectedTask.description}
-                </div>}
+                <div>
+                    <div>Описание
+                        {!isEditingDescription
+                            ? (<button
+                                className="button button-ghost edit-button"
+                                onClick={() => {
+                                    setIsEditingDescription(true)
+                                    setIsEditingTitle(false)
+                                }}
+                            >
+                                <PencilIcon size={24} weight="duotone" />
+                            </button>)
+                            : (<div>
+                                <button
+                                    className="button button-ghost edit-button"
+                                    onClick={() => {
+                                        setEditedTask(prev => ({
+                                            ...prev,
+                                            description: selectedTask.description
+                                        }))
+                                        setIsEditingDescription(false)
+                                    }}>
+                                    <XIcon size={24} weight="bold" color="var(--danger)" />
+                                </button>
+                                <button
+                                    className="button button-ghost edit-button"
+                                    onClick={() => {
+                                        onUpdateTask(selectedTask.id, { description: editedTask.description })
+                                        setIsEditingDescription(false)
+                                    }}>
+                                    <CheckIcon size={24} weight="bold" color="var(--success)" />
+                                </button>
+                            </div>)
+                        }
+                    </div>
+                    {!isEditingDescription
+                        ? (<div className="view-task-modal-description">
+                            {selectedTask.description}
+                        </div>)
+                        : (<textarea
+                            name="task-description-textarea"
+                            id="task-description-textarea"
+                            placeholder="Описание задачи"
+                            value={editedTask.description}
+                            onChange={e => setEditedTask(prev => ({ ...prev, description: e.target.value }))}
+                        />)
+                    }
+
+                </div>
+            }
             <button
                 className="button button-icon close-modal-button"
                 onClick={() => {
                     setSelectedTaskId(null)
                     setIsConfirmDeletionModalOpen(false)
-                    setIsEditTaskModalOpen(false)
+                    setIsEditingTitle(false)
+                    setIsEditingDescription(false)
                 }}
             >
                 <XIcon />
