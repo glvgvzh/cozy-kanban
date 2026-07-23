@@ -21,7 +21,7 @@
     gap: var(--space-6);
     width: min(90vw, 520px);
     max-height: 80vh;
-    padding: var(--space-6);
+    padding: var(--space-7);
 
     background-color: var(--surface-panel);
     border: var(--border-width-column) solid var(--border-color);
@@ -59,6 +59,7 @@
 
 .modal-title {
     margin: 0;
+    min-height: 58px;
     text-align: center;
     font-family: var(--font-display);
     font-size: var(--font-size-xl);
@@ -320,6 +321,30 @@
 /* ==========================================================================================
         Task Details modal
  ========================================================================================== */
+.task-line {
+    display: flex;
+    flex-direction: column;
+}
+
+ .task-line-main{
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.task-line-main button {
+    padding: 0;
+}
+
+.task-line-main input {
+    flex: 1;
+}
+
+.title-char-counter {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+}
 
 .modal-status {
     font-family: var(--font-mono);
@@ -363,24 +388,55 @@
     padding: 0;
     font-size: var(--font-size-sm);
 
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .edit-button:hover {
     color: var(--accent-active);
 }
 
-.view-task-modal-description {
+.task-modal-description {
     width: 100%;
-    color: var(--text-secondary);
+    overflow-y: auto;
+    background-color: inherit;
     font-size: var(--font-size-md);
-    font-family: var(--font-mono);
     line-height: var(--line-height-normal);
-    border: var(--border-width-card) solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-
+    border: var(--border-width-app) solid var(--border-color);
+    white-space: pre-wrap;
     overflow-wrap: break-word;
+
+    height: 220px;
+    border-radius: var(--radius-lg);
+
+    font-family: inherit;
+    color: inherit;
+
+    padding: var(--space-5);
+}
+
+.description-buttons {
+    font-size: var(--font-size-sm);
+    margin-bottom: -20px;
+    padding: 0;
+}
+
+.description-buttons button {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+    padding: var(--space-2);
+    height: 35px;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.task-details-footer {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
 }
 
 /* ==========================================================================================
