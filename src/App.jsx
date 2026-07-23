@@ -12,7 +12,6 @@ import Column from "./Column";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
-import EditTaskModal from "./EditTaskModal";
 import TaskCardContent from "./TaskCardContent";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
 
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
-    const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false)
     const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
 
     const [activeNotificationFilter, setActiveNotificationFilter] = useState('all')
@@ -164,7 +162,6 @@ function App() {
         setNewTaskTitle('')
         setNewTaskDescription('')
         setSelectedTaskId(null)
-        setIsEditTaskModalOpen(false)
         setSelectedPriorityFilter('')
     }
 
@@ -317,8 +314,6 @@ function App() {
                     isConfirmDeletionModalOpen={isConfirmDeletionModalOpen}
                     setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
                     onUpdateTask={handleUpdateTask}
-                    isEditTaskModalOpen={isEditTaskModalOpen}
-                    setIsEditTaskModalOpen={setIsEditTaskModalOpen}
                     formatDate={formatDate}
                 />
             }
@@ -343,14 +338,6 @@ function App() {
                     setNewTaskPriority={setNewTaskPriority}
                     newTaskDeadline={newTaskDeadline}
                     setNewTaskDeadline={setNewTaskDeadline}
-                />
-            }
-
-            {isEditTaskModalOpen && selectedTask &&
-                <EditTaskModal
-                    setIsEditTaskModalOpen={setIsEditTaskModalOpen}
-                    selectedTask={selectedTask}
-                    onUpdateTask={handleUpdateTask}
                 />
             }
 

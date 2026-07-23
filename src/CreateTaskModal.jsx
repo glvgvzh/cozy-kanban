@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import { priorities } from "./data/boardData";
 
-function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription, 
+function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription,
     setNewTaskDescription, newTaskPriority, setNewTaskPriority, newTaskDeadline, setNewTaskDeadline }) {
 
     const inputRef = useRef(null)
@@ -12,6 +12,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
     }, [])
 
     const isCreateDisabled = newTaskTitle.trim() === ''
+    const titleCharCounter = newTaskTitle.length
 
     useEffect(() => {
         function handleEsc(e) {
@@ -28,19 +29,25 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                 <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
             </div>
             <div className="create-task-form">
-                <input
-                    ref={inputRef}
-                    className="create-task-input"
-                    type="text"
-                    placeholder="Заголовок задачи"
-                    value={newTaskTitle}
-                    onChange={e => setNewTaskTitle(e.target.value)}
-                    onKeyDown={e => {
-                        if (e.key === 'Enter') {
-                            onCreateTask()
-                        }
-                    }}
-                />
+                <div className="task-line">
+                    <input
+                        ref={inputRef}
+                        className="create-task-input"
+                        type="text"
+                        placeholder="Заголовок задачи"
+                        value={newTaskTitle}
+                        maxLength={100}
+                        onChange={e => setNewTaskTitle(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter') {
+                                onCreateTask()
+                            }
+                        }}
+                    />
+                    <div className="title-char-counter" style={{ color: `${titleCharCounter > 99 ? 'var(--danger)' : ''}` }}>
+                        {titleCharCounter}/100
+                    </div>
+                </div>
                 <div className="deadline-and-priority-container">
                     <div className="priority-container">
                         <div className="label">Приоритет</div>
@@ -63,8 +70,8 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                     </div>
                     <div className="deadline-container">
                         <div className="label">Срок выполнения</div>
-                        <input 
-                            type="date" 
+                        <input
+                            type="date"
                             className="select"
                             value={newTaskDeadline}
                             onChange={e => setNewTaskDeadline(e.target.value)}

@@ -130,6 +130,7 @@
     width: 100%;
     height: var(--space-7);
     text-align: center;
+    cursor: pointer;
 }
 
 .select:focus {
