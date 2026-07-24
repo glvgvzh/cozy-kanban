@@ -385,7 +385,11 @@ function App() {
             </DragDropProvider>
 
             <div className="footer">
-                <div className="footer-info">info</div>
+                <div className="footer-info">
+                    <div>Всего задач: {tasks.length}</div>
+                    <div>Задач в работе: {tasks.filter(task => task.status === 'inProgress').length}</div>
+                    <div>Просрочено: {tasks.filter(task => isTaskOverdue(task)).length}</div>
+                </div>
                 <div className="footer-filter">
                     <div className="filter-label">Фильтр по приоритету:</div>
                     <div className="filter">
