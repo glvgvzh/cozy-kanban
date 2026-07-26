@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+    .app {
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
