@@ -91,6 +91,7 @@
 
 .button-icon:hover {
     background: var(--surface-hover);
+    cursor: pointer;
 }
 
 .button-filter {
