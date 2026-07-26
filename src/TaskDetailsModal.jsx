@@ -203,7 +203,7 @@ function TaskDetailsModal(
             }
 
             <button
-                className="button button-icon close-modal-button"
+                className="button-icon close-modal-button"
                 onClick={() => {
                     setSelectedTaskId(null)
                     setIsConfirmDeletionModalOpen(false)

@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { columns, tasks as initialTasks, priorities, notificationTypes } from "./data/boardData";
 
 import useTasksStorage from "./hooks/useTasksStorage";
+import InstallBanner from "./InstallBanner";
 import Column from "./Column";
 import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
@@ -15,6 +16,38 @@ import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 import TaskCardContent from "./TaskCardContent";
 
 function App() {
+    const [installPrompt, setInstallPrompt] = useState(null)
+    const canInstall = installPrompt !== null
+
+    const [installBannerDismissed, setInstallBannerDismissed] = useState(() => JSON.parse(localStorage.getItem('installBannerDismissed')) ?? false)
+
+    useEffect(() => {
+        function handleInstallPrompt(e) {
+            e.preventDefault()
+            setInstallPrompt(e)
+        }
+        window.addEventListener('beforeinstallprompt', handleInstallPrompt)
+        return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('installBannerDismissed', JSON.stringify(installBannerDismissed))
+    }, [installBannerDismissed])
+
+    function onDismiss() {
+        setInstallBannerDismissed(true)
+    }
+
+    async function onInstall() {
+        if (!installPrompt) return
+        await installPrompt.prompt()
+        const { outcome } = await installPrompt.userChoice
+        if (outcome === 'accepted') {
+            setInstallBannerDismissed(true)
+            setInstallPrompt(null)
+        }
+    }
+
     const { tasks, setTasks } = useTasksStorage()
 
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
@@ -190,6 +223,13 @@ function App() {
     return (
         <div className="app">
 
+            {canInstall && !installBannerDismissed &&
+                <InstallBanner
+                    onDismiss={onDismiss}
+                    onInstall={onInstall}
+                />
+            }
+
             <div className="header">
                 <div className="header-icon"><KanbanIcon size={50} weight="duotone" /></div>
                 <input
@@ -292,7 +332,8 @@ function App() {
                                                                 return { ...notif, isRead: !notif.isRead }
                                                             }
                                                             return notif
-                                                        }))}
+                                                        }))
+                                                    }
                                                     }
                                                 >
                                                     <ButtonReadIcon size={24} weight="duotone" />
