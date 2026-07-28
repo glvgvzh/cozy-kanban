@@ -5,4 +5,29 @@
         height: 100vh;
         border-radius: 0;
     }
+
+    .board {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: var(--space-5) 0;
+        touch-action: pan-y;
+        width: 100%;
+        gap: 0;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .column-indicator {
+        display: flex;
+        height: fit-content;
+        padding: 0;
+    }
+
+    .column {
+        width: 80%;
+        min-width: 250px;
+        max-width: 500px;
+        flex: 1;
+    }
 }
