@@ -1,7 +1,9 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon, DotIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
+import { useMediaQuery } from "react-responsive";
+import { useSwipeable } from "react-swipeable";
 
 import { useEffect, useState } from "react";
 
@@ -220,6 +222,30 @@ function App() {
         return (task.deadline !== '') && task.status !== 'done' && formatDate(task.deadline - DAY_IN_MS) === formatDate(Date.now())
     }
 
+    const isMobile = useMediaQuery({
+        query: '(max-width: 768px)'
+    })
+    const [activeColumnIndex, setActiveColumnIndex] = useState(() => JSON.parse(localStorage.getItem('mobileActiveColumnIndex')) ?? 0)
+    const activeColumn = columns[activeColumnIndex]
+    const activeColumnTasks = filteredTasks.filter(task => task.status === activeColumn.id)
+
+    useEffect(() => {
+        localStorage.setItem('mobileActiveColumnIndex', JSON.stringify(activeColumnIndex))
+    }, [activeColumnIndex])
+
+    const swipeHandler = useSwipeable({
+        onSwipedLeft: () => setActiveColumnIndex(prev => {
+            if (prev === columns.length - 1) return prev
+            return prev + 1
+        }),
+        onSwipedRight: () => setActiveColumnIndex(prev => {
+            if (prev === 0) return prev
+            return prev - 1
+        }),
+        trackMouse: true,
+        preventScrollOnSwipe: true,
+    })
+
     return (
         <div className="app">
 
@@ -382,48 +408,74 @@ function App() {
                 />
             }
 
-            <DragDropProvider
-                onDragEnd={e => {
-                    if (e.canceled) return
-                    const { target, source } = e.operation
-                    if (!target) return
-                    if (source.data.status === target.id) return
-                    handleUpdateTask(source.id, { status: target.id })
-                }}
-            >
-                <div className="board">
-                    {columns.map(column => {
-                        const columnTasks = filteredTasks.filter(task => task.status === column.id)
-                        return (
-                            <Column
+            {isMobile
+                ? <div className="board" {...swipeHandler}>
+                    <div className="column-indicator">
+                        {columns.map((column, index) => (
+                            <DotIcon
                                 key={column.id}
-                                columnId={column.id}
-                                columnTitle={column.title}
-                                tasks={columnTasks}
-                                setSelectedTaskId={setSelectedTaskId}
-                                searchQuery={searchQuery}
-                                Icon={column.Icon}
-                                isTaskOverdue={isTaskOverdue}
+                                size={32}
+                                weight="duotone"
+                                color={index === activeColumnIndex ? 'var(--accent)' : 'var(--text-disabled)'}
                             />
-                        )
-                    })}
+                        ))}
+                    </div>
+                    <Column
+                        key={activeColumn.id}
+                        columnId={activeColumn.id}
+                        columnTitle={activeColumn.title}
+                        tasks={activeColumnTasks}
+                        setSelectedTaskId={setSelectedTaskId}
+                        searchQuery={searchQuery}
+                        Icon={activeColumn.Icon}
+                        isTaskOverdue={isTaskOverdue}
+                    />
                 </div>
-                <DragOverlay>
-                    {source => {
-                        const task = tasks.find(task => task.id === source.id)
-                        const isOverdue = isTaskOverdue(task)
-                        if (!task) return null
-                        return (
-                            <div className="drag-overlay">
-                                <TaskCardContent
-                                    task={task}
-                                    isOverdue={isOverdue}
-                                />
-                            </div>
-                        )
-                    }}
-                </DragOverlay>
-            </DragDropProvider>
+                : <>
+                    <DragDropProvider
+                        onDragEnd={e => {
+                            if (e.canceled) return
+                            const { target, source } = e.operation
+                            if (!target) return
+                            if (source.data.status === target.id) return
+                            handleUpdateTask(source.id, { status: target.id })
+                        }}
+                    >
+                        <div className="board">
+                            {columns.map(column => {
+                                const columnTasks = filteredTasks.filter(task => task.status === column.id)
+                                return (
+                                    <Column
+                                        key={column.id}
+                                        columnId={column.id}
+                                        columnTitle={column.title}
+                                        tasks={columnTasks}
+                                        setSelectedTaskId={setSelectedTaskId}
+                                        searchQuery={searchQuery}
+                                        Icon={column.Icon}
+                                        isTaskOverdue={isTaskOverdue}
+                                    />
+                                )
+                            })}
+                        </div>
+                        <DragOverlay>
+                            {source => {
+                                const task = tasks.find(task => task.id === source.id)
+                                const isOverdue = isTaskOverdue(task)
+                                if (!task) return null
+                                return (
+                                    <div className="drag-overlay">
+                                        <TaskCardContent
+                                            task={task}
+                                            isOverdue={isOverdue}
+                                        />
+                                    </div>
+                                )
+                            }}
+                        </DragOverlay>
+                    </DragDropProvider>
+                </>
+            }
 
             <div className="footer">
                 <div className="footer-info">
