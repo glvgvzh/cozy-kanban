@@ -4,6 +4,7 @@ import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, X
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
+import { v4 } from "uuid";
 
 import { useEffect, useState } from "react";
 
@@ -102,7 +103,7 @@ function App() {
         const overdueTasksWithoutNotifications = overdueTasks.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'overdue'))
         const dueTodayNewNotifications = dueTodayTasksWithoutNotifications.map(task => {
             return {
-                id: crypto.randomUUID(),
+                id: v4(),
                 taskId: task.id,
                 type: 'deadlineToday',
                 createdAt: Date.now(),
@@ -111,7 +112,7 @@ function App() {
         })
         const dueTomorrowNewNotifications = dueTomorrowTasksWithoutNotifications.map(task => {
             return {
-                id: crypto.randomUUID(),
+                id: v4(),
                 taskId: task.id,
                 type: 'deadlineTomorrow',
                 createdAt: Date.now(),
@@ -120,7 +121,7 @@ function App() {
         })
         const overdueTasksNewNotifications = overdueTasksWithoutNotifications.map(task => {
             return {
-                id: crypto.randomUUID(),
+                id: v4(),
                 taskId: task.id,
                 type: 'overdue',
                 createdAt: Date.now(),
@@ -153,7 +154,7 @@ function App() {
         if (newTaskTitle.trim() === '') return
         const now = Date.now()
         const newTask = {
-            id: crypto.randomUUID(),
+            id: v4(),
             status: 'todo',
             title: newTaskTitle.trim(),
             description: newTaskDescription.trim(),
