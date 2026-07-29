@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon, DotIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon, DotIcon, PlusIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
@@ -191,16 +191,6 @@ function App() {
         }))
     }
 
-    function handleResetTasks() {
-        setTasks(initialTasks)
-        setIsNewTaskModalOpen(false)
-        setIsConfirmDeletionModalOpen(false)
-        setNewTaskTitle('')
-        setNewTaskDescription('')
-        setSelectedTaskId(null)
-        setSelectedPriorityFilter('')
-    }
-
     function formatDate(timestamp) {
         const date = new Date(timestamp)
         const year = date.getFullYear()
@@ -268,15 +258,9 @@ function App() {
                 />
                 <button
                     className="button button-primary"
-                    onClick={handleResetTasks}
-                >
-                    Сбросить доску
-                </button>
-                <button
-                    className="button button-primary"
                     onClick={() => setIsNewTaskModalOpen(true)}
                 >
-                    Новая задача
+                    {isMobile ? <PlusIcon size={24} /> : 'Новая задача'}
                 </button>
                 <button
                     className="button button-icon bell-icon has-badge"
@@ -480,12 +464,12 @@ function App() {
 
             <div className="footer">
                 <div className="footer-info">
-                    <div>Всего задач: {tasks.length}</div>
-                    <div>Задач в работе: {tasks.filter(task => task.status === 'inProgress').length}</div>
+                    <div>Всего: {tasks.length}</div>
+                    <div>В работе: {tasks.filter(task => task.status === 'inProgress').length}</div>
                     <div>Просрочено: {tasks.filter(task => isTaskOverdue(task)).length}</div>
                 </div>
                 <div className="footer-filter">
-                    <div className="filter-label">Фильтр по приоритету:</div>
+                    <div className="filter-label">Приоритет:</div>
                     <div className="filter">
                         <select
                             className="select filter-select"

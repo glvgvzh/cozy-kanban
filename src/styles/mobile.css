@@ -30,4 +30,32 @@
         max-width: 500px;
         flex: 1;
     }
+
+    .header,
+    .footer {
+        gap: 10px;
+        padding: 10px;
+        justify-content: space-around;
+    }
+
+    .header input {
+        padding: 0 var(--space-3);
+        min-width: 0;
+    }
+
+    .header .button-primary {
+        padding: 0;
+        width: 44px;
+    }
+
+    .footer {
+        flex-direction: column;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+    }
+
 }
