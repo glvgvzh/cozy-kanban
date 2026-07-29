@@ -125,15 +125,6 @@ function TaskDetailsModal(
                         })}
                     </select>
                 </div>
-                <div className="deadline-container">
-                    <div className="label">Срок выполнения</div>
-                    <input
-                        type="date"
-                        className="select"
-                        value={formatDate(selectedTask.deadline)}
-                        onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
-                    />
-                </div>
                 <div className="priority-container">
                     <div className="label">Приоритет</div>
                     <select
@@ -152,6 +143,15 @@ function TaskDetailsModal(
                             )
                         })}
                     </select>
+                </div>
+                <div className="deadline-container">
+                    <div className="label">Срок</div>
+                    <input
+                        type="date"
+                        className="select"
+                        value={formatDate(selectedTask.deadline)}
+                        onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
+                    />
                 </div>
             </div>
 
@@ -176,7 +176,7 @@ function TaskDetailsModal(
                                 }))
                                 setIsEditingDescription(false)
                             }}>
-                            <XIcon size={24} weight="bold" color="var(--danger)" />
+                            <XIcon size={32} weight="bold" color="var(--danger)" />
                         </button>
                         <button
                             className="button button-ghost edit-button"
@@ -184,7 +184,7 @@ function TaskDetailsModal(
                                 onUpdateTask(selectedTask.id, { description: editedTask.description })
                                 setIsEditingDescription(false)
                             }}>
-                            <CheckIcon size={24} weight="bold" color="var(--success)" />
+                            <CheckIcon size={32} weight="bold" color="var(--success)" />
                         </button>
                     </div>
                 }

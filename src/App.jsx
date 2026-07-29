@@ -285,6 +285,15 @@ function App() {
                             >
                                 <ListChecksIcon size={32} weight="duotone" />
                             </button>
+                            {isMobile &&
+                                <button
+                                    className="button button-icon"
+                                    aria-label="Закрыть окно создания задачи"
+                                    onClick={() => setIsNotificationCenterOpen(false)}
+                                >
+                                    <XIcon size={26} />
+                                </button>
+                            }
                         </div>
                         <div className="notification-center-filter">
                             <button

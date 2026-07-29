@@ -55,7 +55,51 @@
     input,
     textarea,
     select {
-        font-size: 16px;
+        font-size: 16px !important;
+    }
+
+    .modal {
+        display: flex;
+        gap: var(--space-1);
+        height: 90%;
+        max-height: 90%;
+        overflow-y: auto;
+        padding: var(--space-5)
+    }
+
+    .task-modal-description,
+    #task-description-textarea {
+        flex: 1;
+        padding: var(--space-3);
+    }
+
+    .task-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2);
+    }
+
+    .description-buttons {
+        margin: 0;
+    }
+
+    .task-actions select {
+        width: fit-content;
+        align-self: center;
+    }
+
+    .task-actions .deadline-container {
+        grid-column: 1 / -1;
+        width: fit-content;
+        justify-self: center;
+    }
+
+    .notification-center {
+        width: min(90%, 400px);
+    }
+
+    .notification-center-filter .button-filter {
+        min-width: fit-content;
     }
 
 }
