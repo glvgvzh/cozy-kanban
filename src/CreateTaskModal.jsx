@@ -24,10 +24,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
 
     return (
         <Modal onClose={onClose}>
-            <div className="modal-header">
-                <h2 className="modal-title">Новая задача</h2>
-                <h5 className="modal-subtitle">Добавь то, что нужно не забыть</h5>
-            </div>
+            <div className="modal-title">Новая задача</div>
             <div className="create-task-form">
                 <div className="task-line">
                     <input
@@ -69,7 +66,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                         </select>
                     </div>
                     <div className="deadline-container">
-                        <div className="label">Срок выполнения</div>
+                        <div className="label">Срок</div>
                         <input
                             type="date"
                             className="select"
