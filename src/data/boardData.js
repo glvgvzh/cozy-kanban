@@ -19,53 +19,7 @@ export const columns = [
     }
 ]
 
-export const tasks = [
-    {
-        id: 1,
-        status: 'done',
-        title: 'задача один',
-        description: 'сделать это',
-        createdAt: new Date('2026-06-10').getTime(),
-        priority: 'low',
-        deadline: new Date('2026-07-18').getTime(),
-    },
-    {
-        id: 2,
-        status: 'todo',
-        title: 'задача два',
-        description: 'сделать то',
-        createdAt: new Date('2026-06-18').getTime(),
-        priority: 'medium',
-        deadline: new Date('2026-07-18').getTime(),
-    },
-    {
-        id: 3,
-        status: 'inProgress',
-        title: 'задача три',
-        description: 'пятое',
-        createdAt: new Date('2026-06-23').getTime(),
-        priority: 'high',
-        deadline: new Date('2026-07-19').getTime(),
-    },
-    {
-        id: 4,
-        status: 'inProgress',
-        title: 'задача четыре',
-        description: 'десятое',
-        createdAt: new Date('2026-06-27').getTime(),
-        priority: 'critical',
-        deadline: new Date('2026-07-20').getTime(),
-    },
-    {
-        id: 5,
-        status: 'todo',
-        title: 'задача пять',
-        description: 'че сделать-то...',
-        createdAt: new Date('2026-06-30').getTime(),
-        priority: 'high',
-        deadline: new Date('2026-07-11').getTime(),
-    },
-]
+export const tasks = []
 
 export const priorities = [
     {
