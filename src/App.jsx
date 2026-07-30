@@ -334,7 +334,7 @@ function App() {
                                             }}
                                         >
                                             <div><notificationConfig.Icon size={40} weight="duotone" color={notificationConfig.color} /></div>
-                                            <div>
+                                            <div className="notification-content">
                                                 <div className="modal-subtitle notification-type">
                                                     {notificationConfig.message}
                                                 </div>

@@ -61,16 +61,25 @@
     .modal {
         display: flex;
         gap: var(--space-1);
-        height: 90%;
+        height: fit-content;
         max-height: 90%;
         overflow-y: auto;
         padding: var(--space-5)
+    }
+
+    .close-modal-button {
+        right: 0;
+        top: 0;
     }
 
     .task-modal-description,
     #task-description-textarea {
         flex: 1;
         padding: var(--space-3);
+    }
+
+    #task-description-textarea {
+        min-height: 300px;
     }
 
     .task-actions {
@@ -102,4 +111,7 @@
         min-width: fit-content;
     }
 
+    .task-line-main {
+        gap: var(--space-3);
+    }
 }
