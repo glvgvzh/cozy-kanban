@@ -108,16 +108,16 @@
 
 .notification-center {
     position: fixed;
-    right: var(--space-3);
+    right: var(--space-1);
     width: min(50vw, 400px);
-    min-height: 95%;
+    min-height: 90vh;
     gap: var(--space-2);
 }
 
 .notification-center-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .notification-center-title {
@@ -158,14 +158,23 @@
 .mark-as-read {
     font-size: var(--font-size-sm) !important;
     color: var(--text-muted) !important;
-    margin-left: auto;
+    margin: 0 10px;
 }
 
 .notification-center-body {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+
+    flex: 1;
+    min-height: 0;
+
     overflow-y: auto;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
 }
 
 .notification-card {
@@ -174,7 +183,6 @@
     flex-direction: row;
     align-items: center;
     gap: var(--space-2);
-    min-height: fit-content;
 
     padding: var(--space-6);
     border-radius: var(--radius-lg);
@@ -183,6 +191,7 @@
     transition: background-color var(--transition-fast);
 
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .notification-card::before {
@@ -325,12 +334,16 @@
 /* ==========================================================================================
         Task Details modal
  ========================================================================================== */
-.task-line {
+.task-details-modal {
+    overflow-y: auto;
+}
+
+ .task-line {
     display: flex;
     flex-direction: column;
 }
 
- .task-line-main{
+.task-line-main {
     display: flex;
     align-items: center;
     gap: var(--space-4);
@@ -422,7 +435,7 @@
     align-self: center;
     gap: var(--space-8);
     font-size: var(--font-size-sm);
-    margin-bottom: -20px;
+    /* margin-bottom: -10px; */
     padding: 0;
 }
 
