@@ -237,6 +237,18 @@ function App() {
         preventScrollOnSwipe: true,
     })
 
+    async function requestNotificationPermission() {
+        if (!('Notification' in window)) return
+        const permission = Notification.permission
+        if (permission === 'granted' || permission === 'denied') return
+
+        await Notification.requestPermission()
+    }
+
+    useEffect(() => {
+        requestNotificationPermission()
+    }, [])
+
     return (
         <div className="app">
 
