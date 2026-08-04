@@ -158,7 +158,7 @@ function App() {
         const registration = await navigator.serviceWorker.ready
         await registration.showNotification(title, {
             body: body,
-            icon: '/favicon.ico',
+            icon: '/public/favicon.ico',
         })
     }
 
