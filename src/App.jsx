@@ -142,24 +142,39 @@ function App() {
         })
     }
 
-    function spawnNotification(title, body) {
-        let options = {
-            body: body,
-            icon: '/public/.ico',
-        }
-        let n = new Notification(title, options)
+    async function requestNotificationPermission() {
+        if (!('Notification' in window)) return
+        const permission = Notification.permission
+        if (permission === 'granted' || permission === 'denied') return
+
+        await Notification.requestPermission()
     }
 
     useEffect(() => {
-        const actualNotifications = getActualNotifications(tasks, notifications)
-        const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
-        newNotifications.forEach(notification => {
+        requestNotificationPermission()
+    }, [])
+
+    async function spawnNotification(title, body) {
+        const registration = await navigator.serviceWorker.ready
+        await registration.showNotification(title, {
+            body: body,
+            icon: '/favicon.ico',
+        })
+    }
+
+    useEffect(() => {
+        const currentActualNotifications = getActualNotifications(tasks, notifications)
+        const currentNewNotifications = checkDeadlineNotifications(tasks, currentActualNotifications)
+        currentNewNotifications.forEach(notification => {
             const notificationTitle = notificationTypes[notification.type].message
-            return spawnNotification(notificationTitle, tasks.find(task => task.id === notification.taskId).title)
+            const task = tasks.find(task => task.id === notification.taskId)
+            if (task) {
+                spawnNotification(notificationTitle, task.title)
+            }
         })
         setNotifications(prev => {
-            // const actualNotifications = getActualNotifications(tasks, prev)
-            // const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
+            const actualNotifications = getActualNotifications(tasks, prev)
+            const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
             return [...newNotifications, ...actualNotifications]
         })
 
@@ -251,18 +266,6 @@ function App() {
         trackMouse: true,
         preventScrollOnSwipe: true,
     })
-
-    async function requestNotificationPermission() {
-        if (!('Notification' in window)) return
-        const permission = Notification.permission
-        if (permission === 'granted' || permission === 'denied') return
-
-        await Notification.requestPermission()
-    }
-
-    useEffect(() => {
-        requestNotificationPermission()
-    }, [])
 
     return (
         <div className="app">
