@@ -142,12 +142,27 @@ function App() {
         })
     }
 
+    function spawnNotification(title, body) {
+        let options = {
+            body: body,
+            icon: '/public/.ico',
+        }
+        let n = new Notification(title, options)
+    }
+
     useEffect(() => {
+        const actualNotifications = getActualNotifications(tasks, notifications)
+        const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
+        newNotifications.forEach(notification => {
+            const notificationTitle = notificationTypes[notification.type].message
+            return spawnNotification(notificationTitle, tasks.find(task => task.id === notification.taskId).title)
+        })
         setNotifications(prev => {
-            const actualNotifications = getActualNotifications(tasks, prev)
-            const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
+            // const actualNotifications = getActualNotifications(tasks, prev)
+            // const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
             return [...newNotifications, ...actualNotifications]
         })
+
     }, [tasks])
 
     function handleCreateTask() {
