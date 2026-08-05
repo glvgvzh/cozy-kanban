@@ -523,12 +523,6 @@ function App() {
                             })}
                         </select>
                     </div>
-                    <button 
-                        className="notifications-settings"
-                        onClick={requestNotificationPermission}
-                    >
-                    Notif
-                </button>
                 </div>
             </div>
         </div>
