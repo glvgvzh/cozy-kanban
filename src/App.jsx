@@ -150,9 +150,9 @@ function App() {
         await Notification.requestPermission()
     }
 
-    useEffect(() => {
-        requestNotificationPermission()
-    }, [])
+    // useEffect(() => {
+    //     requestNotificationPermission()
+    // }, [])
 
     async function spawnNotification(title, body) {
         const registration = await navigator.serviceWorker.ready
@@ -523,6 +523,12 @@ function App() {
                             })}
                         </select>
                     </div>
+                    <button 
+                        className="notifications-settings"
+                        onClick={requestNotificationPermission}
+                    >
+                    Notif
+                </button>
                 </div>
             </div>
         </div>

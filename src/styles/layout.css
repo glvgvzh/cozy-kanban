@@ -87,6 +87,10 @@
     justify-content: center;
 }
 
+.notifications-settings {
+    margin-left: 10px;
+}
+
 .footer-info > div {
     display: flex;
     align-items: center;
