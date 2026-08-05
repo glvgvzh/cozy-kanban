@@ -150,9 +150,9 @@ function App() {
         await Notification.requestPermission()
     }
 
-    useEffect(() => {
-        requestNotificationPermission()
-    }, [])
+    // useEffect(() => {
+    //     requestNotificationPermission()
+    // }, [])
 
     async function spawnNotification(title, body) {
         const registration = await navigator.serviceWorker.ready
