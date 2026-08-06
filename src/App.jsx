@@ -73,7 +73,6 @@ function App() {
     const [notificationPermission, setNotificationPermission] = useState(() => JSON.parse(localStorage.getItem('notificationPermission')) ?? false)
 
     useEffect(() => localStorage.setItem('notificationPermission', JSON.stringify(notificationPermission)), [notificationPermission])
-    useEffect(() => console.log(notificationPermission), [notificationPermission])
 
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -170,23 +169,31 @@ function App() {
     }
 
     async function spawnNotification(title, body) {
+        console.log('spawnNotification called')
         const registration = await navigator.serviceWorker.ready
         await registration.showNotification(title, {
             body: body,
-            icon: '/public/favicon.ico',
+            icon: '/favicon.ico',
         })
     }
 
     useEffect(() => {
         const currentActualNotifications = getActualNotifications(tasks, notifications)
         const currentNewNotifications = checkDeadlineNotifications(tasks, currentActualNotifications)
-        currentNewNotifications.forEach(notification => {
-            const notificationTitle = notificationTypes[notification.type].message
-            const task = tasks.find(task => task.id === notification.taskId)
-            if (task) {
-                spawnNotification(notificationTitle, task.title)
-            }
-        })
+        if (notificationPermission) {
+            console.log({
+                notificationPermission,
+                browserPermission: Notification.permission,
+                newNotifications: currentNewNotifications
+            })
+            currentNewNotifications.forEach(notification => {
+                const notificationTitle = notificationTypes[notification.type].message
+                const task = tasks.find(task => task.id === notification.taskId)
+                if (task) {
+                    spawnNotification(notificationTitle, task.title)
+                }
+            })
+        }
         setNotifications(prev => {
             const actualNotifications = getActualNotifications(tasks, prev)
             const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
