@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon, DotIcon, PlusIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, ListChecksIcon, EnvelopeIcon, EnvelopeOpenIcon, XIcon, DotIcon, PlusIcon, GearIcon, ToggleLeftIcon, ToggleRightIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
@@ -17,6 +17,7 @@ import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 import TaskCardContent from "./TaskCardContent";
+import Modal from "./Modal";
 
 function App() {
     const [installPrompt, setInstallPrompt] = useState(null)
@@ -67,6 +68,12 @@ function App() {
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
+
+    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+    const [notificationPermission, setNotificationPermission] = useState(() => JSON.parse(localStorage.getItem('notificationPermission')) ?? false)
+
+    useEffect(() => localStorage.setItem('notificationPermission', JSON.stringify(notificationPermission)), [notificationPermission])
+    useEffect(() => console.log(notificationPermission), [notificationPermission])
 
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -143,16 +150,24 @@ function App() {
     }
 
     async function requestNotificationPermission() {
-        if (!('Notification' in window)) return
+        if (!('Notification' in window)) return false
         const permission = Notification.permission
-        if (permission === 'granted' || permission === 'denied') return
+        if (permission === 'granted') return true
+        if (permission === 'denied') return false
 
-        await Notification.requestPermission()
+        const answer = await Notification.requestPermission()
+        return answer === 'granted' ? true : false
     }
 
-    // useEffect(() => {
-    //     requestNotificationPermission()
-    // }, [])
+    async function handleNotificationPermissionSwitch() {
+        if (notificationPermission === true) {
+            setNotificationPermission(false)
+            return
+        }
+
+        const allowed = await requestNotificationPermission()
+        setNotificationPermission(allowed)
+    }
 
     async function spawnNotification(title, body) {
         const registration = await navigator.serviceWorker.ready
@@ -507,24 +522,58 @@ function App() {
                     <div>В работе: {tasks.filter(task => task.status === 'inProgress').length}</div>
                     <div>Просрочено: {tasks.filter(task => isTaskOverdue(task)).length}</div>
                 </div>
-                <div className="footer-filter">
-                    <div className="filter-label">Приоритет:</div>
-                    <div className="filter">
-                        <select
-                            className="select filter-select"
-                            value={selectedPriorityFilter}
-                            onChange={e => setSelectedPriorityFilter(e.target.value)}
-                        >
-                            <option value={''}>Все</option>
-                            {priorities.map(priority => {
-                                return (
-                                    <option key={priority.id} value={priority.id}>{priority.label}</option>
-                                )
-                            })}
-                        </select>
+                <div className="filter-and-settings">
+                    <div className="footer-filter">
+                        <div className="filter-label">Приоритет:</div>
+                        <div className="filter">
+                            <select
+                                className="select filter-select"
+                                value={selectedPriorityFilter}
+                                onChange={e => setSelectedPriorityFilter(e.target.value)}
+                            >
+                                <option value={''}>Все</option>
+                                {priorities.map(priority => {
+                                    return (
+                                        <option key={priority.id} value={priority.id}>{priority.label}</option>
+                                    )
+                                })}
+                            </select>
+                        </div>
                     </div>
+                    <button
+                        className="button button-icon settings-gear"
+                        onClick={() => setIsSettingsModalOpen(true)}
+                    >
+                        <GearIcon size={32} weight="duotone" />
+                    </button>
                 </div>
             </div>
+
+            {isSettingsModalOpen &&
+                <Modal onClose={() => setIsSettingsModalOpen(false)}>
+                    <div className="modal-title">Настройки</div>
+
+                    <div className="notification-settings">
+                        <div>Уведомления</div>
+                        <button
+                            className={`button button-icon toggle ${notificationPermission && `toggle-active`}`}
+                            onClick={handleNotificationPermissionSwitch}
+                        >
+                            {notificationPermission ? <ToggleRightIcon size={40} weight="duotone" /> : <ToggleLeftIcon size={40} weight="duotone" />}
+                        </button>
+
+                    </div>
+
+                    <button
+                        className="button button-icon close-modal-button"
+                        aria-label="Закрыть окно создания задачи"
+                        onClick={() => setIsSettingsModalOpen(false)}
+                    >
+                        <XIcon />
+                    </button>
+
+                </Modal>
+            }
         </div>
     )
 }
