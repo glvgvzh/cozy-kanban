@@ -70,9 +70,9 @@ function App() {
     const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-    const [notificationPermission, setNotificationPermission] = useState(() => JSON.parse(localStorage.getItem('notificationPermission')) ?? false)
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(() => JSON.parse(localStorage.getItem('isNotificationEnabled')) ?? false)
 
-    useEffect(() => localStorage.setItem('notificationPermission', JSON.stringify(notificationPermission)), [notificationPermission])
+    useEffect(() => localStorage.setItem('isNotificationEnabled', JSON.stringify(isNotificationEnabled)), [isNotificationEnabled])
 
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -159,14 +159,20 @@ function App() {
     }
 
     async function handleNotificationPermissionSwitch() {
-        if (notificationPermission === true) {
-            setNotificationPermission(false)
+        if (isNotificationEnabled === true) {
+            setIsNotificationEnabled(false)
             return
         }
 
         const allowed = await requestNotificationPermission()
-        setNotificationPermission(allowed)
+        setIsNotificationEnabled(allowed)
     }
+
+    useEffect(() => {
+        if (Notification.permission !== 'granted') {
+            setIsNotificationEnabled(false)
+        }
+    }, [])
 
     async function spawnNotification(title, body) {
         console.log('spawnNotification called')
@@ -180,12 +186,7 @@ function App() {
     useEffect(() => {
         const currentActualNotifications = getActualNotifications(tasks, notifications)
         const currentNewNotifications = checkDeadlineNotifications(tasks, currentActualNotifications)
-        if (notificationPermission) {
-            console.log({
-                notificationPermission,
-                browserPermission: Notification.permission,
-                newNotifications: currentNewNotifications
-            })
+        if (isNotificationEnabled) {
             currentNewNotifications.forEach(notification => {
                 const notificationTitle = notificationTypes[notification.type].message
                 const task = tasks.find(task => task.id === notification.taskId)
@@ -563,10 +564,10 @@ function App() {
                     <div className="notification-settings">
                         <div>Уведомления</div>
                         <button
-                            className={`button button-icon toggle ${notificationPermission && `toggle-active`}`}
+                            className={`button button-icon toggle ${isNotificationEnabled && `toggle-active`}`}
                             onClick={handleNotificationPermissionSwitch}
                         >
-                            {notificationPermission ? <ToggleRightIcon size={40} weight="duotone" /> : <ToggleLeftIcon size={40} weight="duotone" />}
+                            {isNotificationEnabled ? <ToggleRightIcon size={40} weight="duotone" /> : <ToggleLeftIcon size={40} weight="duotone" />}
                         </button>
 
                     </div>
