@@ -8,7 +8,7 @@ import { v4 } from "uuid";
 
 import { useEffect, useState } from "react";
 
-import { columns, tasks as initialTasks, priorities, notificationTypes } from "./data/boardData";
+import { columns, priorities, notificationTypes } from "./data/boardData";
 
 import useTasksStorage from "./hooks/useTasksStorage";
 import InstallBanner from "./InstallBanner";

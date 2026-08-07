@@ -1,5 +1,5 @@
 import { XIcon } from "@phosphor-icons/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Modal from "./Modal";
 import { priorities } from "./data/boardData";
 
