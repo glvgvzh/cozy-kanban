@@ -149,8 +149,8 @@ function TaskDetailsModal(
                     <input
                         type="date"
                         className="select"
-                        value={formatDate(selectedTask.deadline)}
-                        onChange={e => onUpdateTask(selectedTask.id, { deadline: Date.parse(e.target.value) })}
+                        value={selectedTask.deadline === '' ? '' : formatDate(selectedTask.deadline)}
+                        onChange={e => onUpdateTask(selectedTask.id, { deadline: e.target.value === '' ? '' : Date.parse(e.target.value) })}
                     />
                 </div>
             </div>
