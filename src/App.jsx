@@ -169,7 +169,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (Notification.permission !== 'granted') {
+        if (!('Notification' in window) || Notification.permission !== 'granted') {
             setIsNotificationEnabled(false)
         }
     }, [])
