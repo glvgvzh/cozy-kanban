@@ -64,11 +64,6 @@ function App() {
 
     const [activeNotificationFilter, setActiveNotificationFilter] = useState('all')
 
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [newTaskDescription, setNewTaskDescription] = useState('')
-    const [newTaskPriority, setNewTaskPriority] = useState('low')
-    const [newTaskDeadline, setNewTaskDeadline] = useState('')
-
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
@@ -206,30 +201,8 @@ function App() {
 
     }, [tasks])
 
-    function handleCreateTask() {
-        if (newTaskTitle.trim() === '') return
-        const now = Date.now()
-        const newTask = {
-            id: v4(),
-            status: 'todo',
-            title: newTaskTitle.trim(),
-            description: newTaskDescription.trim(),
-            createdAt: now,
-            priority: newTaskPriority,
-            deadline: newTaskDeadline === '' ? '' : Date.parse(newTaskDeadline),
-        }
+    function addTask(newTask) {
         setTasks(prevTasks => [...prevTasks, newTask])
-        setIsNewTaskModalOpen(false)
-        setNewTaskTitle('')
-        setNewTaskDescription('')
-        setNewTaskPriority('low')
-        setNewTaskDeadline('')
-    }
-
-    function handleCloseTaskModal() {
-        setIsNewTaskModalOpen(false)
-        setNewTaskTitle('')
-        setNewTaskDescription('')
     }
 
     function handleDeleteTask() {
@@ -340,16 +313,8 @@ function App() {
 
             {isNewTaskModalOpen &&
                 <CreateTaskModal
-                    newTaskTitle={newTaskTitle}
-                    setNewTaskTitle={setNewTaskTitle}
-                    onCreateTask={handleCreateTask}
-                    onClose={handleCloseTaskModal}
-                    newTaskDescription={newTaskDescription}
-                    setNewTaskDescription={setNewTaskDescription}
-                    newTaskPriority={newTaskPriority}
-                    setNewTaskPriority={setNewTaskPriority}
-                    newTaskDeadline={newTaskDeadline}
-                    setNewTaskDeadline={setNewTaskDeadline}
+                    onClose={() => setIsNewTaskModalOpen(false)}
+                    onCreateTask={addTask}
                 />
             }
 
