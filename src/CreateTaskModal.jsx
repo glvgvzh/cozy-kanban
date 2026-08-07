@@ -1,10 +1,15 @@
 import { XIcon } from "@phosphor-icons/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import { priorities } from "./data/boardData";
+import { v4 } from "uuid";
 
-function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose, newTaskDescription,
-    setNewTaskDescription, newTaskPriority, setNewTaskPriority, newTaskDeadline, setNewTaskDeadline }) {
+function CreateTaskModal({ onClose, onCreateTask }) {
+
+    const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [newTaskDescription, setNewTaskDescription] = useState('')
+    const [newTaskPriority, setNewTaskPriority] = useState('low')
+    const [newTaskDeadline, setNewTaskDeadline] = useState('')
 
     const inputRef = useRef(null)
     useEffect(() => {
@@ -22,6 +27,22 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
         return () => document.removeEventListener('keydown', handleEsc)
     }, [onClose])
 
+    function handleCreateTask() {
+        if (newTaskTitle.trim() === '') return
+        const now = Date.now()
+        const newTask = {
+            id: v4(),
+            status: 'todo',
+            title: newTaskTitle.trim(),
+            description: newTaskDescription.trim(),
+            createdAt: now,
+            priority: newTaskPriority,
+            deadline: newTaskDeadline === '' ? '' : Date.parse(newTaskDeadline),
+        }
+        onCreateTask(newTask)
+        onClose()
+    }
+
     return (
         <Modal onClose={onClose}>
             <div className="modal-title">Новая задача</div>
@@ -37,7 +58,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                         onChange={e => setNewTaskTitle(e.target.value)}
                         onKeyDown={e => {
                             if (e.key === 'Enter') {
-                                onCreateTask()
+                                handleCreateTask()
                             }
                         }}
                     />
@@ -85,7 +106,7 @@ function CreateTaskModal({ newTaskTitle, setNewTaskTitle, onCreateTask, onClose,
                 <button
                     className="button button-primary modal-button"
                     disabled={isCreateDisabled}
-                    onClick={onCreateTask}
+                    onClick={handleCreateTask}
                 >
                     Создать
                 </button>
