@@ -1,6 +1,6 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, XIcon, DotIcon, PlusIcon, GearIcon, ToggleLeftIcon, ToggleRightIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, XIcon, DotIcon, PlusIcon, GearIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
@@ -19,6 +19,7 @@ import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 import TaskCardContent from "./TaskCardContent";
 import Modal from "./Modal";
 import NotificationCenter from "./NotificationCenter";
+import SettingsModal from "./SettingsModal";
 
 import { formatDate, isTaskDueToday, isTaskDueTomorrow, isTaskOverdue } from "./utils/deadlineUtilities";
 
@@ -455,29 +456,11 @@ function App() {
             </div>
 
             {isSettingsModalOpen &&
-                <Modal onClose={() => setIsSettingsModalOpen(false)}>
-                    <div className="modal-title">Настройки</div>
-
-                    <div className="notification-settings">
-                        <div>Уведомления</div>
-                        <button
-                            className={`button button-icon toggle ${isNotificationEnabled && `toggle-active`}`}
-                            onClick={handleNotificationPermissionSwitch}
-                        >
-                            {isNotificationEnabled ? <ToggleRightIcon size={40} weight="duotone" /> : <ToggleLeftIcon size={40} weight="duotone" />}
-                        </button>
-
-                    </div>
-
-                    <button
-                        className="button button-icon close-modal-button"
-                        aria-label="Закрыть окно создания задачи"
-                        onClick={() => setIsSettingsModalOpen(false)}
-                    >
-                        <XIcon />
-                    </button>
-
-                </Modal>
+                <SettingsModal
+                    onClose={() => setIsSettingsModalOpen(false)}
+                    isNotificationEnabled={isNotificationEnabled}
+                    handleNotificationPermissionSwitch={handleNotificationPermissionSwitch}
+                />
             }
         </div>
     )
