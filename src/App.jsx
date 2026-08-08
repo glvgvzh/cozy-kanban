@@ -115,10 +115,10 @@ function App() {
     }
 
     useEffect(() => {
-        const currentActualNotifications = getActualNotifications(tasks, notifications)
-        const currentNewNotifications = checkDeadlineNotifications(tasks, currentActualNotifications)
+        const actualNotifications = getActualNotifications(tasks, notifications)
+        const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
         if (isNotificationEnabled && 'Notification' in window && Notification.permission === 'granted') {
-            currentNewNotifications.forEach(notification => {
+            newNotifications.forEach(notification => {
                 const notificationTitle = notificationTypes[notification.type].message
                 const task = tasks.find(task => task.id === notification.taskId)
                 if (task) {
@@ -126,13 +126,10 @@ function App() {
                 }
             })
         }
-        setNotifications(prev => {
-            const actualNotifications = getActualNotifications(tasks, prev)
-            const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
-            return [...newNotifications, ...actualNotifications]
-        })
-
-    }, [tasks])
+        if (newNotifications.length > 0 || actualNotifications.length !== notifications.length) {
+            setNotifications([...newNotifications, ...actualNotifications])
+        } 
+    }, [tasks, notifications, isNotificationEnabled, setNotifications])
 
     function addTask(newTask) {
         setTasks(prevTasks => [...prevTasks, newTask])
