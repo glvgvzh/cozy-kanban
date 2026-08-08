@@ -102,19 +102,11 @@ function App() {
             setIsNotificationEnabled(false)
             return
         }
-
         const allowed = await requestNotificationPermission()
         setIsNotificationEnabled(allowed)
     }
 
-    useEffect(() => {
-        if (!('Notification' in window) || Notification.permission !== 'granted') {
-            setIsNotificationEnabled(false)
-        }
-    }, [])
-
     async function spawnNotification(title, body) {
-        console.log('spawnNotification called')
         const registration = await navigator.serviceWorker.ready
         await registration.showNotification(title, {
             body: body,
@@ -125,7 +117,7 @@ function App() {
     useEffect(() => {
         const currentActualNotifications = getActualNotifications(tasks, notifications)
         const currentNewNotifications = checkDeadlineNotifications(tasks, currentActualNotifications)
-        if (isNotificationEnabled) {
+        if (isNotificationEnabled && 'Notification' in window && Notification.permission === 'granted') {
             currentNewNotifications.forEach(notification => {
                 const notificationTitle = notificationTypes[notification.type].message
                 const task = tasks.find(task => task.id === notification.taskId)
