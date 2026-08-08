@@ -1,10 +1,9 @@
 import "./styles/index.css"
 
-import { KanbanIcon, BellIcon, XIcon, DotIcon, PlusIcon, GearIcon } from "@phosphor-icons/react";
+import { KanbanIcon, BellIcon, DotIcon, PlusIcon, GearIcon } from "@phosphor-icons/react";
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
-import { v4 } from "uuid";
 
 import { useEffect, useState } from "react";
 
@@ -17,11 +16,11 @@ import CreateTaskModal from "./CreateTaskModal";
 import TaskDetailsModal from "./TaskDetailsModal";
 import DeleteTaskConfirmationModal from "./DeleteTaskConfirmationModal";
 import TaskCardContent from "./TaskCardContent";
-import Modal from "./Modal";
 import NotificationCenter from "./NotificationCenter";
 import SettingsModal from "./SettingsModal";
 
-import { formatDate, isTaskDueToday, isTaskDueTomorrow, isTaskOverdue } from "./utils/deadlineUtilities";
+import { formatDate, isTaskOverdue } from "./utils/deadlineUtilities";
+import { checkDeadlineNotifications, getActualNotifications } from "./utils/notificationUtilities";
 
 function App() {
     const [installPrompt, setInstallPrompt] = useState(null)
@@ -97,54 +96,6 @@ function App() {
     useEffect(() => localStorage.setItem('notifications', JSON.stringify(notifications)), [notifications])
 
     const unreadNotifications = notifications.filter(notification => !notification.isRead)
-
-    function checkDeadlineNotifications(tasks, notifications) {
-        const dueToday = tasks.filter(task => isTaskDueToday(task))
-        const dueTomorrow = tasks.filter(task => isTaskDueTomorrow(task))
-        const overdueTasks = tasks.filter(task => isTaskOverdue(task))
-        const dueTodayTasksWithoutNotifications = dueToday.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'deadlineToday'))
-        const dueTomorrowTasksWithoutNotifications = dueTomorrow.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'deadlineTomorrow'))
-        const overdueTasksWithoutNotifications = overdueTasks.filter(task => !notifications.some(notification => notification.taskId === task.id && notification.type === 'overdue'))
-        const dueTodayNewNotifications = dueTodayTasksWithoutNotifications.map(task => {
-            return {
-                id: v4(),
-                taskId: task.id,
-                type: 'deadlineToday',
-                createdAt: Date.now(),
-                isRead: false,
-            }
-        })
-        const dueTomorrowNewNotifications = dueTomorrowTasksWithoutNotifications.map(task => {
-            return {
-                id: v4(),
-                taskId: task.id,
-                type: 'deadlineTomorrow',
-                createdAt: Date.now(),
-                isRead: false,
-            }
-        })
-        const overdueTasksNewNotifications = overdueTasksWithoutNotifications.map(task => {
-            return {
-                id: v4(),
-                taskId: task.id,
-                type: 'overdue',
-                createdAt: Date.now(),
-                isRead: false,
-            }
-        })
-        return [...overdueTasksNewNotifications, ...dueTodayNewNotifications, ...dueTomorrowNewNotifications]
-    }
-
-    function getActualNotifications(tasks, notifications) {
-        return notifications.filter(notification => {
-            const task = tasks.find(task => task.id === notification.taskId)
-            if (!task) return false
-            if (notification.type === 'deadlineToday') return isTaskDueToday(task)
-            if (notification.type === 'deadlineTomorrow') return isTaskDueTomorrow(task)
-            if (notification.type === 'overdue') return isTaskOverdue(task)
-            return false
-        })
-    }
 
     async function requestNotificationPermission() {
         if (!('Notification' in window)) return false
