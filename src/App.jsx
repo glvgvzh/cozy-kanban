@@ -7,9 +7,11 @@ import { useSwipeable } from "react-swipeable";
 
 import { useEffect, useState } from "react";
 
-import { columns, priorities, notificationTypes } from "./data/boardData";
+import { columns, priorities, notificationTypes, tasks as initialTasks } from "./data/boardData";
+import { formatDate, isTaskOverdue } from "./utils/deadlineUtilities";
+import { checkDeadlineNotifications, getActualNotifications } from "./utils/notificationUtilities";
 
-import useTasksStorage from "./hooks/useTasksStorage";
+import useLocalStorage from "./hooks/useLocalStorage";
 import InstallBanner from "./InstallBanner";
 import Column from "./Column";
 import CreateTaskModal from "./CreateTaskModal";
@@ -19,14 +21,11 @@ import TaskCardContent from "./TaskCardContent";
 import NotificationCenter from "./NotificationCenter";
 import SettingsModal from "./SettingsModal";
 
-import { formatDate, isTaskOverdue } from "./utils/deadlineUtilities";
-import { checkDeadlineNotifications, getActualNotifications } from "./utils/notificationUtilities";
-
 function App() {
     const [installPrompt, setInstallPrompt] = useState(null)
     const canInstall = installPrompt !== null
 
-    const [installBannerDismissed, setInstallBannerDismissed] = useState(() => JSON.parse(localStorage.getItem('installBannerDismissed')) ?? false)
+    const [installBannerDismissed, setInstallBannerDismissed] = useLocalStorage('installBannerDismissed', false)
 
     useEffect(() => {
         function handleInstallPrompt(e) {
@@ -36,10 +35,6 @@ function App() {
         window.addEventListener('beforeinstallprompt', handleInstallPrompt)
         return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
     }, [])
-
-    useEffect(() => {
-        localStorage.setItem('installBannerDismissed', JSON.stringify(installBannerDismissed))
-    }, [installBannerDismissed])
 
     function onDismiss() {
         setInstallBannerDismissed(true)
@@ -55,7 +50,7 @@ function App() {
         }
     }
 
-    const { tasks, setTasks } = useTasksStorage()
+    const [tasks, setTasks] = useLocalStorage('tasks', initialTasks)
 
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
     const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
@@ -65,12 +60,12 @@ function App() {
 
     const [selectedTaskId, setSelectedTaskId] = useState(null)
     const [searchQuery, setSearchQuery] = useState('')
-    const [selectedPriorityFilter, setSelectedPriorityFilter] = useState(() => localStorage.getItem('priority') || '')
+
+    const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage('priority', '')
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(() => JSON.parse(localStorage.getItem('isNotificationEnabled')) ?? false)
 
-    useEffect(() => localStorage.setItem('isNotificationEnabled', JSON.stringify(isNotificationEnabled)), [isNotificationEnabled])
+    const [isNotificationEnabled, setIsNotificationEnabled] = useLocalStorage('isNotificationEnabled', false)
 
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -86,14 +81,9 @@ function App() {
         return matchesSearch && matchesPriority
     }))
 
-    useEffect(() => {
-        localStorage.setItem('priority', selectedPriorityFilter)
-    }, [selectedPriorityFilter])
-
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
 
-    const [notifications, setNotifications] = useState(() => JSON.parse(localStorage.getItem('notifications')) || [])
-    useEffect(() => localStorage.setItem('notifications', JSON.stringify(notifications)), [notifications])
+    const [notifications, setNotifications] = useLocalStorage('notifications', [])
 
     const unreadNotifications = notifications.filter(notification => !notification.isRead)
 
@@ -174,13 +164,10 @@ function App() {
     const isMobile = useMediaQuery({
         query: '(max-width: 768px)'
     })
-    const [activeColumnIndex, setActiveColumnIndex] = useState(() => JSON.parse(localStorage.getItem('mobileActiveColumnIndex')) ?? 0)
+
+    const [activeColumnIndex, setActiveColumnIndex] = useLocalStorage('mobileActiveColumnIndex', 0)
     const activeColumn = columns[activeColumnIndex]
     const activeColumnTasks = filteredTasks.filter(task => task.status === activeColumn.id)
-
-    useEffect(() => {
-        localStorage.setItem('mobileActiveColumnIndex', JSON.stringify(activeColumnIndex))
-    }, [activeColumnIndex])
 
     const swipeHandler = useSwipeable({
         onSwipedLeft: () => setActiveColumnIndex(prev => {
