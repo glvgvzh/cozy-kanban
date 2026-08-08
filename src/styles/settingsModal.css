@@ -1,0 +1,14 @@
+.notification-settings {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+}
+
+.toggle:hover {
+    background: transparent !important;
+}
+
+.toggle-active svg :nth-child(1) {
+    fill: #1e881a;
+    opacity: .7;
+}

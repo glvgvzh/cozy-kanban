@@ -1,0 +1,86 @@
+.create-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+}
+
+.create-task-input {
+    height: 40px;
+    min-width: 0;
+    border: var(--border-width-app) solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-input);
+    padding: 0 var(--space-5);
+    color: var(--text-primary);
+    transition: box-shadow var(--transition-fast);
+}
+
+.create-task-input:focus {
+    box-shadow: var(--focus-ring);
+    outline: none;
+}
+
+.deadline-and-priority-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    justify-content: space-around;
+}
+
+.task-actions {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    gap: var(--space-2);
+}
+
+.deadline-container,
+.priority-container,
+.modal-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.delete-button {
+    padding: 0 !important;
+}
+
+.delete-button svg {
+    width: var(--space-7);
+    height: var(--space-7);
+}
+
+#task-description-textarea {
+    background-color: var(--surface-input);
+    resize: none;
+    height: 300px;
+    border-radius: var(--radius-lg);
+    border: var(--border-width-app) solid var(--border-color);
+
+    font-family: inherit;
+    color: inherit;
+
+    padding: var(--space-5);
+    font-size: var(--font-size-md);
+}
+
+#task-description-textarea:focus {
+    box-shadow: var(--focus-ring);
+    outline: none;
+}
+
+.task-actions-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
