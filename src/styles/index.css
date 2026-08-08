@@ -2,6 +2,10 @@
 @import "./base.css";
 @import "./layout.css";
 @import "./modal.css";
+@import "./notificationCenter.css";
+@import "./createTaskModal.css";
+@import "./taskDetailsModal.css";
+@import "./settingsModal.css";
 @import "./column.css";
 @import "./task.css";
 @import "./controls.css";

@@ -1,0 +1,133 @@
+.notification-center {
+    position: fixed;
+    right: var(--space-1);
+    width: min(50vw, 400px);
+    min-height: 90vh;
+    gap: var(--space-2);
+}
+
+.notification-center-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.notification-center-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.notification-center-filter {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: space-around;
+}
+
+.has-badge {
+    position: relative;
+}
+
+.badge {
+    border: var(--border-width-app) solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background-color: var(--danger-hover);
+    font-size: var(--font-size-xs);
+    color: var(--accent-foreground);
+    padding: 0 5px;
+}
+
+.badge-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(20%, -20%);
+}
+
+.mark-as-read {
+    font-size: var(--font-size-sm) !important;
+    color: var(--text-muted) !important;
+    margin: 0 10px;
+}
+
+.notification-center-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-card) solid var(--border-color);
+    background-color: var(--surface-card);
+    transition: background-color var(--transition-fast);
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.notification-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: transparent;
+    width: var(--space-3);
+}
+
+.notification-card:hover {
+    background-color: var(--surface-hover);
+    cursor: pointer;
+}
+
+.notification-card .task-deadline {
+    margin-top: 6px;
+}
+
+.notification-task-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
+.unread-card .notification-task-title {
+    font-weight: var(--font-weight-bold);
+}
+
+.unread-card::before {
+    background: var(--accent);
+}
+
+.notification-type {
+    text-align: start;
+}
+
+.notification-actions {
+    display: inline-flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: var(--space-2);
+}
