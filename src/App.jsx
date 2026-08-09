@@ -115,6 +115,40 @@ function App() {
     }
 
     useEffect(() => {
+        let permissionStatus
+
+        function syncPermissions() {
+            if (!('Notification' in window)) return
+            if (Notification.permission !== 'granted') {
+                setIsNotificationEnabled(false)
+            }
+        }
+        function handleVisibilityChange() {
+            if (document.visibilityState === 'visible') {
+                syncPermissions()
+            }
+        }
+        async function fetchNotificationPermissionChange() {
+            try {
+                permissionStatus = await navigator.permissions.query({ name: 'notifications' })
+                permissionStatus.addEventListener('change', syncPermissions)
+            } catch {
+                return
+            }
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+
+        fetchNotificationPermissionChange()
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            if (permissionStatus) {
+                permissionStatus.removeEventListener('change', syncPermissions)
+            }
+        }
+    }, [setIsNotificationEnabled])
+
+    useEffect(() => {
         const actualNotifications = getActualNotifications(tasks, notifications)
         const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
         if (isNotificationEnabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -128,7 +162,7 @@ function App() {
         }
         if (newNotifications.length > 0 || actualNotifications.length !== notifications.length) {
             setNotifications([...newNotifications, ...actualNotifications])
-        } 
+        }
     }, [tasks, notifications, isNotificationEnabled, setNotifications])
 
     function addTask(newTask) {
