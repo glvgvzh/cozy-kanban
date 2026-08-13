@@ -41,4 +41,4 @@ function updateTest(value, id) {
     updateRecord.run(value, id)
 }
 
-export { createTest, getTest, deleteTest, updateTest }
+export { db, createTest, getTest, deleteTest, updateTest }

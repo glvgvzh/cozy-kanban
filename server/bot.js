@@ -1,3 +1,5 @@
+import process from "node:process"
+
 let offset = 0
 async function pollUpdates() {
     const token = process.env.TELEGRAM_BOT_TOKEN
