@@ -1,13 +1,14 @@
 import { ToggleLeftIcon, ToggleRightIcon, XIcon } from "@phosphor-icons/react"
 import Modal from "./Modal"
+import LinkTelegram from "./LinkTelegram"
 
-function SettingsModal({ onClose, isNotificationEnabled, handleNotificationPermissionSwitch,  }) {
+function SettingsModal({ onClose, isNotificationEnabled, handleNotificationPermissionSwitch, }) {
     return (
         <Modal onClose={onClose}>
             <div className="modal-title">Настройки</div>
 
             <div className="notification-settings">
-                <div>Уведомления</div>
+                <div className="settings-name">Уведомления</div>
                 <button
                     className={`button button-icon toggle ${isNotificationEnabled && `toggle-active`}`}
                     onClick={handleNotificationPermissionSwitch}
@@ -16,6 +17,8 @@ function SettingsModal({ onClose, isNotificationEnabled, handleNotificationPermi
                 </button>
 
             </div>
+
+            <LinkTelegram />
 
             <button
                 className="button button-icon close-modal-button"

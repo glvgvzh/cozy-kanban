@@ -4,6 +4,12 @@
     align-items: center;
 }
 
+.settings-name {
+    white-space: nowrap;
+    font-weight: var(--font-weight-medium);
+    width: fit-content;
+}
+
 .toggle:hover {
     background: transparent !important;
 }
@@ -11,4 +17,26 @@
 .toggle-active svg :nth-child(1) {
     fill: #1e881a;
     opacity: .7;
+}
+
+.link-telegram {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: center;
+    margin-top: var(--space-5);
+}
+
+.link-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.link-controls .select {
+    font-size: 16px;
+    min-width: 70px;
+    max-width: 120px;
 }
