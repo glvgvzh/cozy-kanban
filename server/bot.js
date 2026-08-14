@@ -1,4 +1,5 @@
 import process from "node:process"
+import { getOrCreateBoard } from "./models/board.js"
 
 let offset = 0
 async function pollUpdates() {
@@ -12,8 +13,16 @@ async function pollUpdates() {
 
         if (answer.result.length > 0) {
             const lastUpdate = answer.result[answer.result.length - 1]
+
             for (const update of answer.result) {
-                console.log(update.update_id, update.message.text)
+                let messageText
+                if (update.message.text === '/start') {
+                    const telegramId = update.message.chat.id
+                    const board = getOrCreateBoard(telegramId)
+                    messageText = `Код подключения: ${board.code}\n\nВведите этот код в приложении Cozy Kanban, чтобы связать доску с Telegram`
+                } else {
+                    messageText = 'Неизвестная команда'
+                }
                 const sendResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -21,9 +30,10 @@ async function pollUpdates() {
                     },
                     body: JSON.stringify({
                         chat_id: update.message.chat.id,
-                        text: update.message.text === '/start' ? 'Бот работает' : 'Неизвестная команда',
+                        text: messageText,
                     })
                 })
+
                 if (!sendResponse.ok) {
                     throw new Error(`Telegram API error: ${sendResponse.status}`)
                 }
