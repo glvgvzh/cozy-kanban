@@ -114,4 +114,9 @@
     .task-line-main {
         gap: var(--space-3);
     }
+
+    .settings-name {
+        white-space: normal;
+    }
+    
 }
