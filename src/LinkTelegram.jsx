@@ -9,7 +9,7 @@ function LinkTelegram() {
 
     async function verifyCode(code) {
         try {
-            const response = await fetch(`http://localhost:3000/api/boards/${code}`)
+            const response = await fetch(`http://localhost:3000/api/boards/${code}/status`)
             if (!response.ok) {
                 throw new Error(response.status)
             }

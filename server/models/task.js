@@ -61,4 +61,12 @@ function updateTaskById(task) {
     updateTaskByIdQuery.run(task.status, task.title, task.description, task.priority, task.deadline, task.id)
 }
 
-export { createTask, deleteTaskById, getTasksByBoardId, updateTaskById }
+const getTaskByIdAndBoardIdQuery = db.prepare(`
+    SELECT * FROM tasks WHERE id = ? AND board_id = ?
+`)
+
+function getTaskByIdAndBoardId(taskId, boardId) {
+    return getTaskByIdAndBoardIdQuery.get(taskId, boardId)
+}
+
+export { createTask, deleteTaskById, getTasksByBoardId, updateTaskById, getTaskByIdAndBoardId }
