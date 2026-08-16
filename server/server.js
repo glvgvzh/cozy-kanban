@@ -2,8 +2,15 @@ import http from 'node:http'
 import { getBoardByCode } from './models/board.js'
 import { getTasksByBoardId, createTask, getTaskByIdAndBoardId, updateTaskById, deleteTaskById } from './models/task.js'
 
+const allowedHosts = ['http://localhost:5173', 'http://localhost:4173']
+
 const server = http.createServer((request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173')
+    const origin = request.headers.origin
+
+    if (allowedHosts.includes(origin)) {
+        response.setHeader('Access-Control-Allow-Origin', origin)
+    }
+
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
     response.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
@@ -77,7 +84,7 @@ const server = http.createServer((request, response) => {
                 request.on('data', chunk => body += chunk)
                 request.on('end', () => {
                     const task = JSON.parse(body)
-                    createTask(task, board.id)
+                    createTask(board.id, task)
                     response.statusCode = 201
                     response.setHeader('Content-Type', 'application/json')
                     response.end(JSON.stringify({
@@ -115,7 +122,7 @@ const server = http.createServer((request, response) => {
                         response.setHeader('Content-Type', 'application/json')
                         response.end(JSON.stringify({
                             taskUpdated: true,
-                            newTask
+                            task: newTask
                         }))
                     })
                 } else {

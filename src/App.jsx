@@ -5,12 +5,12 @@ import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useMediaQuery } from "react-responsive";
 import { useSwipeable } from "react-swipeable";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { columns, priorities, notificationTypes, tasks as initialTasks } from "./data/boardData";
 import { formatDate, isTaskOverdue } from "./utils/deadlineUtilities";
 import { checkDeadlineNotifications, getActualNotifications } from "./utils/notificationUtilities";
-import { migrateTasks } from "./api/taskApi.js";
+import { migrateTasks, getTasksByBoard, deleteTask, updateTask, createTask } from "./api/taskApi.js";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 import InstallBanner from "./InstallBanner";
@@ -85,8 +85,12 @@ function App() {
     const selectedTask = tasks.find(task => task.id === selectedTaskId)
 
     const [notifications, setNotifications] = useLocalStorage('notifications', [])
-
     const unreadNotifications = notifications.filter(notification => !notification.isRead)
+
+    const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
+    const [isTelegramConnected, setIsTelegramConnected] = useState(false)
+
+
 
     async function requestNotificationPermission() {
         if (!('Notification' in window)) return false
@@ -166,23 +170,36 @@ function App() {
         }
     }, [tasks, notifications, isNotificationEnabled, setNotifications])
 
-    function addTask(newTask) {
-        setTasks(prevTasks => [...prevTasks, newTask])
+    async function addTask(newTask) {
+        let taskToAdd = newTask
+        if (isTelegramConnected) {
+            const result = await createTask(telegramCode, newTask)
+            if (!result?.taskCreated) return
+            taskToAdd = result.task
+        }
+        setTasks(prevTasks => [...prevTasks, taskToAdd])
     }
 
-    function handleDeleteTask() {
+    async function handleDeleteTask() {
+        if (isTelegramConnected) {
+            const result = await deleteTask(telegramCode, selectedTaskId)
+            if (!result?.taskDeleted) return
+        }
         setTasks(prevTasks => prevTasks.filter(task => task.id !== selectedTaskId))
         setIsConfirmDeletionModalOpen(false)
         setSelectedTaskId(null)
     }
 
-    function handleUpdateTask(taskId, updates) {
-        setTasks(prevTasks => prevTasks.map(task => {
-            if (task.id === taskId) {
-                return ({ ...task, ...updates })
-            }
-            return task
-        }))
+    async function handleUpdateTask(taskId, updates) {
+        const currentTask = tasks.find(task => task.id === taskId)
+        if (!currentTask) return
+        const updatedTask = {...currentTask, ...updates}
+
+        if (isTelegramConnected) {
+            const result = await updateTask(telegramCode, updatedTask)
+            if (!result?.taskUpdated) return
+        }
+        setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? updatedTask : task))
     }
 
     const isMobile = useMediaQuery({
@@ -206,9 +223,48 @@ function App() {
         preventScrollOnSwipe: true,
     })
 
-    async function handleMigrateTasks(code) {
-        return await migrateTasks(tasks, code)
+    async function verifyCode(code) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/boards/${code}/status`)
+            if (!response.ok) {
+                throw new Error(response.status)
+            }
+            const answer = await response.json()
+            if (answer.telegramConnected) {
+                setIsTelegramConnected(true)
+                return true
+            } else {
+                setIsTelegramConnected(false)
+                return false
+            }
+
+        } catch (error) {
+            setIsTelegramConnected(false)
+            console.error(error)
+            return false
+        }
     }
+
+    const tasksRef = useRef(tasks)
+    useEffect(() => {
+        tasksRef.current = tasks
+    }, [tasks])
+
+    useEffect(() => {
+        async function loadServerTasks() {
+            if (telegramCode !== '') {
+                const isConnected = await verifyCode(telegramCode)
+                if (isConnected) {
+                    const migrated = await migrateTasks(telegramCode, tasksRef.current)
+                    if (migrated) {
+                        const serverTasks = await getTasksByBoard(telegramCode)
+                        setTasks(serverTasks)
+                    }
+                }
+            }
+        }
+        loadServerTasks()
+    }, [telegramCode, setTasks])
 
     return (
         <div className="app">
@@ -391,7 +447,9 @@ function App() {
                     onClose={() => setIsSettingsModalOpen(false)}
                     isNotificationEnabled={isNotificationEnabled}
                     handleNotificationPermissionSwitch={handleNotificationPermissionSwitch}
-                    migrateTasks={handleMigrateTasks}
+                    setTelegramCode={setTelegramCode}
+                    isTelegramConnected={isTelegramConnected}
+                    onVerifyCode={verifyCode}
                 />
             }
         </div>

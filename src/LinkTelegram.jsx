@@ -1,33 +1,9 @@
 import { CheckIcon, LinkBreakIcon, LinkIcon } from "@phosphor-icons/react"
 import { useState } from "react"
-import useLocalStorage from "./hooks/useLocalStorage"
 
-function LinkTelegram({ migrateTasks }) {
+function LinkTelegram({ setTelegramCode, isTelegramConnected, onVerifyCode }) {
 
-    const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
-    const [isTelegramConnected, setIsTelegramConnected] = useState(false)
-
-    async function verifyCode(code) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/boards/${code}/status`)
-            if (!response.ok) {
-                throw new Error(response.status)
-            }
-            const answer = await response.json()
-            if (answer.telegramConnected) {
-                setIsTelegramConnected(true)
-                return true
-            } else {
-                setIsTelegramConnected(false)
-                return false
-            }
-
-        } catch (error) {
-            setIsTelegramConnected(false)
-            console.error(error)
-            return false
-        }
-    }
+    const [inputCode, setInputCode] = useState('')
 
     return (
         <div className="link-telegram">
@@ -42,16 +18,17 @@ function LinkTelegram({ migrateTasks }) {
                 <input
                     className="select"
                     type="text"
-                    value={telegramCode}
-                    onChange={e => setTelegramCode(e.target.value)}
+                    value={inputCode}
+                    onChange={e => setInputCode(e.target.value)}
                 />
                 <button
                     className="button button-primary"
                     onClick={async () => {
-                        const isConnected = await verifyCode(telegramCode)
+                        const isConnected = await onVerifyCode(inputCode)
                         if (isConnected) {
-                            await migrateTasks(telegramCode)
+                            setTelegramCode(inputCode)
                         }
+                        setInputCode('')
                     }}
                 >
                     <CheckIcon />

@@ -18,7 +18,7 @@ const createTaskQuery = db.prepare(`
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 `)
 
-function createTask(task, boardId) {
+function createTask(boardId, task) {
     createTaskQuery.run(
         task.id,
         boardId,
