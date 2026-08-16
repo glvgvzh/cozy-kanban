@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { columns, priorities, notificationTypes, tasks as initialTasks } from "./data/boardData";
 import { formatDate, isTaskOverdue } from "./utils/deadlineUtilities";
 import { checkDeadlineNotifications, getActualNotifications } from "./utils/notificationUtilities";
+import { migrateTasks } from "./api/taskApi.js";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 import InstallBanner from "./InstallBanner";
@@ -205,6 +206,10 @@ function App() {
         preventScrollOnSwipe: true,
     })
 
+    async function handleMigrateTasks(code) {
+        return await migrateTasks(tasks, code)
+    }
+
     return (
         <div className="app">
 
@@ -386,6 +391,7 @@ function App() {
                     onClose={() => setIsSettingsModalOpen(false)}
                     isNotificationEnabled={isNotificationEnabled}
                     handleNotificationPermissionSwitch={handleNotificationPermissionSwitch}
+                    migrateTasks={handleMigrateTasks}
                 />
             }
         </div>

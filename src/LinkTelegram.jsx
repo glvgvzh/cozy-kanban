@@ -2,7 +2,7 @@ import { CheckIcon, LinkBreakIcon, LinkIcon } from "@phosphor-icons/react"
 import { useState } from "react"
 import useLocalStorage from "./hooks/useLocalStorage"
 
-function LinkTelegram() {
+function LinkTelegram({ migrateTasks }) {
 
     const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
     const [isTelegramConnected, setIsTelegramConnected] = useState(false)
@@ -16,13 +16,16 @@ function LinkTelegram() {
             const answer = await response.json()
             if (answer.telegramConnected) {
                 setIsTelegramConnected(true)
+                return true
             } else {
                 setIsTelegramConnected(false)
+                return false
             }
 
         } catch (error) {
             setIsTelegramConnected(false)
             console.error(error)
+            return false
         }
     }
 
@@ -44,7 +47,12 @@ function LinkTelegram() {
                 />
                 <button
                     className="button button-primary"
-                    onClick={() => verifyCode(telegramCode)}
+                    onClick={async () => {
+                        const isConnected = await verifyCode(telegramCode)
+                        if (isConnected) {
+                            await migrateTasks(telegramCode)
+                        }
+                    }}
                 >
                     <CheckIcon />
                 </button>
