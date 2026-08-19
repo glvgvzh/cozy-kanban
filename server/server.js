@@ -2,7 +2,7 @@ import http from 'node:http'
 import { getBoardByCode } from './models/board.js'
 import { getTasksByBoardId, createTask, getTaskByIdAndBoardId, updateTaskById, deleteTaskById } from './models/task.js'
 
-const allowedHosts = ['http://localhost:5173', 'http://localhost:4173']
+const allowedHosts = ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:5174']
 
 const server = http.createServer((request, response) => {
     const origin = request.headers.origin
