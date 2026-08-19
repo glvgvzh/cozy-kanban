@@ -1,3 +1,8 @@
+function normalizeTask(task) {
+    const { created_at, ...rest } = task
+    return { ...rest, createdAt: created_at }
+}
+
 async function getTasksByBoard(code) {
     try {
         const response = await fetch(`http://localhost:3000/api/boards/${code}/tasks`)
@@ -5,7 +10,8 @@ async function getTasksByBoard(code) {
             throw new Error(response.status)
         }
         const data = await response.json()
-        return data.tasks
+        return data.tasks.map(normalizeTask)
+
     } catch (error) {
         console.error(error)
     }
