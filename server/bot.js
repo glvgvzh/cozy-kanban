@@ -1,23 +1,18 @@
 import process from "node:process"
 import { getOrCreateBoard } from "./models/board.js"
-import { createTask } from "../src/api/taskApi.js"
-import { v4 } from "uuid"
+import { messages } from "./bot/messages.js"
+import { combineTask, saveTask } from "./bot/utils.js"
 
 const userStates = new Map()
 
-let offset = 0
-
-function combineTask(title, description, priority, deadline) {
-    return {
-        id: v4(),
-        status: 'todo',
-        title: title.trim(),
-        description: description.trim(),
-        createdAt: Date.now(),
-        priority: priority,
-        deadline: deadline,
-    }
+const priorities = {
+    low: 'Низкий',
+    medium: 'Средний',
+    high: 'Высокий',
+    critical: 'Критический',
 }
+
+let offset = 0
 
 async function pollUpdates() {
     const token = process.env.TELEGRAM_BOT_TOKEN
@@ -35,137 +30,54 @@ async function pollUpdates() {
                 let messageText
                 const telegramId = update.message.chat.id
                 const state = userStates.get(telegramId)
-                const priorities = {
-                    low: 'Низкий',
-                    medium: 'Средний',
-                    high: 'Высокий',
-                    critical: 'Критический',
-                }
                 if (update.message.text === '/start') {
-                    messageText = `👋 <b>Привет! Это Cozy Kanban Bot</b>
-
-Он поможет создавать задачи прямо из Telegram
-
-Доступные команды:
-🔗 /code - получить код подключения
-✨ /new - создать новую задачу`
+                    messageText = messages.start
                 } else if (update.message.text === '/code') {
                     const board = getOrCreateBoard(telegramId)
-                    messageText = `🔗 <b>Код подключения</b>
-
-Ваш код:
-
-<code>${board.code}</code>
-
-<i>Введите его в приложении Cozy Kanban, чтобы связать доску с Telegram</i>`
+                    messageText = messages.codeMessage(board.code)
                 } else if (update.message.text === '/new') {
                     userStates.set(telegramId, {
                         step: 'title',
                         task: {},
                     })
-                    messageText = `✨ <b>Новая задача</b>
-
-Шаг 1 из 4
-
-Введите название задачи:`
+                    messageText = messages.newTask
                 } else if (state && state.step === 'description' && update.message.text === '/skip') {
                     state.task.description = ''
                     state.step = 'priority'
-                    messageText = `✅ Описание сохранено
-
-Шаг 3 из 4
-
-⭐ Выберите приоритет:
-
-🟢 Низкий
-🟡 Средний
-🟠 Высокий
-🔴 Критический`
+                    messageText = messages.priority
                 } else {
                     if (state) {
                         if (state.step === 'title') {
                             state.task.title = update.message.text
                             state.step = 'description'
-                            messageText = `✅ Название сохранено
-
-Шаг 2 из 4
-
-📄 Добавьте описание задачи:
-
-<i>Если описание не требуется:</i>
-⏩️ /skip`
+                            messageText = messages.description
                         }
                         else if (state.step === 'description') {
                             state.task.description = update.message.text
                             state.step = 'priority'
-                            messageText = `✅ Описание сохранено
-
-Шаг 3 из 4
-
-⭐ Выберите приоритет:
-
-🟢 Низкий
-🟡 Средний
-🟠 Высокий
-🔴 Критический`
+                            messageText = messages.priority
                         }
                         else if (state.step === 'priority') {
                             const formattedPriority = Object.keys(priorities).find(key => priorities[key].toLowerCase() === update.message.text.toLowerCase())
                             if (!formattedPriority) {
-                                messageText = `⚠️ <b>Неизвестный приоритет</b>
-
-Выберите один из вариантов:
-
-🟢 Низкий
-🟡 Средний
-🟠 Высокий
-🔴 Критический`
+                                messageText = messages.unknownPriority
                             } else {
                                 state.task.priority = String(formattedPriority)
                                 state.step = 'deadline'
-                                messageText = `✅ Приоритет сохранён
-
-Шаг 4 из 4
-
-📅 Укажите срок выполнения
-
-<i>Формат:</i>
-<code>ДД.ММ.ГГГГ</code>
-<i>Например:</i>
-<code>01.01.2027</code>
-
-<i>Если срока нет:</i>
-⏩️ /skip`
+                                messageText = messages.deadline
                             }
                         }
                         else if (state.step === 'deadline') {
                             if (update.message.text === '/skip') {
                                 state.task.deadline = ''
+                                const formattedPriority = priorities[state.task.priority]
                                 const readyTask = combineTask(state.task.title, state.task.description, state.task.priority, state.task.deadline)
-                                const board = getOrCreateBoard(telegramId)
-                                const result = await createTask(board.code, readyTask)
+                                const result = await saveTask(telegramId, readyTask)
                                 if (result?.taskCreated) {
                                     userStates.delete(telegramId)
-                                    messageText = `🎉 <b>Задача создана!</b>
-
-📝 <b>Название:</b>
-${readyTask.title}
-
-📄 <b>Описание:</b>
-${readyTask.description}
-
-⭐ <b>Приоритет:</b>
-${priorities[readyTask.priority]}
-
-📅 <b>Дедлайн:</b>
-
-
-<i>Открыть задачу можно в Cozy Kanban</i>`
+                                    messageText = messages.createTaskSuccess(readyTask, formattedPriority, state.task.deadline)
                                 } else {
-                                    messageText = `❌ <b>Не удалось создать задачу</b>
-
-Не получилось сохранить задачу
-Попробуйте ещё раз позже`
+                                    messageText = messages.createTaskFailed
                                 }
                             } else {
                                 const day = update.message.text.split('.')[0]
@@ -174,45 +86,24 @@ ${priorities[readyTask.priority]}
                                 const formattedDeadline = `${year}-${month}-${day}`
 
                                 if (isNaN(Date.parse(formattedDeadline))) {
-                                    messageText = `⚠️ <b>Неверный формат даты</b>
-
-<i>Используйте формат:</i>
-<code>ДД.ММ.ГГГГ</code>
-<i>Например:</i>
-<code>09.09.2029</code>`
+                                    messageText = messages.unknownDeadline
                                 } else {
                                     state.task.deadline = Date.parse(formattedDeadline)
                                     const readyTask = combineTask(state.task.title, state.task.description, state.task.priority, state.task.deadline)
-                                    const board = getOrCreateBoard(telegramId)
-                                    const result = await createTask(board.code, readyTask)
+                                    const formattedPriority = priorities[state.task.priority]
+                                    const result = await saveTask(telegramId, readyTask)
+                                    const deadlineForMessage = `${day}.${month}.${year}`
                                     if (result?.taskCreated) {
                                         userStates.delete(telegramId)
-                                        messageText = `🎉 <b>Задача создана!</b>
-
-📝 <b>Название:</b>
-${readyTask.title}
-
-📄 <b>Описание:</b>
-${readyTask.description}
-
-⭐ <b>Приоритет:</b>
-${priorities[readyTask.priority]}
-
-📅 <b>Дедлайн:</b>
-${day}.${month}.${year}
-
-<i>Открыть задачу можно в Cozy Kanban</i>`
+                                        messageText = messages.createTaskSuccess(readyTask, formattedPriority, deadlineForMessage)
                                     } else {
-                                        messageText = `❌ <i>Не удалось создать задачу</i>
-
-Не получилось сохранить задачу
-Попробуйте ещё раз позже`
+                                        messageText = messages.createTaskFailed
                                     }
                                 }
                             }
                         }
                     } else {
-                        messageText = 'Неизвестная команда'
+                        messageText = messages.unknownCommand
                     }
                 }
                 const sendResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
