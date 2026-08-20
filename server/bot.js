@@ -1,8 +1,7 @@
 import process from "node:process"
 import { getOrCreateBoard } from "./models/board.js"
-import { createTask } from "../src/api/taskApi.js"
-import { v4 } from "uuid"
 import { messages } from "./bot/messages.js"
+import { combineTask, saveTask } from "./bot/utils.js"
 
 const userStates = new Map()
 
@@ -14,18 +13,6 @@ const priorities = {
 }
 
 let offset = 0
-
-function combineTask(title, description, priority, deadline) {
-    return {
-        id: v4(),
-        status: 'todo',
-        title: title.trim(),
-        description: description.trim(),
-        createdAt: Date.now(),
-        priority: priority,
-        deadline: deadline,
-    }
-}
 
 async function pollUpdates() {
     const token = process.env.TELEGRAM_BOT_TOKEN
@@ -85,8 +72,7 @@ async function pollUpdates() {
                                 state.task.deadline = ''
                                 const formattedPriority = priorities[state.task.priority]
                                 const readyTask = combineTask(state.task.title, state.task.description, state.task.priority, state.task.deadline)
-                                const board = getOrCreateBoard(telegramId)
-                                const result = await createTask(board.code, readyTask)
+                                const result = await saveTask(telegramId, readyTask)
                                 if (result?.taskCreated) {
                                     userStates.delete(telegramId)
                                     messageText = messages.createTaskSuccess(readyTask, formattedPriority, state.task.deadline)
@@ -105,8 +91,7 @@ async function pollUpdates() {
                                     state.task.deadline = Date.parse(formattedDeadline)
                                     const readyTask = combineTask(state.task.title, state.task.description, state.task.priority, state.task.deadline)
                                     const formattedPriority = priorities[state.task.priority]
-                                    const board = getOrCreateBoard(telegramId)
-                                    const result = await createTask(board.code, readyTask)
+                                    const result = await saveTask(telegramId, readyTask)
                                     const deadlineForMessage = `${day}.${month}.${year}`
                                     if (result?.taskCreated) {
                                         userStates.delete(telegramId)

@@ -193,7 +193,7 @@ function App() {
     async function handleUpdateTask(taskId, updates) {
         const currentTask = tasks.find(task => task.id === taskId)
         if (!currentTask) return
-        const updatedTask = {...currentTask, ...updates}
+        const updatedTask = { ...currentTask, ...updates }
 
         if (isTelegramConnected) {
             const result = await updateTask(telegramCode, updatedTask)
