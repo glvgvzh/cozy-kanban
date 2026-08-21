@@ -69,4 +69,12 @@ function getTaskByIdAndBoardId(taskId, boardId) {
     return getTaskByIdAndBoardIdQuery.get(taskId, boardId)
 }
 
-export { createTask, deleteTaskById, getTasksByBoardId, updateTaskById, getTaskByIdAndBoardId }
+const getAllTasksQuery = db.prepare(`
+    SELECT * FROM tasks
+`)
+
+function getAllTasks() {
+    return getAllTasksQuery.all()
+}
+
+export { createTask, deleteTaskById, getTasksByBoardId, updateTaskById, getTaskByIdAndBoardId, getAllTasks }

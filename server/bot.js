@@ -2,6 +2,7 @@ import process from "node:process"
 import { getOrCreateBoard } from "./models/board.js"
 import { messages } from "./bot/messages.js"
 import { combineTask, saveTask } from "./bot/utils.js"
+import { sendDeadlineNotifications } from "./bot/sendDeadlineNotifications.js"
 
 const userStates = new Map()
 
@@ -130,6 +131,8 @@ async function pollUpdates() {
         console.error(error)
     }
 }
+
+setInterval(sendDeadlineNotifications, 10000);
 
 while (true) {
     await pollUpdates()

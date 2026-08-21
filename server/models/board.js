@@ -56,6 +56,14 @@ function getBoardByCode(code) {
     return getBoardByCodeQuery.get(code)
 }
 
+const getBoardByIdQuery = db.prepare(`
+    SELECT * FROM boards WHERE id = ?
+`)
 
-export { getOrCreateBoard, getBoardByCode, deleteBoardByTelegramId, getBoardByTelegramId }
+function getBoardById(id) {
+    return getBoardByIdQuery.get(id)
+}
+
+
+export { getOrCreateBoard, getBoardByCode, deleteBoardByTelegramId, getBoardByTelegramId, getBoardById }
 
