@@ -18,3 +18,32 @@ export type TaskUpdate = {
   priority?: TaskPriority
   deadline?: '' | number
 }
+
+export type ApiTask = {
+  id: string
+  board_id: number
+  status: TaskStatus
+  title: string
+  description: string
+  created_at: number
+  priority: TaskPriority
+  deadline: Task['deadline']
+}
+
+export type GetTasksResponse = {
+  tasks: ApiTask[]
+}
+
+export type PostTasksResponse = {
+  taskCreated: boolean
+  task: Task
+}
+
+export type PatchTasksResponse = {
+  taskUpdated: boolean
+  task: Task
+}
+
+export type DeleteTasksResponse = {
+  taskDeleted: boolean
+}
