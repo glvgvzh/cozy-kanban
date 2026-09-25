@@ -5,7 +5,16 @@
     "strict": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
     "moduleResolution": "bundler"
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
