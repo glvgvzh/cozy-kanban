@@ -5,7 +5,7 @@ import type {
   PostTasksResponse,
   PatchTasksResponse,
   DeleteTasksResponse,
-} from '../types/task'
+} from '../types/task.js'
 
 function normalizeTask(task: ApiTask): Task {
   return {
@@ -25,7 +25,7 @@ async function getTasksByBoard(code: string): Promise<Task[] | undefined> {
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`)
     }
-    const data: GetTasksResponse = await response.json()
+    const data = (await response.json()) as GetTasksResponse
     return data.tasks.map(normalizeTask)
   } catch (error) {
     console.error(error)
@@ -44,7 +44,7 @@ async function createTask(code: string, task: Task): Promise<PostTasksResponse |
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`)
     }
-    const answer: PostTasksResponse = await response.json()
+    const answer = (await response.json()) as PostTasksResponse
     return answer
   } catch (error) {
     console.error(error)
@@ -63,7 +63,7 @@ async function updateTask(code: string, task: Task): Promise<PatchTasksResponse 
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`)
     }
-    const answer: PatchTasksResponse = await response.json()
+    const answer = (await response.json()) as PatchTasksResponse
     return answer
   } catch (error) {
     console.error(error)
@@ -78,7 +78,7 @@ async function deleteTask(code: string, taskId: string): Promise<DeleteTasksResp
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`)
     }
-    const answer: DeleteTasksResponse = await response.json()
+    const answer = (await response.json()) as DeleteTasksResponse
     return answer
   } catch (error) {
     console.error(error)
