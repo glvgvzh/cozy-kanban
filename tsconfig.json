@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
     "strict": true,
     "noEmit": true,
     "jsx": "react-jsx",
