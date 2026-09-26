@@ -1,9 +1,16 @@
 import { useEffect } from "react"
+import type { Dispatch, SetStateAction } from "react"
 import Modal from "./Modal"
 
-function DeleteTaskConfirmationModal({ taskTitle, setIsConfirmDeletionModalOpen, onDelete }) {
+type DeleteTaskConfirmationModalProps = {
+    taskTitle: string
+    setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
+    onDelete: () => void
+ }
+
+function DeleteTaskConfirmationModal({ taskTitle, setIsConfirmDeletionModalOpen, onDelete }: DeleteTaskConfirmationModalProps) {
     useEffect(() => {
-        function handleEsc(e) {
+        function handleEsc(e: KeyboardEvent): void {
             if (e.key === 'Escape') setIsConfirmDeletionModalOpen(false)
         }
         document.addEventListener('keydown', handleEsc)
