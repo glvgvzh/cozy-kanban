@@ -1,4 +1,4 @@
-import type { Task } from '../types/task'
+import type { Task } from '../types/task.js'
 
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp)
