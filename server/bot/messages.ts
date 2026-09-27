@@ -1,5 +1,7 @@
+import type { Task } from '../../src/types/task.js'
+
 export const messages = {
-    start: `
+  start: `
 👋 <b>Привет! Это Cozy Kanban Bot</b>
 
 Он поможет создавать задачи прямо из Telegram
@@ -9,8 +11,7 @@ export const messages = {
 ✨ /new - создать новую задачу
 `,
 
-
-    codeMessage: (code) => `
+  codeMessage: (code: string) => `
 🔗 <b>Код подключения</b>
 
 Ваш код:
@@ -20,8 +21,7 @@ export const messages = {
 <i>Введите его в приложении Cozy Kanban, чтобы связать доску с Telegram</i>
 `,
 
-
-    newTask: `
+  newTask: `
 ✨ <b>Новая задача</b>
 
 Шаг 1 из 4
@@ -29,8 +29,7 @@ export const messages = {
 Введите название задачи:
 `,
 
-
-    description: `
+  description: `
 ✅ Название сохранено
 
 Шаг 2 из 4
@@ -41,8 +40,7 @@ export const messages = {
 ⏩️ /skip
 `,
 
-
-    priority: `
+  priority: `
 ✅ Описание сохранено
 
 Шаг 3 из 4
@@ -55,8 +53,7 @@ export const messages = {
 🔴 Критический
 `,
 
-
-    unknownPriority: `
+  unknownPriority: `
 ⚠️ <b>Неизвестный приоритет</b>
 
 Выберите один из вариантов:
@@ -67,8 +64,7 @@ export const messages = {
 🔴 Критический
 `,
 
-
-    deadline: `
+  deadline: `
 ✅ Приоритет сохранён
 
 Шаг 4 из 4
@@ -84,8 +80,7 @@ export const messages = {
 ⏩️ /skip
 `,
 
-
-    unknownDeadline: `
+  unknownDeadline: `
 ⚠️ <b>Неверный формат даты</b>
 
 <i>Используйте формат:</i>
@@ -94,8 +89,7 @@ export const messages = {
 <code>09.09.2029</code>
 `,
 
-
-    createTaskSuccess: (task, priority, deadline) => `
+  createTaskSuccess: (task: Task, priority: string, deadline: string) => `
 🎉 <b>Задача создана!</b>
 
 📝 <b>Название:</b>
@@ -113,14 +107,12 @@ ${deadline}
 <i>Открыть задачу можно в Cozy Kanban</i>
 `,
 
-
-    createTaskFailed: `
+  createTaskFailed: `
 ❌ <i>Не удалось создать задачу</i>
 
 Не получилось сохранить задачу
 Попробуйте ещё раз позже
 `,
 
-
-    unknownCommand: 'Неизвестная команда',
+  unknownCommand: 'Неизвестная команда',
 }
