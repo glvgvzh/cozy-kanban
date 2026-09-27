@@ -1,5 +1,7 @@
 import type { Task } from '../types/task.js'
 
+type DeadlineTask = Pick<Task, 'deadline' | 'status'>
+
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp)
   const year = date.getFullYear()
@@ -8,7 +10,7 @@ export function formatDate(timestamp: number): string {
   return `${year}-${month}-${day}`
 }
 
-export function isTaskOverdue(task: Task): boolean {
+export function isTaskOverdue(task: DeadlineTask): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
@@ -16,7 +18,7 @@ export function isTaskOverdue(task: Task): boolean {
   )
 }
 
-export function isTaskDueToday(task: Task): boolean {
+export function isTaskDueToday(task: DeadlineTask): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
@@ -26,7 +28,7 @@ export function isTaskDueToday(task: Task): boolean {
 
 const DAY_IN_MS = 60 * 60 * 24 * 1000
 
-export function isTaskDueTomorrow(task: Task): boolean {
+export function isTaskDueTomorrow(task: DeadlineTask): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
