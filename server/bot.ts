@@ -6,6 +6,21 @@ import { sendDeadlineNotifications } from "./bot/sendDeadlineNotifications.js"
 
 const userStates = new Map()
 
+type TelegramUpdate = {
+    update_id: number
+    message?: {
+        text?: string
+        chat: {
+            id: number
+        }
+    }
+}
+
+type APIAnswer = {
+    ok: boolean
+    result: TelegramUpdate[]
+}
+
 const priorities = {
     low: 'Низкий',
     medium: 'Средний',
@@ -22,10 +37,10 @@ async function pollUpdates() {
         if (!response.ok) {
             throw new Error(`Telegram API error: ${response.status}`)
         }
-        const answer = await response.json()
+        const answer = await response.json() as APIAnswer
 
         if (answer.result.length > 0) {
-            const lastUpdate = answer.result[answer.result.length - 1]
+            const lastUpdate: TelegramUpdate = answer.result[answer.result.length - 1]
 
             for (const update of answer.result) {
                 let messageText
