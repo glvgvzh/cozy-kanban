@@ -1,5 +1,5 @@
-import { db } from '../db.js'
-import type { DatabaseTelegramNotification, TelegramNotification } from '../types/notification.js'
+import { db } from '../db.ts'
+import type { DatabaseTelegramNotification, TelegramNotification } from '../types/notification.ts'
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS telegram_notifications (

@@ -1,7 +1,7 @@
 import process from 'node:process'
-import { checkDeadlineNotifications } from './checkDeadlineNotifications.js'
-import { getBoardById } from '../models/board.js'
-import { createNotification } from '../models/telegram_notifications.js'
+import { checkDeadlineNotifications } from './checkDeadlineNotifications.ts'
+import { getBoardById } from '../models/board.ts'
+import { createNotification } from '../models/telegram_notifications.ts'
 
 async function sendDeadlineNotifications() {
   const newNotifications = checkDeadlineNotifications()

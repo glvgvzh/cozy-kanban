@@ -1,4 +1,4 @@
-import type { Task } from '../../src/types/task.js'
+import type { Task } from '../../src/types/task.ts'
 
 export const messages = {
   start: `

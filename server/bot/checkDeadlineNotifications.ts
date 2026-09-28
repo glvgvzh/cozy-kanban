@@ -1,12 +1,12 @@
-import { getAllTasks } from '../models/task.js'
+import { getAllTasks } from '../models/task.ts'
 import {
   isTaskDueToday,
   isTaskDueTomorrow,
   isTaskOverdue,
-} from '../../src/utils/deadlineUtilities.js'
-import { hasNotification } from '../models/telegram_notifications.js'
-import type { DatabaseTask } from '../types/task.js'
-import type { NotificationType } from '../../src/types/notification.js'
+} from '../../src/utils/deadlineUtilities.ts'
+import { hasNotification } from '../models/telegram_notifications.ts'
+import type { DatabaseTask } from '../types/task.ts'
+import type { NotificationType } from '../../src/types/notification.ts'
 
 type DeadlineNotification = {
   task: DatabaseTask

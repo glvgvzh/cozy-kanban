@@ -1,5 +1,5 @@
-import type { Task } from '../../src/types/task.js'
-import type { NotificationType } from '../../src/types/notification.js'
+import type { Task } from '../../src/types/task.ts'
+import type { NotificationType } from '../../src/types/notification.ts'
 
 export type TelegramNotification = {
   taskId: Task['id']
