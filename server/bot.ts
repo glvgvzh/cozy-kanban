@@ -1,10 +1,10 @@
 import process from 'node:process'
-import { getOrCreateBoard } from './models/board.js'
-import { messages } from './bot/messages.js'
-import { combineTask, saveTask } from './bot/utils.js'
-import { sendDeadlineNotifications } from './bot/sendDeadlineNotifications.js'
-import type { BotState } from './types/bot.js'
-import type { TaskPriority } from '../src/types/task.js'
+import { getOrCreateBoard } from './models/board.ts'
+import { messages } from './bot/messages.ts'
+import { combineTask, saveTask } from './bot/utils.ts'
+import { sendDeadlineNotifications } from './bot/sendDeadlineNotifications.ts'
+import type { BotState } from './types/bot.ts'
+import type { TaskPriority } from '../src/types/task.ts'
 
 const userStates = new Map<number, BotState>()
 

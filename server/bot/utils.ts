@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
-import { createTask } from '../../src/api/taskApi.js'
-import { getOrCreateBoard } from '../models/board.js'
-import type { Task, TaskPriority } from '../../src/types/task.js'
+import { createTask } from '../../src/api/taskApi.ts'
+import { getOrCreateBoard } from '../models/board.ts'
+import type { Task, TaskPriority } from '../../src/types/task.ts'
 
 export function combineTask(
   title: Task['title'],

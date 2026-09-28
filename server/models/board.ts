@@ -1,6 +1,6 @@
-import { db } from '../db.js'
+import { db } from '../db.ts'
 import crypto from 'node:crypto'
-import type { Board } from '../types/board.js'
+import type { Board } from '../types/board.ts'
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS boards (

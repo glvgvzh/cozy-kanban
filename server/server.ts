@@ -1,13 +1,13 @@
 import http from 'node:http'
-import { getBoardByCode } from './models/board.js'
+import { getBoardByCode } from './models/board.ts'
 import {
   getTasksByBoardId,
   createTask,
   getTaskByIdAndBoardId,
   updateTaskById,
   deleteTaskById,
-} from './models/task.js'
-import type { Task } from '../src/types/task.js'
+} from './models/task.ts'
+import type { Task } from '../src/types/task.ts'
 
 const allowedHosts = ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:5174']
 

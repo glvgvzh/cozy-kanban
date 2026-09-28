@@ -68,7 +68,7 @@ PWA-приложение для управления задачами с инт�
 
 - React
 - Vite
-- JavaScript
+- TypeScript
 - CSS
 - Vite PWA Plugin
 
@@ -103,7 +103,7 @@ npm run dev
 #### API сервер
 
 ```bash
-node server/server.js
+node server/server.ts
 ```
 
 #### Telegram бот
@@ -117,5 +117,5 @@ TELEGRAM_BOT_TOKEN=your_token
 Запустить Telegram-бота:
 
 ```bash
-node --env-file=.env server/bot.js
+node --env-file=.env server/bot.ts
 ```

@@ -1,7 +1,7 @@
-import type { Task } from '../../src/types/task.js'
-import { db } from '../db.js'
-import type { Board } from '../types/board.js'
-import type { DatabaseTask } from '../types/task.js'
+import type { Task } from '../../src/types/task.ts'
+import { db } from '../db.ts'
+import type { Board } from '../types/board.ts'
+import type { DatabaseTask } from '../types/task.ts'
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS tasks (
