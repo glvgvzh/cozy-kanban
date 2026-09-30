@@ -10,7 +10,7 @@ type TaskDetailsModalProps = {
   setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
   isConfirmDeletionModalOpen: boolean
   setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
-  onUpdateTask: (taskId: Task['id'], taskUpdate: TaskUpdate) => void
+  onUpdateTask: (taskId: Task['id'], taskUpdate: TaskUpdate) => Promise<boolean>
   formatDate: (timestamp: number) => string
 }
 
@@ -107,9 +107,11 @@ function TaskDetailsModal({
             <button
               className="button button-ghost edit-button"
               disabled={isSaveDisabled}
-              onClick={() => {
+              onClick={async () => {
                 if (editedTask.title.trim() === '') return
-                onUpdateTask(selectedTask.id, { title: editedTask.title })
+                if (!(await onUpdateTask(selectedTask.id, { title: editedTask.title }))) {
+                  return
+                }
                 setIsEditingTitle(false)
               }}
             >
@@ -204,8 +206,9 @@ function TaskDetailsModal({
             </button>
             <button
               className="button button-ghost edit-button"
-              onClick={() => {
-                onUpdateTask(selectedTask.id, { description: editedTask.description })
+              onClick={async () => {
+                if (!(await onUpdateTask(selectedTask.id, { description: editedTask.description })))
+                  return
                 setIsEditingDescription(false)
               }}
             >
