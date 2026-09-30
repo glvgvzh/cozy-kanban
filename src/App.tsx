@@ -192,10 +192,11 @@ function App() {
     let taskToAdd = newTask
     if (isTelegramConnected) {
       const result = await createTask(telegramCode, newTask)
-      if (!result?.taskCreated) return
+      if (!result?.taskCreated) return false
       taskToAdd = result.task
     }
     setTasks((prevTasks) => [...prevTasks, taskToAdd])
+    return true
   }
 
   async function handleDeleteTask() {
