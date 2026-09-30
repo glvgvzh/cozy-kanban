@@ -212,14 +212,15 @@ function App() {
 
   async function handleUpdateTask(taskId: Task['id'], updates: TaskUpdate) {
     const currentTask = tasks.find((task) => task.id === taskId)
-    if (!currentTask) return
+    if (!currentTask) return false
     const updatedTask = { ...currentTask, ...updates }
 
     if (isTelegramConnected) {
       const result = await updateTask(telegramCode, updatedTask)
-      if (!result?.taskUpdated) return
+      if (!result?.taskUpdated) return false
     }
     setTasks((prevTasks) => prevTasks.map((task) => (task.id === taskId ? updatedTask : task)))
+    return true
   }
 
   const isMobile = useMediaQuery({
