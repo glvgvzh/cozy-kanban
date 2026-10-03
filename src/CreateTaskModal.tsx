@@ -15,7 +15,6 @@ function CreateTaskModal({ onClose, onCreateTask }: CreateTaskModalProps) {
   const [newTaskDescription, setNewTaskDescription] = useState('')
   const [newTaskPriority, setNewTaskPriority] = useState<TaskPriority>('low')
   const [newTaskDeadline, setNewTaskDeadline] = useState('')
-  const [isError, setIsError] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
@@ -45,17 +44,13 @@ function CreateTaskModal({ onClose, onCreateTask }: CreateTaskModalProps) {
       priority: newTaskPriority,
       deadline: newTaskDeadline === '' ? '' : Date.parse(newTaskDeadline),
     }
-    if (!(await onCreateTask(newTask))) {
-      setIsError(true)
-      return
-    }
+    if (!(await onCreateTask(newTask))) return
     onClose()
   }
 
   return (
     <Modal onClose={onClose}>
       <div className="modal-title">Новая задача</div>
-      {isError && <div className="error-field">Ошибка создания задачи, попробуйте еще раз</div>}
       <div className="create-task-form">
         <div className="task-line">
           <input
