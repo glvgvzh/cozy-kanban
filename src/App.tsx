@@ -24,6 +24,9 @@ import SettingsModal from './SettingsModal'
 import type { Task, TaskUpdate } from './types/task'
 import type { Notification, NotificationFilter } from './types/notification'
 import type { NotificationConfig } from './types/board'
+import type { ActiveToast } from './types/toast'
+import Toast from './Toast'
+import { v4 } from 'uuid'
 
 function App() {
   type BeforeInstallPromptEvent = Event & {
@@ -84,6 +87,8 @@ function App() {
     'isNotificationEnabled',
     false,
   )
+
+  const [toast, setToast] = useState<ActiveToast | null>(null)
 
   const normalizedQuery = searchQuery.toLowerCase().trim()
 
@@ -192,10 +197,14 @@ function App() {
     let taskToAdd = newTask
     if (isTelegramConnected) {
       const result = await createTask(telegramCode, newTask)
-      if (!result?.taskCreated) return false
+      if (!result?.taskCreated) {
+        setToast({ id: v4(), operation: 'create', status: 'fail' })
+        return false
+      }
       taskToAdd = result.task
     }
     setTasks((prevTasks) => [...prevTasks, taskToAdd])
+    setToast({ id: v4(), operation: 'create', status: 'success' })
     return true
   }
 
@@ -203,11 +212,15 @@ function App() {
     if (isTelegramConnected) {
       if (!selectedTaskId) return
       const result = await deleteTask(telegramCode, selectedTaskId)
-      if (!result?.taskDeleted) return
+      if (!result?.taskDeleted) {
+        setToast({ id: v4(), operation: 'delete', status: 'fail' })
+        return
+      }
     }
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId))
     setIsConfirmDeletionModalOpen(false)
     setSelectedTaskId(null)
+    setToast({ id: v4(), operation: 'delete', status: 'success' })
   }
 
   async function handleUpdateTask(taskId: Task['id'], updates: TaskUpdate) {
@@ -217,9 +230,13 @@ function App() {
 
     if (isTelegramConnected) {
       const result = await updateTask(telegramCode, updatedTask)
-      if (!result?.taskUpdated) return false
+      if (!result?.taskUpdated) {
+        setToast({ id: v4(), operation: 'update', status: 'fail' })
+        return false
+      }
     }
     setTasks((prevTasks) => prevTasks.map((task) => (task.id === taskId ? updatedTask : task)))
+    setToast({ id: v4(), operation: 'update', status: 'success' })
     return true
   }
 
@@ -289,12 +306,20 @@ function App() {
     loadServerTasks()
   }, [telegramCode, setTasks])
 
+  useEffect(() => {
+    if (!toast) return
+    const timer = setTimeout(() => {
+      setToast(null)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [toast])
+
   return (
     <div className="app">
       {canInstall && !installBannerDismissed && (
         <InstallBanner onDismiss={onDismiss} onInstall={onInstall} />
       )}
-
+      {toast !== null && <Toast key={toast.id} toast={toast} />}
       <div className="header">
         <div className="header-icon">
           <KanbanIcon size={50} weight="duotone" />
