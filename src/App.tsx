@@ -13,19 +13,19 @@ import { checkDeadlineNotifications, getActualNotifications } from './utils/noti
 import { migrateTasks, getTasksByBoard, deleteTask, updateTask, createTask } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
-import InstallBanner from './InstallBanner'
-import Column from './Column'
-import CreateTaskModal from './CreateTaskModal'
-import TaskDetailsModal from './TaskDetailsModal'
-import DeleteTaskConfirmationModal from './DeleteTaskConfirmationModal'
-import TaskCardContent from './TaskCardContent'
-import NotificationCenter from './NotificationCenter'
-import SettingsModal from './SettingsModal'
+import InstallBanner from './components/InstallBanner'
+import Column from './components/Column'
+import CreateTaskModal from './components/CreateTaskModal'
+import TaskDetailsModal from './components/TaskDetailsModal'
+import DeleteTaskConfirmationModal from './components/DeleteTaskConfirmationModal'
+import TaskCardContent from './components/TaskCardContent'
+import NotificationCenter from './components/NotificationCenter'
+import SettingsModal from './components/SettingsModal'
 import type { Task, TaskUpdate } from './types/task'
 import type { Notification, NotificationFilter } from './types/notification'
 import type { NotificationConfig } from './types/board'
 import type { ActiveToast } from './types/toast'
-import Toast from './Toast'
+import Toast from './components/Toast'
 import { v4 } from 'uuid'
 
 function App() {
@@ -166,7 +166,9 @@ function App() {
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         syncPermissions()
-        setCurrentDate(Date.now())
+        if (new Date(currentDate).setHours(0, 0, 0, 0) !== new Date().setHours(0, 0, 0, 0)) {
+          setCurrentDate(Date.now())
+        }
       }
     }
     async function fetchNotificationPermissionChange() {
@@ -187,7 +189,7 @@ function App() {
         permissionStatus.removeEventListener('change', syncPermissions)
       }
     }
-  }, [setIsNotificationEnabled])
+  }, [setIsNotificationEnabled, currentDate])
 
   useEffect(() => {
     const actualNotifications = getActualNotifications(tasks, notifications, currentDate)
@@ -446,7 +448,6 @@ function App() {
             setSelectedTaskId={setSelectedTaskId}
             searchQuery={searchQuery}
             Icon={activeColumn.Icon}
-            isTaskOverdue={isTaskOverdue}
             currentDate={currentDate}
           />
         </div>
@@ -472,7 +473,6 @@ function App() {
                     setSelectedTaskId={setSelectedTaskId}
                     searchQuery={searchQuery}
                     Icon={column.Icon}
-                    isTaskOverdue={isTaskOverdue}
                     currentDate={currentDate}
                   />
                 )

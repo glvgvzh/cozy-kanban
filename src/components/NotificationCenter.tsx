@@ -5,9 +5,9 @@ import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
 } from '@phosphor-icons/react'
-import { notificationTypes } from './data/boardData'
-import type { Task } from './types/task'
-import type { Notification, NotificationFilter } from './types/notification'
+import { notificationTypes } from '../data/boardData'
+import type { Task } from '../types/task'
+import type { Notification, NotificationFilter } from '../types/notification'
 import type { Dispatch, SetStateAction } from 'react'
 
 type NotificationCenterProps = {

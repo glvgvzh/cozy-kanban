@@ -1,5 +1,5 @@
-import type { ActiveToast } from './types/toast'
-import { toastConfig } from './data/toastData'
+import type { ActiveToast } from '../types/toast'
+import { toastConfig } from '../data/toastData'
 import { CheckCircleIcon, WarningCircleIcon } from '@phosphor-icons/react'
 
 type ToastProps = {

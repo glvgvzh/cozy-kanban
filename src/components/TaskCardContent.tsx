@@ -1,6 +1,6 @@
 import { BookmarkSimpleIcon } from '@phosphor-icons/react'
-import { priorities } from './data/boardData'
-import type { Task } from './types/task'
+import { priorities } from '../data/boardData'
+import type { Task } from '../types/task'
 
 type TaskCardContentProps = {
   task: Task

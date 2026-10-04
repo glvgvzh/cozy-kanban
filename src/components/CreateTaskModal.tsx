@@ -1,9 +1,9 @@
 import { XIcon } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
 import Modal from './Modal'
-import { priorities } from './data/boardData'
+import { priorities } from '../data/boardData'
 import { v4 } from 'uuid'
-import type { Task, TaskPriority } from './types/task'
+import type { Task, TaskPriority } from '../types/task'
 
 type CreateTaskModalProps = {
   onClose: () => void
