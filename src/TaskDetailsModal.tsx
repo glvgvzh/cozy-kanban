@@ -12,6 +12,7 @@ type TaskDetailsModalProps = {
   setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
   onUpdateTask: (taskId: Task['id'], taskUpdate: TaskUpdate) => Promise<boolean>
   formatDate: (timestamp: number) => string
+  isDisabled: boolean
 }
 
 function TaskDetailsModal({
@@ -21,6 +22,7 @@ function TaskDetailsModal({
   setIsConfirmDeletionModalOpen,
   onUpdateTask,
   formatDate,
+  isDisabled,
 }: TaskDetailsModalProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [isEditingDescription, setIsEditingDescription] = useState(false)
@@ -29,7 +31,6 @@ function TaskDetailsModal({
     description: selectedTask.description,
   })
 
-  const isSaveDisabled = editedTask.title.trim() === ''
   const titleCharCounter = editedTask.title.length
 
   const titleInputRef = useRef<HTMLInputElement>(null)
@@ -106,7 +107,7 @@ function TaskDetailsModal({
             </button>
             <button
               className="button button-ghost edit-button"
-              disabled={isSaveDisabled}
+              disabled={editedTask.title.trim() === '' || isDisabled}
               onClick={async () => {
                 if (editedTask.title.trim() === '') return
                 if (!(await onUpdateTask(selectedTask.id, { title: editedTask.title }))) {
@@ -132,6 +133,7 @@ function TaskDetailsModal({
           <div className="label">Статус</div>
           <select
             className="select"
+            disabled={isDisabled}
             value={selectedTask.status}
             onChange={(e) =>
               onUpdateTask(selectedTask.id, { status: e.target.value as TaskStatus })
@@ -150,6 +152,7 @@ function TaskDetailsModal({
           <div className="label">Приоритет</div>
           <select
             className="select"
+            disabled={isDisabled}
             value={selectedTask.priority}
             onChange={(e) =>
               onUpdateTask(selectedTask.id, { priority: e.target.value as TaskPriority })
@@ -169,6 +172,7 @@ function TaskDetailsModal({
           <input
             type="date"
             className="select"
+            disabled={isDisabled}
             value={selectedTask.deadline === '' ? '' : formatDate(selectedTask.deadline)}
             onChange={(e) =>
               onUpdateTask(selectedTask.id, {
@@ -206,6 +210,7 @@ function TaskDetailsModal({
             </button>
             <button
               className="button button-ghost edit-button"
+              disabled={isDisabled}
               onClick={async () => {
                 if (!(await onUpdateTask(selectedTask.id, { description: editedTask.description })))
                   return

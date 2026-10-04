@@ -6,12 +6,14 @@ type DeleteTaskConfirmationModalProps = {
   taskTitle: string
   setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
   onDelete: () => void
+  isDisabled: boolean
 }
 
 function DeleteTaskConfirmationModal({
   taskTitle,
   setIsConfirmDeletionModalOpen,
   onDelete,
+  isDisabled,
 }: DeleteTaskConfirmationModalProps) {
   useEffect(() => {
     function handleEsc(e: KeyboardEvent): void {
@@ -31,7 +33,11 @@ function DeleteTaskConfirmationModal({
         >
           Отмена
         </button>
-        <button className="button button-danger confirm-deletion-button" onClick={onDelete}>
+        <button
+          className="button button-danger confirm-deletion-button"
+          disabled={isDisabled}
+          onClick={onDelete}
+        >
           Удалить
         </button>
       </div>
