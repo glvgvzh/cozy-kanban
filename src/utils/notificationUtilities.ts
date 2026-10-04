@@ -3,10 +3,14 @@ import { v4 } from 'uuid'
 import type { Task } from '../types/task'
 import type { Notification } from '../types/notification'
 
-export function checkDeadlineNotifications(tasks: Task[], notifications: Notification[]) {
-  const dueToday = tasks.filter((task) => isTaskDueToday(task))
-  const dueTomorrow = tasks.filter((task) => isTaskDueTomorrow(task))
-  const overdueTasks = tasks.filter((task) => isTaskOverdue(task))
+export function checkDeadlineNotifications(
+  tasks: Task[],
+  notifications: Notification[],
+  currentDate: number,
+) {
+  const dueToday = tasks.filter((task) => isTaskDueToday(task, currentDate))
+  const dueTomorrow = tasks.filter((task) => isTaskDueTomorrow(task, currentDate))
+  const overdueTasks = tasks.filter((task) => isTaskOverdue(task, currentDate))
   const dueTodayTasksWithoutNotifications = dueToday.filter(
     (task) =>
       !notifications.some(
@@ -64,13 +68,17 @@ export function checkDeadlineNotifications(tasks: Task[], notifications: Notific
   ]
 }
 
-export function getActualNotifications(tasks: Task[], notifications: Notification[]) {
+export function getActualNotifications(
+  tasks: Task[],
+  notifications: Notification[],
+  currentDate: number,
+) {
   return notifications.filter((notification) => {
     const task = tasks.find((task) => task.id === notification.taskId)
     if (!task) return false
-    if (notification.type === 'deadlineToday') return isTaskDueToday(task)
-    if (notification.type === 'deadlineTomorrow') return isTaskDueTomorrow(task)
-    if (notification.type === 'overdue') return isTaskOverdue(task)
+    if (notification.type === 'deadlineToday') return isTaskDueToday(task, currentDate)
+    if (notification.type === 'deadlineTomorrow') return isTaskDueTomorrow(task, currentDate)
+    if (notification.type === 'overdue') return isTaskOverdue(task, currentDate)
     return false
   })
 }

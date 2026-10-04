@@ -10,28 +10,28 @@ export function formatDate(timestamp: number): string {
   return `${year}-${month}-${day}`
 }
 
-export function isTaskOverdue(task: DeadlineTask): boolean {
+export function isTaskOverdue(task: DeadlineTask, currentDate: number): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
-    formatDate(task.deadline) < formatDate(Date.now())
+    formatDate(task.deadline) < formatDate(currentDate)
   )
 }
 
-export function isTaskDueToday(task: DeadlineTask): boolean {
+export function isTaskDueToday(task: DeadlineTask, currentDate: number): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
-    formatDate(task.deadline) === formatDate(Date.now())
+    formatDate(task.deadline) === formatDate(currentDate)
   )
 }
 
 const DAY_IN_MS = 60 * 60 * 24 * 1000
 
-export function isTaskDueTomorrow(task: DeadlineTask): boolean {
+export function isTaskDueTomorrow(task: DeadlineTask, currentDate: number): boolean {
   return (
     task.deadline !== '' &&
     task.status !== 'done' &&
-    formatDate(task.deadline - DAY_IN_MS) === formatDate(Date.now())
+    formatDate(task.deadline - DAY_IN_MS) === formatDate(currentDate)
   )
 }

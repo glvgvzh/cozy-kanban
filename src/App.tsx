@@ -110,6 +110,18 @@ function App() {
 
   const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
   const [isTelegramConnected, setIsTelegramConnected] = useState(false)
+  const [currentDate, setCurrentDate] = useState(() => Date.now())
+
+  useEffect(() => {
+    const nextDate = new Date(currentDate)
+    nextDate.setDate(nextDate.getDate() + 1)
+    nextDate.setHours(0, 0, 0, 0)
+    const msLeftUntilNextMidnight = nextDate.getTime() - currentDate
+    const timer = setTimeout(() => {
+      setCurrentDate(Date.now())
+    }, msLeftUntilNextMidnight)
+    return () => clearTimeout(timer)
+  }, [currentDate])
 
   async function requestNotificationPermission() {
     if (!('Notification' in window)) return false
@@ -150,6 +162,7 @@ function App() {
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         syncPermissions()
+        setCurrentDate(Date.now())
       }
     }
     async function fetchNotificationPermissionChange() {
@@ -173,8 +186,8 @@ function App() {
   }, [setIsNotificationEnabled])
 
   useEffect(() => {
-    const actualNotifications = getActualNotifications(tasks, notifications)
-    const newNotifications = checkDeadlineNotifications(tasks, actualNotifications)
+    const actualNotifications = getActualNotifications(tasks, notifications, currentDate)
+    const newNotifications = checkDeadlineNotifications(tasks, actualNotifications, currentDate)
     if (
       isNotificationEnabled &&
       'Notification' in window &&
@@ -191,7 +204,7 @@ function App() {
     if (newNotifications.length > 0 || actualNotifications.length !== notifications.length) {
       setNotifications([...newNotifications, ...actualNotifications])
     }
-  }, [tasks, notifications, isNotificationEnabled, setNotifications])
+  }, [tasks, notifications, isNotificationEnabled, setNotifications, currentDate])
 
   async function addTask(newTask: Task) {
     let taskToAdd = newTask
@@ -403,6 +416,7 @@ function App() {
             searchQuery={searchQuery}
             Icon={activeColumn.Icon}
             isTaskOverdue={isTaskOverdue}
+            currentDate={currentDate}
           />
         </div>
       ) : (
@@ -429,6 +443,7 @@ function App() {
                     searchQuery={searchQuery}
                     Icon={column.Icon}
                     isTaskOverdue={isTaskOverdue}
+                    currentDate={currentDate}
                   />
                 )
               })}
@@ -437,7 +452,7 @@ function App() {
               {(source) => {
                 const task = tasks.find((task) => task.id === source.id)
                 if (!task) return null
-                const isOverdue = isTaskOverdue(task)
+                const isOverdue = isTaskOverdue(task, currentDate)
                 return (
                   <div className="drag-overlay">
                     <TaskCardContent task={task} isOverdue={isOverdue} />
@@ -453,7 +468,7 @@ function App() {
         <div className="footer-info">
           <div>Всего: {tasks.length}</div>
           <div>В работе: {tasks.filter((task) => task.status === 'inProgress').length}</div>
-          <div>Просрочено: {tasks.filter((task) => isTaskOverdue(task)).length}</div>
+          <div>Просрочено: {tasks.filter((task) => isTaskOverdue(task, currentDate)).length}</div>
         </div>
         <div className="filter-and-settings">
           <div className="footer-filter">
