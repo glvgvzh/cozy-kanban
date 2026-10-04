@@ -8,9 +8,10 @@ import type { Task, TaskPriority } from './types/task'
 type CreateTaskModalProps = {
   onClose: () => void
   onCreateTask: (task: Task) => Promise<boolean>
+  isDisabled: boolean
 }
 
-function CreateTaskModal({ onClose, onCreateTask }: CreateTaskModalProps) {
+function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTaskModalProps) {
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [newTaskDescription, setNewTaskDescription] = useState('')
   const [newTaskPriority, setNewTaskPriority] = useState<TaskPriority>('low')
@@ -21,7 +22,7 @@ function CreateTaskModal({ onClose, onCreateTask }: CreateTaskModalProps) {
     inputRef.current?.focus()
   }, [])
 
-  const isCreateDisabled = newTaskTitle.trim() === ''
+  const isCreateDisabled = newTaskTitle.trim() === '' || isDisabled
   const titleCharCounter = newTaskTitle.length
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function CreateTaskModal({ onClose, onCreateTask }: CreateTaskModalProps) {
             onChange={(e) => setNewTaskTitle(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
+                if (isDisabled) return
                 handleCreateTask()
               }
             }}

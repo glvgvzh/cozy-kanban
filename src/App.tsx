@@ -110,6 +110,10 @@ function App() {
 
   const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
   const [isTelegramConnected, setIsTelegramConnected] = useState(false)
+
+  const [isCrudLoading, setIsCrudLoading] = useState(false)
+  const crudLoadingRef = useRef(isCrudLoading)
+
   const [currentDate, setCurrentDate] = useState(() => Date.now())
 
   useEffect(() => {
@@ -206,51 +210,72 @@ function App() {
     }
   }, [tasks, notifications, isNotificationEnabled, setNotifications, currentDate])
 
+  function updateCrudLoading(newState: boolean): void {
+    crudLoadingRef.current = newState
+    setIsCrudLoading(newState)
+  }
+
   async function addTask(newTask: Task) {
-    let taskToAdd = newTask
-    if (isTelegramConnected) {
-      const result = await createTask(telegramCode, newTask)
-      if (!result?.taskCreated) {
-        setToast({ id: v4(), operation: 'create', status: 'fail' })
-        return false
+    if (crudLoadingRef.current) return false
+    updateCrudLoading(true)
+    try {
+      let taskToAdd = newTask
+      if (isTelegramConnected) {
+        const result = await createTask(telegramCode, newTask)
+        if (!result?.taskCreated) {
+          setToast({ id: v4(), operation: 'create', status: 'fail' })
+          return false
+        }
+        taskToAdd = result.task
       }
-      taskToAdd = result.task
+      setTasks((prevTasks) => [...prevTasks, taskToAdd])
+      setToast({ id: v4(), operation: 'create', status: 'success' })
+      return true
+    } finally {
+      updateCrudLoading(false)
     }
-    setTasks((prevTasks) => [...prevTasks, taskToAdd])
-    setToast({ id: v4(), operation: 'create', status: 'success' })
-    return true
   }
 
   async function handleDeleteTask() {
-    if (isTelegramConnected) {
-      if (!selectedTaskId) return
-      const result = await deleteTask(telegramCode, selectedTaskId)
-      if (!result?.taskDeleted) {
-        setToast({ id: v4(), operation: 'delete', status: 'fail' })
-        return
+    if (!selectedTaskId || crudLoadingRef.current) return
+    updateCrudLoading(true)
+    try {
+      if (isTelegramConnected) {
+        const result = await deleteTask(telegramCode, selectedTaskId)
+        if (!result?.taskDeleted) {
+          setToast({ id: v4(), operation: 'delete', status: 'fail' })
+          return
+        }
       }
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId))
+      setIsConfirmDeletionModalOpen(false)
+      setSelectedTaskId(null)
+      setToast({ id: v4(), operation: 'delete', status: 'success' })
+    } finally {
+      updateCrudLoading(false)
     }
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId))
-    setIsConfirmDeletionModalOpen(false)
-    setSelectedTaskId(null)
-    setToast({ id: v4(), operation: 'delete', status: 'success' })
   }
 
   async function handleUpdateTask(taskId: Task['id'], updates: TaskUpdate) {
     const currentTask = tasks.find((task) => task.id === taskId)
-    if (!currentTask) return false
-    const updatedTask = { ...currentTask, ...updates }
+    if (!currentTask || crudLoadingRef.current) return false
+    updateCrudLoading(true)
+    try {
+      const updatedTask = { ...currentTask, ...updates }
 
-    if (isTelegramConnected) {
-      const result = await updateTask(telegramCode, updatedTask)
-      if (!result?.taskUpdated) {
-        setToast({ id: v4(), operation: 'update', status: 'fail' })
-        return false
+      if (isTelegramConnected) {
+        const result = await updateTask(telegramCode, updatedTask)
+        if (!result?.taskUpdated) {
+          setToast({ id: v4(), operation: 'update', status: 'fail' })
+          return false
+        }
       }
+      setTasks((prevTasks) => prevTasks.map((task) => (task.id === taskId ? updatedTask : task)))
+      setToast({ id: v4(), operation: 'update', status: 'success' })
+      return true
+    } finally {
+      updateCrudLoading(false)
     }
-    setTasks((prevTasks) => prevTasks.map((task) => (task.id === taskId ? updatedTask : task)))
-    setToast({ id: v4(), operation: 'update', status: 'success' })
-    return true
   }
 
   const isMobile = useMediaQuery({
@@ -380,6 +405,7 @@ function App() {
           setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
           onUpdateTask={handleUpdateTask}
           formatDate={formatDate}
+          isDisabled={isCrudLoading}
         />
       )}
 
@@ -388,11 +414,16 @@ function App() {
           taskTitle={selectedTask.title}
           setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
           onDelete={handleDeleteTask}
+          isDisabled={isCrudLoading}
         />
       )}
 
       {isNewTaskModalOpen && (
-        <CreateTaskModal onClose={() => setIsNewTaskModalOpen(false)} onCreateTask={addTask} />
+        <CreateTaskModal
+          onClose={() => setIsNewTaskModalOpen(false)}
+          onCreateTask={addTask}
+          isDisabled={isCrudLoading}
+        />
       )}
 
       {isMobile ? (
@@ -425,8 +456,7 @@ function App() {
             onDragEnd={(e) => {
               if (e.canceled) return
               const { target, source } = e.operation
-              if (!target || !source) return
-              if (source.data.status === target.id) return
+              if (!target || !source || source.data.status === target.id || isCrudLoading) return
               handleUpdateTask(String(source.id), { status: target.id as Task['status'] })
             }}
           >
