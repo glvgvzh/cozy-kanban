@@ -14,15 +14,16 @@ type DeadlineNotification = {
 }
 
 function checkDeadlineNotifications() {
+  const currentDate = Date.now()
   const allTasks = getAllTasks()
   const dueToday: DeadlineNotification[] = allTasks
-    .filter((task) => isTaskDueToday(task))
+    .filter((task) => isTaskDueToday(task, currentDate))
     .map((task) => ({ task, type: 'deadlineToday' }))
   const dueTomorrow: DeadlineNotification[] = allTasks
-    .filter((task) => isTaskDueTomorrow(task))
+    .filter((task) => isTaskDueTomorrow(task, currentDate))
     .map((task) => ({ task, type: 'deadlineTomorrow' }))
   const overdueTasks: DeadlineNotification[] = allTasks
-    .filter((task) => isTaskOverdue(task))
+    .filter((task) => isTaskOverdue(task, currentDate))
     .map((task) => ({ task, type: 'overdue' }))
 
   const notifications: DeadlineNotification[] = [...overdueTasks, ...dueToday, ...dueTomorrow]

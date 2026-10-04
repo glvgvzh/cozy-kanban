@@ -11,7 +11,8 @@ type ColumnProps = {
   setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
   searchQuery: string
   Icon: Column['Icon']
-  isTaskOverdue: (task: Task) => boolean
+  isTaskOverdue: (task: Task, currentDate: number) => boolean
+  currentDate: number
 }
 
 function Column({
@@ -22,6 +23,7 @@ function Column({
   searchQuery,
   Icon,
   isTaskOverdue,
+  currentDate
 }: ColumnProps) {
   const { ref, isDropTarget } = useDroppable({
     id: columnId,
@@ -56,7 +58,7 @@ function Column({
       ) : (
         <div className="column-body">
           {sortedByDeadline.map((task) => {
-            const isOverdue = isTaskOverdue(task)
+            const isOverdue = isTaskOverdue(task, currentDate)
             return (
               <TaskCard
                 key={task.id}
