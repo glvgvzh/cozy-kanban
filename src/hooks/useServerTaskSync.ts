@@ -1,0 +1,36 @@
+import { useRef, useEffect, type Dispatch, type SetStateAction } from 'react'
+import { migrateTasks, getTasksByBoard } from '../api/taskApi'
+import type { Task } from '../types/task'
+
+type UseServerTaskSyncProps = {
+  tasks: Task[]
+  setTasks: Dispatch<SetStateAction<Task[]>>
+  telegramCode: string
+  verifyCode: (code: string) => Promise<boolean>
+}
+
+function useServerTaskSync({ tasks, setTasks, telegramCode, verifyCode }: UseServerTaskSyncProps) {
+  const tasksRef = useRef(tasks)
+  useEffect(() => {
+    tasksRef.current = tasks
+  }, [tasks])
+
+  useEffect(() => {
+    async function loadServerTasks() {
+      if (telegramCode !== '') {
+        const isConnected = await verifyCode(telegramCode)
+        if (isConnected) {
+          const migrated = await migrateTasks(telegramCode, tasksRef.current)
+          if (migrated) {
+            const serverTasks = await getTasksByBoard(telegramCode)
+            if (!serverTasks) return
+            setTasks(serverTasks)
+          }
+        }
+      }
+    }
+    loadServerTasks()
+  }, [telegramCode, setTasks, verifyCode])
+}
+
+export default useServerTaskSync

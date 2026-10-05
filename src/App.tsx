@@ -2,10 +2,9 @@ import './styles/index.css'
 
 import { useMediaQuery } from 'react-responsive'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import { tasks as initialTasks } from './data/boardData'
-import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
 import InstallBanner from './components/InstallBanner'
@@ -25,6 +24,7 @@ import MobileBoard from './components/MobileBoard'
 import DesktopBoard from './components/DesktopBoard'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import useServerTaskSync from './hooks/useServerTaskSync'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
@@ -93,27 +93,7 @@ function App() {
     setIsConfirmDeletionModalOpen,
   })
 
-  const tasksRef = useRef(tasks)
-  useEffect(() => {
-    tasksRef.current = tasks
-  }, [tasks])
-
-  useEffect(() => {
-    async function loadServerTasks() {
-      if (telegramCode !== '') {
-        const isConnected = await verifyCode(telegramCode)
-        if (isConnected) {
-          const migrated = await migrateTasks(telegramCode, tasksRef.current)
-          if (migrated) {
-            const serverTasks = await getTasksByBoard(telegramCode)
-            if (!serverTasks) return
-            setTasks(serverTasks)
-          }
-        }
-      }
-    }
-    loadServerTasks()
-  }, [telegramCode, setTasks, verifyCode])
+  useServerTaskSync({ tasks, setTasks, telegramCode, verifyCode })
 
   const isMobile = useMediaQuery({
     query: '(max-width: 768px)',

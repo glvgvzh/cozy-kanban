@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import useLocalStorage from './useLocalStorage'
 
 function useTelegramConnect() {
   const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
   const [isTelegramConnected, setIsTelegramConnected] = useState(false)
 
-  async function verifyCode(code: string) {
+  const verifyCode = useCallback(async (code: string) => {
     try {
       const response = await fetch(`http://localhost:3000/api/boards/${code}/status`)
       if (!response.ok) {
@@ -24,7 +24,7 @@ function useTelegramConnect() {
       console.error(error)
       return false
     }
-  }
+  }, [])
 
   return { telegramCode, setTelegramCode, verifyCode, isTelegramConnected }
 }
