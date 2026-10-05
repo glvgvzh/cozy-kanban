@@ -1,15 +1,14 @@
 import { useDraggable } from '@dnd-kit/react'
-import TaskCardContent from './TaskCardContent'
-import type { Task } from './types/task'
-import type { Dispatch, SetStateAction } from 'react'
+import { TaskCardContent } from './TaskCardContent'
+import type { Task } from '../types'
 
 type TaskCardProps = {
   task: Task
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (id: string) => void
   isOverdue: boolean
 }
 
-function TaskCard({ task, setSelectedTaskId, isOverdue }: TaskCardProps) {
+export function TaskCard({ task, setSelectedTaskId, isOverdue }: TaskCardProps) {
   const { ref } = useDraggable({
     id: task.id,
     data: {
@@ -23,5 +22,3 @@ function TaskCard({ task, setSelectedTaskId, isOverdue }: TaskCardProps) {
     </div>
   )
 }
-
-export default TaskCard

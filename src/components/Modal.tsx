@@ -3,7 +3,7 @@ type ModalProps = {
   onClose: () => void
 }
 
-function Modal({ children, onClose }: ModalProps) {
+export function Modal({ children, onClose }: ModalProps) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -12,5 +12,3 @@ function Modal({ children, onClose }: ModalProps) {
     </div>
   )
 }
-
-export default Modal

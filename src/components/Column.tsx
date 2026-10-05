@@ -1,29 +1,26 @@
-import TaskCard from './TaskCard'
+import { TaskCard } from './TaskCard'
 import { useDroppable } from '@dnd-kit/react'
-import type { Column } from './types/board'
-import type { Task } from './types/task'
-import type { Dispatch, SetStateAction } from 'react'
+import type { Column, Task } from '../types'
+import { isTaskOverdue } from '../utils/deadlineUtilities'
 
 type ColumnProps = {
   columnId: Column['id']
   columnTitle: Column['title']
   tasks: Task[]
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (id: string) => void
   searchQuery: string
   Icon: Column['Icon']
-  isTaskOverdue: (task: Task, currentDate: number) => boolean
-  currentDate: number
+  currentTimestamp: number
 }
 
-function Column({
+export function Column({
   columnId,
   columnTitle,
   tasks,
   setSelectedTaskId,
   searchQuery,
   Icon,
-  isTaskOverdue,
-  currentDate
+  currentTimestamp,
 }: ColumnProps) {
   const { ref, isDropTarget } = useDroppable({
     id: columnId,
@@ -58,7 +55,7 @@ function Column({
       ) : (
         <div className="column-body">
           {sortedByDeadline.map((task) => {
-            const isOverdue = isTaskOverdue(task, currentDate)
+            const isOverdue = isTaskOverdue(task, currentTimestamp)
             return (
               <TaskCard
                 key={task.id}
@@ -73,5 +70,3 @@ function Column({
     </div>
   )
 }
-
-export default Column

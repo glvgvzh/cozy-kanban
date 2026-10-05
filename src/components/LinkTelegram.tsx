@@ -1,14 +1,17 @@
 import { CheckIcon, LinkBreakIcon, LinkIcon } from '@phosphor-icons/react'
 import { useState } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
 
 type LinkTelegramProps = {
-  setTelegramCode: Dispatch<SetStateAction<string>>
+  setTelegramCode: (value: string) => void
   isTelegramConnected: boolean
   onVerifyCode: (code: string) => Promise<boolean>
 }
 
-function LinkTelegram({ setTelegramCode, isTelegramConnected, onVerifyCode }: LinkTelegramProps) {
+export function LinkTelegram({
+  setTelegramCode,
+  isTelegramConnected,
+  onVerifyCode,
+}: LinkTelegramProps) {
   const [inputCode, setInputCode] = useState('')
 
   return (
@@ -48,5 +51,3 @@ function LinkTelegram({ setTelegramCode, isTelegramConnected, onVerifyCode }: Li
     </div>
   )
 }
-
-export default LinkTelegram

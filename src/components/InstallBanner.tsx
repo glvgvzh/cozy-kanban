@@ -5,7 +5,7 @@ type InstallBannerProps = {
   onInstall: () => void
 }
 
-function InstallBanner({ onDismiss, onInstall }: InstallBannerProps) {
+export function InstallBanner({ onDismiss, onInstall }: InstallBannerProps) {
   return (
     <div className="install-banner">
       <div className="banner-label">Установите Cozy Kanban на устройство для быстрого доступа</div>
@@ -18,5 +18,3 @@ function InstallBanner({ onDismiss, onInstall }: InstallBannerProps) {
     </div>
   )
 }
-
-export default InstallBanner

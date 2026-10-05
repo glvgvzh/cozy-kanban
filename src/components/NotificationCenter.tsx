@@ -5,9 +5,8 @@ import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
 } from '@phosphor-icons/react'
-import { notificationTypes } from './data/boardData'
-import type { Task } from './types/task'
-import type { Notification, NotificationFilter } from './types/notification'
+import { notificationTypes } from '../data/boardData'
+import type { Task, Notification, NotificationFilter } from '../types'
 import type { Dispatch, SetStateAction } from 'react'
 
 type NotificationCenterProps = {
@@ -15,14 +14,14 @@ type NotificationCenterProps = {
   onClose: () => void
   setNotifications: Dispatch<SetStateAction<Notification[]>>
   isMobile: boolean
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (value: Task['id'] | null) => void
   activeNotificationFilter: NotificationFilter
-  setActiveNotificationFilter: Dispatch<SetStateAction<NotificationFilter>>
+  setActiveNotificationFilter: (value: NotificationFilter) => void
   notifications: Notification[]
   unreadNotifications: Notification[]
 }
 
-function NotificationCenter({
+export function NotificationCenter({
   tasks,
   onClose,
   setNotifications,
@@ -153,5 +152,3 @@ function NotificationCenter({
     </div>
   )
 }
-
-export default NotificationCenter
