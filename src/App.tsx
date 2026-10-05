@@ -5,12 +5,12 @@ import { DragDropProvider, DragOverlay } from '@dnd-kit/react'
 import { useMediaQuery } from 'react-responsive'
 import { useSwipeable } from 'react-swipeable'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import { columns, priorities, notificationTypes, tasks as initialTasks } from './data/boardData'
 import { formatDate, isTaskOverdue } from './utils/deadlineUtilities'
 import { checkDeadlineNotifications, getActualNotifications } from './utils/notificationUtilities'
-import { migrateTasks, getTasksByBoard, deleteTask, updateTask, createTask } from './api/taskApi'
+import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
 import InstallBanner from './components/InstallBanner'
@@ -21,22 +21,25 @@ import DeleteTaskConfirmationModal from './components/DeleteTaskConfirmationModa
 import TaskCardContent from './components/TaskCardContent'
 import NotificationCenter from './components/NotificationCenter'
 import SettingsModal from './components/SettingsModal'
-import type { Task, TaskUpdate } from './types/task'
+import type { Task } from './types/task'
 import type { Notification, NotificationFilter } from './types/notification'
 import type { NotificationConfig } from './types/board'
 import type { ActiveToast } from './types/toast'
 import Toast from './components/Toast'
-import { v4 } from 'uuid'
 import useInstallBanner from './hooks/useInstallBanner'
+import useCrud from './hooks/useCrud'
+import useTelegramConnect from './hooks/useTelegramConnect'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
+  const { telegramCode, setTelegramCode, verifyCode, isTelegramConnected } = useTelegramConnect()
 
   const [tasks, setTasks] = useLocalStorage('tasks', initialTasks)
 
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
   const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
   const [activeNotificationFilter, setActiveNotificationFilter] =
     useState<NotificationFilter>('all')
@@ -45,8 +48,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
 
   const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage('priority', '')
-
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
   const [isNotificationEnabled, setIsNotificationEnabled] = useLocalStorage(
     'isNotificationEnabled',
@@ -73,11 +74,16 @@ function App() {
   const [notifications, setNotifications] = useLocalStorage<Notification[]>('notifications', [])
   const unreadNotifications = notifications.filter((notification) => !notification.isRead)
 
-  const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
-  const [isTelegramConnected, setIsTelegramConnected] = useState(false)
-
-  const [isCrudLoading, setIsCrudLoading] = useState(false)
-  const crudLoadingRef = useRef(isCrudLoading)
+  const { addTask, handleDeleteTask, handleUpdateTask, isCrudLoading } = useCrud({
+    tasks,
+    isTelegramConnected,
+    telegramCode,
+    setToast,
+    setTasks,
+    selectedTaskId,
+    setSelectedTaskId,
+    setIsConfirmDeletionModalOpen,
+  })
 
   const [currentDate, setCurrentDate] = useState(() => Date.now())
 
@@ -177,73 +183,27 @@ function App() {
     }
   }, [tasks, notifications, isNotificationEnabled, setNotifications, currentDate])
 
-  function updateCrudLoading(newState: boolean): void {
-    crudLoadingRef.current = newState
-    setIsCrudLoading(newState)
-  }
+  const tasksRef = useRef(tasks)
+  useEffect(() => {
+    tasksRef.current = tasks
+  }, [tasks])
 
-  async function addTask(newTask: Task) {
-    if (crudLoadingRef.current) return false
-    updateCrudLoading(true)
-    try {
-      let taskToAdd = newTask
-      if (isTelegramConnected) {
-        const result = await createTask(telegramCode, newTask)
-        if (!result?.taskCreated) {
-          setToast({ id: v4(), operation: 'create', status: 'fail' })
-          return false
-        }
-        taskToAdd = result.task
-      }
-      setTasks((prevTasks) => [...prevTasks, taskToAdd])
-      setToast({ id: v4(), operation: 'create', status: 'success' })
-      return true
-    } finally {
-      updateCrudLoading(false)
-    }
-  }
-
-  async function handleDeleteTask() {
-    if (!selectedTaskId || crudLoadingRef.current) return
-    updateCrudLoading(true)
-    try {
-      if (isTelegramConnected) {
-        const result = await deleteTask(telegramCode, selectedTaskId)
-        if (!result?.taskDeleted) {
-          setToast({ id: v4(), operation: 'delete', status: 'fail' })
-          return
+  useEffect(() => {
+    async function loadServerTasks() {
+      if (telegramCode !== '') {
+        const isConnected = await verifyCode(telegramCode)
+        if (isConnected) {
+          const migrated = await migrateTasks(telegramCode, tasksRef.current)
+          if (migrated) {
+            const serverTasks = await getTasksByBoard(telegramCode)
+            if (!serverTasks) return
+            setTasks(serverTasks)
+          }
         }
       }
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId))
-      setIsConfirmDeletionModalOpen(false)
-      setSelectedTaskId(null)
-      setToast({ id: v4(), operation: 'delete', status: 'success' })
-    } finally {
-      updateCrudLoading(false)
     }
-  }
-
-  async function handleUpdateTask(taskId: Task['id'], updates: TaskUpdate) {
-    const currentTask = tasks.find((task) => task.id === taskId)
-    if (!currentTask || crudLoadingRef.current) return false
-    updateCrudLoading(true)
-    try {
-      const updatedTask = { ...currentTask, ...updates }
-
-      if (isTelegramConnected) {
-        const result = await updateTask(telegramCode, updatedTask)
-        if (!result?.taskUpdated) {
-          setToast({ id: v4(), operation: 'update', status: 'fail' })
-          return false
-        }
-      }
-      setTasks((prevTasks) => prevTasks.map((task) => (task.id === taskId ? updatedTask : task)))
-      setToast({ id: v4(), operation: 'update', status: 'success' })
-      return true
-    } finally {
-      updateCrudLoading(false)
-    }
-  }
+    loadServerTasks()
+  }, [telegramCode, setTasks, verifyCode])
 
   const isMobile = useMediaQuery({
     query: '(max-width: 768px)',
@@ -267,49 +227,6 @@ function App() {
     trackMouse: true,
     preventScrollOnSwipe: true,
   })
-
-  async function verifyCode(code: string) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/boards/${code}/status`)
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`)
-      }
-      const answer = await response.json()
-      if (answer.telegramConnected) {
-        setIsTelegramConnected(true)
-        return true
-      } else {
-        setIsTelegramConnected(false)
-        return false
-      }
-    } catch (error) {
-      setIsTelegramConnected(false)
-      console.error(error)
-      return false
-    }
-  }
-
-  const tasksRef = useRef(tasks)
-  useEffect(() => {
-    tasksRef.current = tasks
-  }, [tasks])
-
-  useEffect(() => {
-    async function loadServerTasks() {
-      if (telegramCode !== '') {
-        const isConnected = await verifyCode(telegramCode)
-        if (isConnected) {
-          const migrated = await migrateTasks(telegramCode, tasksRef.current)
-          if (migrated) {
-            const serverTasks = await getTasksByBoard(telegramCode)
-            if (!serverTasks) return
-            setTasks(serverTasks)
-          }
-        }
-      }
-    }
-    loadServerTasks()
-  }, [telegramCode, setTasks])
 
   useEffect(() => {
     if (!toast) return
