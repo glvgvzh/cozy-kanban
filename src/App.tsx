@@ -25,24 +25,15 @@ import DesktopBoard from './components/DesktopBoard'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import useServerTaskSync from './hooks/useServerTaskSync'
+import useCurrentDay from './hooks/useCurrentDay'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
   const { telegramCode, setTelegramCode, verifyCode, isTelegramConnected } = useTelegramConnect()
 
   const [tasks, setTasks] = useLocalStorage('tasks', initialTasks)
-  const [currentTimestamp, setCurrentTimestamp] = useState(() => Date.now())
 
-  useEffect(() => {
-    const nextDate = new Date(currentTimestamp)
-    nextDate.setDate(nextDate.getDate() + 1)
-    nextDate.setHours(0, 0, 0, 0)
-    const msLeftUntilNextMidnight = nextDate.getTime() - currentTimestamp
-    const timer = setTimeout(() => {
-      setCurrentTimestamp(Date.now())
-    }, msLeftUntilNextMidnight)
-    return () => clearTimeout(timer)
-  }, [currentTimestamp, setCurrentTimestamp])
+  const { currentTimestamp } = useCurrentDay()
 
   const {
     unreadNotifications,
@@ -52,7 +43,7 @@ function App() {
     setActiveNotificationFilter,
     isNotificationEnabled,
     handleNotificationPermissionSwitch,
-  } = useNotifications({ tasks, currentTimestamp, setCurrentTimestamp })
+  } = useNotifications({ tasks, currentTimestamp })
 
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
   const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)

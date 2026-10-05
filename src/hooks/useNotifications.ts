@@ -1,4 +1,4 @@
-import { useState, useEffect, type Dispatch, type SetStateAction } from 'react'
+import { useState, useEffect } from 'react'
 import useLocalStorage from './useLocalStorage'
 import type { NotificationConfig } from '../types/board'
 import type { Task } from '../types/task'
@@ -9,10 +9,9 @@ import { notificationTypes } from '../data/boardData'
 type UseNotificationsProps = {
   tasks: Task[]
   currentTimestamp: number
-  setCurrentTimestamp: Dispatch<SetStateAction<number>>
 }
 
-function useNotifications({ tasks, currentTimestamp, setCurrentTimestamp }: UseNotificationsProps) {
+function useNotifications({ tasks, currentTimestamp }: UseNotificationsProps) {
   const [isNotificationEnabled, setIsNotificationEnabled] = useLocalStorage(
     'isNotificationEnabled',
     false,
@@ -63,9 +62,6 @@ function useNotifications({ tasks, currentTimestamp, setCurrentTimestamp }: UseN
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         syncPermissions()
-        if (new Date(currentTimestamp).setHours(0, 0, 0, 0) !== new Date().setHours(0, 0, 0, 0)) {
-          setCurrentTimestamp(Date.now())
-        }
       }
     }
     async function fetchNotificationPermissionChange() {
@@ -86,7 +82,7 @@ function useNotifications({ tasks, currentTimestamp, setCurrentTimestamp }: UseN
         permissionStatus.removeEventListener('change', syncPermissions)
       }
     }
-  }, [setIsNotificationEnabled, currentTimestamp, setCurrentTimestamp])
+  }, [setIsNotificationEnabled])
 
   useEffect(() => {
     const actualNotifications = getActualNotifications(tasks, notifications, currentTimestamp)
