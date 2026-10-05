@@ -27,45 +27,10 @@ import type { NotificationConfig } from './types/board'
 import type { ActiveToast } from './types/toast'
 import Toast from './components/Toast'
 import { v4 } from 'uuid'
+import useInstallBanner from './hooks/useInstallBanner'
 
 function App() {
-  type BeforeInstallPromptEvent = Event & {
-    prompt: () => Promise<void>
-    userChoice: Promise<{
-      outcome: 'accepted' | 'dismissed'
-      platform: string
-    }>
-  }
-  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const canInstall = installPrompt !== null
-
-  const [installBannerDismissed, setInstallBannerDismissed] = useLocalStorage(
-    'installBannerDismissed',
-    false,
-  )
-
-  useEffect(() => {
-    function handleInstallPrompt(e: Event) {
-      e.preventDefault()
-      setInstallPrompt(e as BeforeInstallPromptEvent)
-    }
-    window.addEventListener('beforeinstallprompt', handleInstallPrompt)
-    return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
-  }, [])
-
-  function onDismiss() {
-    setInstallBannerDismissed(true)
-  }
-
-  async function onInstall() {
-    if (!installPrompt) return
-    await installPrompt.prompt()
-    const { outcome } = await installPrompt.userChoice
-    if (outcome === 'accepted') {
-      setInstallBannerDismissed(true)
-      setInstallPrompt(null)
-    }
-  }
+  const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
 
   const [tasks, setTasks] = useLocalStorage('tasks', initialTasks)
 
