@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
-import useLocalStorage from './useLocalStorage'
+import { useLocalStorage } from './useLocalStorage'
 
-function useTelegramConnect() {
+export function useTelegramConnect() {
   const [telegramCode, setTelegramCode] = useLocalStorage('telegramCode', '')
   const [isTelegramConnected, setIsTelegramConnected] = useState(false)
 
@@ -28,5 +28,3 @@ function useTelegramConnect() {
 
   return { telegramCode, setTelegramCode, verifyCode, isTelegramConnected }
 }
-
-export default useTelegramConnect

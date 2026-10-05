@@ -1,6 +1,6 @@
 import { ToggleLeftIcon, ToggleRightIcon, XIcon } from '@phosphor-icons/react'
-import Modal from './Modal'
-import LinkTelegram from './LinkTelegram'
+import { Modal } from './Modal'
+import { LinkTelegram } from './LinkTelegram'
 
 type SettingsModalProps = {
   onClose: () => void
@@ -11,7 +11,7 @@ type SettingsModalProps = {
   onVerifyCode: (code: string) => Promise<boolean>
 }
 
-function SettingsModal({
+export function SettingsModal({
   onClose,
   isNotificationEnabled,
   handleNotificationPermissionSwitch,
@@ -53,5 +53,3 @@ function SettingsModal({
     </Modal>
   )
 }
-
-export default SettingsModal

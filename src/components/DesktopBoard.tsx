@@ -1,8 +1,8 @@
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react'
-import Column from './Column'
-import type { TaskUpdate, Task } from '../types/task'
+import { Column } from './Column'
+import { TaskCardContent } from './TaskCardContent'
+import type { TaskUpdate, Task } from '../types'
 import { columns } from '../data/boardData'
-import TaskCardContent from './TaskCardContent'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 
 type DesktopBoardProps = {
@@ -15,7 +15,7 @@ type DesktopBoardProps = {
   currentTimestamp: number
 }
 
-function DesktopBoard({
+export function DesktopBoard({
   tasks,
   filteredTasks,
   isCrudLoading,
@@ -65,5 +65,3 @@ function DesktopBoard({
     </DragDropProvider>
   )
 }
-
-export default DesktopBoard

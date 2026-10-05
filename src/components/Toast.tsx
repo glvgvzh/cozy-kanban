@@ -1,4 +1,4 @@
-import type { ActiveToast } from '../types/toast'
+import type { ActiveToast } from '../types'
 import { toastConfig } from '../data/toastData'
 import { CheckCircleIcon, WarningCircleIcon } from '@phosphor-icons/react'
 
@@ -6,7 +6,7 @@ type ToastProps = {
   toast: ActiveToast
 }
 
-function Toast({ toast }: ToastProps) {
+export function Toast({ toast }: ToastProps) {
   return (
     <div className={`toast ${toast.status === 'success' ? 'toast-success' : 'toast-fail'}`}>
       {toast.status === 'success' ? (
@@ -18,5 +18,3 @@ function Toast({ toast }: ToastProps) {
     </div>
   )
 }
-
-export default Toast

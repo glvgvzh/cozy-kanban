@@ -1,13 +1,13 @@
 import { BookmarkSimpleIcon } from '@phosphor-icons/react'
 import { priorities } from '../data/boardData'
-import type { Task } from '../types/task'
+import type { Task } from '../types'
 
 type TaskCardContentProps = {
   task: Task
   isOverdue: boolean
 }
 
-function TaskCardContent({ task, isOverdue }: TaskCardContentProps) {
+export function TaskCardContent({ task, isOverdue }: TaskCardContentProps) {
   const priority = priorities.find((priority) => priority.id === task.priority)
   if (!priority) {
     throw new Error(`Priority "${task.priority}" not found`)
@@ -31,5 +31,3 @@ function TaskCardContent({ task, isOverdue }: TaskCardContentProps) {
     </div>
   )
 }
-
-export default TaskCardContent

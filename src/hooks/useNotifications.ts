@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
-import useLocalStorage from './useLocalStorage'
-import type { NotificationConfig } from '../types/board'
-import type { Task } from '../types/task'
-import type { Notification, NotificationFilter } from '../types/notification'
+import { useLocalStorage } from './useLocalStorage'
+import type { Task, Notification, NotificationFilter, NotificationConfig } from '../types'
 import { getActualNotifications, checkDeadlineNotifications } from '../utils/notificationUtilities'
 import { notificationTypes } from '../data/boardData'
 
@@ -11,7 +9,7 @@ type UseNotificationsProps = {
   currentTimestamp: number
 }
 
-function useNotifications({ tasks, currentTimestamp }: UseNotificationsProps) {
+export function useNotifications({ tasks, currentTimestamp }: UseNotificationsProps) {
   const [isNotificationEnabled, setIsNotificationEnabled] = useLocalStorage(
     'isNotificationEnabled',
     false,
@@ -119,5 +117,3 @@ function useNotifications({ tasks, currentTimestamp }: UseNotificationsProps) {
     handleNotificationPermissionSwitch,
   }
 }
-
-export default useNotifications

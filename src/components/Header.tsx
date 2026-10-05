@@ -1,6 +1,6 @@
 import { KanbanIcon, PlusIcon, BellIcon } from '@phosphor-icons/react'
 import type { Dispatch, SetStateAction } from 'react'
-import type { Notification } from '../types/notification'
+import type { Notification } from '../types'
 
 type HeaderProps = {
   searchQuery: string
@@ -11,7 +11,7 @@ type HeaderProps = {
   unreadNotifications: Notification[]
 }
 
-function Header({
+export function Header({
   searchQuery,
   setSearchQuery,
   onOpenNewTaskModal,
@@ -46,5 +46,3 @@ function Header({
     </div>
   )
 }
-
-export default Header

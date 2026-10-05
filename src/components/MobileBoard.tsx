@@ -1,8 +1,8 @@
 import { useSwipeable } from 'react-swipeable'
-import useLocalStorage from '../hooks/useLocalStorage'
+import { useLocalStorage } from '../hooks'
 import { columns } from '../data/boardData'
-import type { Task } from '../types/task'
-import Column from './Column'
+import type { Task } from '../types'
+import { Column } from './Column'
 import { DotIcon } from '@phosphor-icons/react'
 
 type MobileBoardProps = {
@@ -12,7 +12,7 @@ type MobileBoardProps = {
   currentTimestamp: number
 }
 
-function MobileBoard({
+export function MobileBoard({
   filteredTasks,
   setSelectedTaskId,
   searchQuery,
@@ -62,5 +62,3 @@ function MobileBoard({
     </div>
   )
 }
-
-export default MobileBoard

@@ -1,31 +1,30 @@
 import './styles/index.css'
-
 import { useMediaQuery } from 'react-responsive'
-
 import { useEffect, useState } from 'react'
-
 import { tasks as initialTasks } from './data/boardData'
-
-import useLocalStorage from './hooks/useLocalStorage'
-import InstallBanner from './components/InstallBanner'
-import CreateTaskModal from './components/CreateTaskModal'
-import TaskDetailsModal from './components/TaskDetailsModal'
-import DeleteTaskConfirmationModal from './components/DeleteTaskConfirmationModal'
-import NotificationCenter from './components/NotificationCenter'
-import SettingsModal from './components/SettingsModal'
-import type { Task } from './types/task'
-import type { ActiveToast } from './types/toast'
-import Toast from './components/Toast'
-import useInstallBanner from './hooks/useInstallBanner'
-import useCrud from './hooks/useCrud'
-import useTelegramConnect from './hooks/useTelegramConnect'
-import useNotifications from './hooks/useNotifications'
-import MobileBoard from './components/MobileBoard'
-import DesktopBoard from './components/DesktopBoard'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import useServerTaskSync from './hooks/useServerTaskSync'
-import useCurrentDay from './hooks/useCurrentDay'
+import type { Task, ActiveToast } from './types'
+import {
+  useLocalStorage,
+  useInstallBanner,
+  useCrud,
+  useTelegramConnect,
+  useNotifications,
+  useServerTaskSync,
+  useCurrentDay,
+} from './hooks'
+import {
+  CreateTaskModal,
+  DeleteTaskConfirmationModal,
+  DesktopBoard,
+  Footer,
+  Header,
+  InstallBanner,
+  MobileBoard,
+  NotificationCenter,
+  SettingsModal,
+  TaskDetailsModal,
+  Toast,
+} from './components'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()

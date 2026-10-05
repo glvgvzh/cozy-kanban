@@ -1,8 +1,8 @@
 import { XIcon, CheckIcon, PencilIcon, TrashIcon } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
-import Modal from './Modal'
+import { Modal } from './Modal'
 import { columns, priorities } from '../data/boardData'
-import type { Task, TaskStatus, TaskUpdate, TaskPriority } from '../types/task'
+import type { Task, TaskStatus, TaskUpdate, TaskPriority } from '../types'
 import { formatDate } from '../utils/deadlineUtilities'
 
 type TaskDetailsModalProps = {
@@ -14,7 +14,7 @@ type TaskDetailsModalProps = {
   isDisabled: boolean
 }
 
-function TaskDetailsModal({
+export function TaskDetailsModal({
   selectedTask,
   setSelectedTaskId,
   isConfirmDeletionModalOpen,
@@ -260,5 +260,3 @@ function TaskDetailsModal({
     </Modal>
   )
 }
-
-export default TaskDetailsModal

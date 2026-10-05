@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { migrateTasks, getTasksByBoard } from '../api/taskApi'
-import type { Task } from '../types/task'
+import type { Task } from '../types'
 
 type UseServerTaskSyncProps = {
   tasks: Task[]
@@ -9,7 +9,12 @@ type UseServerTaskSyncProps = {
   verifyCode: (code: string) => Promise<boolean>
 }
 
-function useServerTaskSync({ tasks, setTasks, telegramCode, verifyCode }: UseServerTaskSyncProps) {
+export function useServerTaskSync({
+  tasks,
+  setTasks,
+  telegramCode,
+  verifyCode,
+}: UseServerTaskSyncProps) {
   const tasksRef = useRef(tasks)
   useEffect(() => {
     tasksRef.current = tasks
@@ -32,5 +37,3 @@ function useServerTaskSync({ tasks, setTasks, telegramCode, verifyCode }: UseSer
     loadServerTasks()
   }, [telegramCode, setTasks, verifyCode])
 }
-
-export default useServerTaskSync

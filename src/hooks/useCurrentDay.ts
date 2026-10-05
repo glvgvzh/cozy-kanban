@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function useCurrentDay() {
+export function useCurrentDay() {
   const [currentTimestamp, setCurrentTimestamp] = useState(() => Date.now())
 
   useEffect(() => {
@@ -30,5 +30,3 @@ function useCurrentDay() {
 
   return { currentTimestamp }
 }
-
-export default useCurrentDay

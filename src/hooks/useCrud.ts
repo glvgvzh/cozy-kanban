@@ -15,7 +15,7 @@ type UseCrudProps = {
   onCloseConfirmDeletionModal: () => void
 }
 
-function useCrud({
+export function useCrud({
   tasks,
   isTelegramConnected,
   telegramCode,
@@ -98,5 +98,3 @@ function useCrud({
 
   return { addTask, handleDeleteTask, handleUpdateTask, isCrudLoading }
 }
-
-export default useCrud

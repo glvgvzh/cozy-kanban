@@ -6,8 +6,7 @@ import {
   EnvelopeOpenIcon,
 } from '@phosphor-icons/react'
 import { notificationTypes } from '../data/boardData'
-import type { Task } from '../types/task'
-import type { Notification, NotificationFilter } from '../types/notification'
+import type { Task, Notification, NotificationFilter } from '../types'
 import type { Dispatch, SetStateAction } from 'react'
 
 type NotificationCenterProps = {
@@ -22,7 +21,7 @@ type NotificationCenterProps = {
   unreadNotifications: Notification[]
 }
 
-function NotificationCenter({
+export function NotificationCenter({
   tasks,
   onClose,
   setNotifications,
@@ -153,5 +152,3 @@ function NotificationCenter({
     </div>
   )
 }
-
-export default NotificationCenter

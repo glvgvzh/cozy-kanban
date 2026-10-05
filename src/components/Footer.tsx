@@ -1,4 +1,4 @@
-import type { Task } from '../types/task'
+import type { Task } from '../types'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 import { priorities } from '../data/boardData'
 import { GearIcon } from '@phosphor-icons/react'
@@ -11,7 +11,7 @@ type FooterProps = {
   onOpenSettingsModal: () => void
 }
 
-function Footer({
+export function Footer({
   tasks,
   currentTimestamp,
   selectedPriorityFilter,
@@ -54,5 +54,3 @@ function Footer({
     </div>
   )
 }
-
-export default Footer

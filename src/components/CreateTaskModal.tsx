@@ -1,9 +1,9 @@
 import { XIcon } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
-import Modal from './Modal'
+import { Modal } from './Modal'
 import { priorities } from '../data/boardData'
 import { v4 } from 'uuid'
-import type { Task, TaskPriority } from '../types/task'
+import type { Task, TaskPriority } from '../types'
 
 type CreateTaskModalProps = {
   onClose: () => void
@@ -11,7 +11,7 @@ type CreateTaskModalProps = {
   isDisabled: boolean
 }
 
-function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTaskModalProps) {
+export function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTaskModalProps) {
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [newTaskDescription, setNewTaskDescription] = useState('')
   const [newTaskPriority, setNewTaskPriority] = useState<TaskPriority>('low')
@@ -128,5 +128,3 @@ function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTaskModalP
     </Modal>
   )
 }
-
-export default CreateTaskModal

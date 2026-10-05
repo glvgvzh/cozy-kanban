@@ -7,7 +7,11 @@ type LinkTelegramProps = {
   onVerifyCode: (code: string) => Promise<boolean>
 }
 
-function LinkTelegram({ setTelegramCode, isTelegramConnected, onVerifyCode }: LinkTelegramProps) {
+export function LinkTelegram({
+  setTelegramCode,
+  isTelegramConnected,
+  onVerifyCode,
+}: LinkTelegramProps) {
   const [inputCode, setInputCode] = useState('')
 
   return (
@@ -47,5 +51,3 @@ function LinkTelegram({ setTelegramCode, isTelegramConnected, onVerifyCode }: Li
     </div>
   )
 }
-
-export default LinkTelegram

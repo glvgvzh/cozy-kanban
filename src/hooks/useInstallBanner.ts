@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import useLocalStorage from './useLocalStorage'
+import { useLocalStorage } from './useLocalStorage'
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>
@@ -9,7 +9,7 @@ type BeforeInstallPromptEvent = Event & {
   }>
 }
 
-function useInstallBanner() {
+export function useInstallBanner() {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const canInstall = installPrompt !== null
 
@@ -42,5 +42,3 @@ function useInstallBanner() {
   }
   return { canInstall, installBannerDismissed, onDismiss, onInstall }
 }
-
-export default useInstallBanner

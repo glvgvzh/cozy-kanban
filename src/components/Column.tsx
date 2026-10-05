@@ -1,7 +1,6 @@
-import TaskCard from './TaskCard'
+import { TaskCard } from './TaskCard'
 import { useDroppable } from '@dnd-kit/react'
-import type { Column } from '../types/board'
-import type { Task } from '../types/task'
+import type { Column, Task } from '../types'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 
 type ColumnProps = {
@@ -14,7 +13,7 @@ type ColumnProps = {
   currentTimestamp: number
 }
 
-function Column({
+export function Column({
   columnId,
   columnTitle,
   tasks,
@@ -71,5 +70,3 @@ function Column({
     </div>
   )
 }
-
-export default Column
