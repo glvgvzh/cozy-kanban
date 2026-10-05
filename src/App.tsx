@@ -1,12 +1,11 @@
 import './styles/index.css'
 
-import { KanbanIcon, BellIcon, PlusIcon, GearIcon } from '@phosphor-icons/react'
 import { useMediaQuery } from 'react-responsive'
 
 import { useEffect, useState, useRef } from 'react'
 
-import { priorities, tasks as initialTasks } from './data/boardData'
-import { formatDate, isTaskOverdue } from './utils/deadlineUtilities'
+import { tasks as initialTasks } from './data/boardData'
+import { formatDate } from './utils/deadlineUtilities'
 import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
@@ -25,6 +24,8 @@ import useTelegramConnect from './hooks/useTelegramConnect'
 import useNotifications from './hooks/useNotifications'
 import MobileBoard from './components/MobileBoard'
 import DesktopBoard from './components/DesktopBoard'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
@@ -61,7 +62,9 @@ function App() {
 
   const [selectedTaskId, setSelectedTaskId] = useState<Task['id'] | null>(null)
 
-  const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage('priority', '')
+  const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage<
+    Task['priority'] | ''
+  >('priority', '')
 
   const [toast, setToast] = useState<ActiveToast | null>(null)
 
@@ -131,30 +134,15 @@ function App() {
         <InstallBanner onDismiss={onDismiss} onInstall={onInstall} />
       )}
       {toast !== null && <Toast key={toast.id} toast={toast} />}
-      <div className="header">
-        <div className="header-icon">
-          <KanbanIcon size={50} weight="duotone" />
-        </div>
-        <input
-          placeholder="Что в фокусе сегодня?"
-          className="focus-input"
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button className="button button-primary" onClick={() => setIsNewTaskModalOpen(true)}>
-          {isMobile ? <PlusIcon size={24} /> : 'Новая задача'}
-        </button>
-        <button
-          className="button button-icon bell-icon has-badge"
-          onClick={() => setIsNotificationCenterOpen((prev) => !prev)}
-        >
-          <BellIcon size={32} weight="duotone" />
-          {unreadNotifications.length !== 0 && (
-            <span className="badge badge-icon">{unreadNotifications.length}</span>
-          )}
-        </button>
-      </div>
+
+      <Header
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setIsNewTaskModalOpen={setIsNewTaskModalOpen}
+        isMobile={isMobile}
+        setIsNotificationCenterOpen={setIsNotificationCenterOpen}
+        unreadNotifications={unreadNotifications}
+      />
 
       {isNotificationCenterOpen && (
         <NotificationCenter
@@ -218,42 +206,13 @@ function App() {
         />
       )}
 
-      <div className="footer">
-        <div className="footer-info">
-          <div>Всего: {tasks.length}</div>
-          <div>В работе: {tasks.filter((task) => task.status === 'inProgress').length}</div>
-          <div>
-            Просрочено: {tasks.filter((task) => isTaskOverdue(task, currentTimestamp)).length}
-          </div>
-        </div>
-        <div className="filter-and-settings">
-          <div className="footer-filter">
-            <div className="filter-label">Приоритет:</div>
-            <div className="filter">
-              <select
-                className="select filter-select"
-                value={selectedPriorityFilter}
-                onChange={(e) => setSelectedPriorityFilter(e.target.value)}
-              >
-                <option value={''}>Все</option>
-                {priorities.map((priority) => {
-                  return (
-                    <option key={priority.id} value={priority.id}>
-                      {priority.label}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-          </div>
-          <button
-            className="button button-icon settings-gear"
-            onClick={() => setIsSettingsModalOpen(true)}
-          >
-            <GearIcon size={32} weight="duotone" />
-          </button>
-        </div>
-      </div>
+      <Footer
+        tasks={tasks}
+        currentTimestamp={currentTimestamp}
+        selectedPriorityFilter={selectedPriorityFilter}
+        setSelectedPriorityFilter={setSelectedPriorityFilter}
+        setIsSettingsModalOpen={setIsSettingsModalOpen}
+      />
 
       {isSettingsModalOpen && (
         <SettingsModal
