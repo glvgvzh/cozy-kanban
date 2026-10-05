@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import Modal from './Modal'
 import { columns, priorities } from '../data/boardData'
 import type { Task, TaskStatus, TaskUpdate, TaskPriority } from '../types/task'
+import { formatDate } from '../utils/deadlineUtilities'
 
 type TaskDetailsModalProps = {
   selectedTask: Task
@@ -11,7 +12,6 @@ type TaskDetailsModalProps = {
   isConfirmDeletionModalOpen: boolean
   setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
   onUpdateTask: (taskId: Task['id'], taskUpdate: TaskUpdate) => Promise<boolean>
-  formatDate: (timestamp: number) => string
   isDisabled: boolean
 }
 
@@ -21,7 +21,6 @@ function TaskDetailsModal({
   isConfirmDeletionModalOpen,
   setIsConfirmDeletionModalOpen,
   onUpdateTask,
-  formatDate,
   isDisabled,
 }: TaskDetailsModalProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)

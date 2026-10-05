@@ -5,7 +5,6 @@ import { useMediaQuery } from 'react-responsive'
 import { useEffect, useState, useRef } from 'react'
 
 import { tasks as initialTasks } from './data/boardData'
-import { formatDate } from './utils/deadlineUtilities'
 import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
@@ -165,7 +164,6 @@ function App() {
           isConfirmDeletionModalOpen={isConfirmDeletionModalOpen}
           setIsConfirmDeletionModalOpen={setIsConfirmDeletionModalOpen}
           onUpdateTask={handleUpdateTask}
-          formatDate={formatDate}
           isDisabled={isCrudLoading}
         />
       )}
