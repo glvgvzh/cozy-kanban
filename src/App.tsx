@@ -1,23 +1,19 @@
 import './styles/index.css'
 
-import { KanbanIcon, BellIcon, DotIcon, PlusIcon, GearIcon } from '@phosphor-icons/react'
-import { DragDropProvider, DragOverlay } from '@dnd-kit/react'
+import { KanbanIcon, BellIcon, PlusIcon, GearIcon } from '@phosphor-icons/react'
 import { useMediaQuery } from 'react-responsive'
-import { useSwipeable } from 'react-swipeable'
 
 import { useEffect, useState, useRef } from 'react'
 
-import { columns, priorities, tasks as initialTasks } from './data/boardData'
+import { priorities, tasks as initialTasks } from './data/boardData'
 import { formatDate, isTaskOverdue } from './utils/deadlineUtilities'
 import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
 import InstallBanner from './components/InstallBanner'
-import Column from './components/Column'
 import CreateTaskModal from './components/CreateTaskModal'
 import TaskDetailsModal from './components/TaskDetailsModal'
 import DeleteTaskConfirmationModal from './components/DeleteTaskConfirmationModal'
-import TaskCardContent from './components/TaskCardContent'
 import NotificationCenter from './components/NotificationCenter'
 import SettingsModal from './components/SettingsModal'
 import type { Task } from './types/task'
@@ -27,6 +23,8 @@ import useInstallBanner from './hooks/useInstallBanner'
 import useCrud from './hooks/useCrud'
 import useTelegramConnect from './hooks/useTelegramConnect'
 import useNotifications from './hooks/useNotifications'
+import MobileBoard from './components/MobileBoard'
+import DesktopBoard from './components/DesktopBoard'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
@@ -62,14 +60,13 @@ function App() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState<Task['id'] | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
 
   const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage('priority', '')
 
   const [toast, setToast] = useState<ActiveToast | null>(null)
 
+  const [searchQuery, setSearchQuery] = useState('')
   const normalizedQuery = searchQuery.toLowerCase().trim()
-
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       task.title.toLowerCase().includes(normalizedQuery) ||
@@ -118,25 +115,6 @@ function App() {
 
   const isMobile = useMediaQuery({
     query: '(max-width: 768px)',
-  })
-
-  const [activeColumnIndex, setActiveColumnIndex] = useLocalStorage('mobileActiveColumnIndex', 0)
-  const activeColumn = columns[activeColumnIndex]
-  const activeColumnTasks = filteredTasks.filter((task) => task.status === activeColumn.id)
-
-  const swipeHandler = useSwipeable({
-    onSwipedLeft: () =>
-      setActiveColumnIndex((prev) => {
-        if (prev === columns.length - 1) return prev
-        return prev + 1
-      }),
-    onSwipedRight: () =>
-      setActiveColumnIndex((prev) => {
-        if (prev === 0) return prev
-        return prev - 1
-      }),
-    trackMouse: true,
-    preventScrollOnSwipe: true,
   })
 
   useEffect(() => {
@@ -222,69 +200,22 @@ function App() {
       )}
 
       {isMobile ? (
-        <div className="board" {...swipeHandler}>
-          <div className="column-indicator">
-            {columns.map((column, index) => (
-              <DotIcon
-                key={column.id}
-                size={32}
-                weight="duotone"
-                color={index === activeColumnIndex ? 'var(--accent)' : 'var(--text-disabled)'}
-              />
-            ))}
-          </div>
-          <Column
-            key={activeColumn.id}
-            columnId={activeColumn.id}
-            columnTitle={activeColumn.title}
-            tasks={activeColumnTasks}
-            setSelectedTaskId={setSelectedTaskId}
-            searchQuery={searchQuery}
-            Icon={activeColumn.Icon}
-            currentTimestamp={currentTimestamp}
-          />
-        </div>
+        <MobileBoard
+          filteredTasks={filteredTasks}
+          setSelectedTaskId={setSelectedTaskId}
+          searchQuery={searchQuery}
+          currentTimestamp={currentTimestamp}
+        />
       ) : (
-        <>
-          <DragDropProvider
-            onDragEnd={(e) => {
-              if (e.canceled) return
-              const { target, source } = e.operation
-              if (!target || !source || source.data.status === target.id || isCrudLoading) return
-              handleUpdateTask(String(source.id), { status: target.id as Task['status'] })
-            }}
-          >
-            <div className="board">
-              {columns.map((column) => {
-                const columnTasks = filteredTasks.filter((task) => task.status === column.id)
-                return (
-                  <Column
-                    key={column.id}
-                    columnId={column.id}
-                    columnTitle={column.title}
-                    tasks={columnTasks}
-                    setSelectedTaskId={setSelectedTaskId}
-                    searchQuery={searchQuery}
-                    Icon={column.Icon}
-                    currentTimestamp={currentTimestamp}
-                  />
-                )
-              })}
-            </div>
-            <DragOverlay>
-              {(source) => {
-                const task = tasks.find((task) => task.id === source.id)
-                if (!task) return null
-                const isOverdue = isTaskOverdue(task, currentTimestamp)
-                return (
-                  <div className="drag-overlay">
-                    <TaskCardContent task={task} isOverdue={isOverdue} />
-                  </div>
-                )
-              }}
-            </DragOverlay>
-          </DragDropProvider>
-        </>
+        <DesktopBoard
+          tasks={tasks}
+          filteredTasks={filteredTasks}
+          isCrudLoading={isCrudLoading}
+          handleUpdateTask={handleUpdateTask}
+          setSelectedTaskId={setSelectedTaskId}
+          searchQuery={searchQuery}
+          currentTimestamp={currentTimestamp}
+        />
       )}
 
       <div className="footer">
