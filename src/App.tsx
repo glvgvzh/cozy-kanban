@@ -7,9 +7,8 @@ import { useSwipeable } from 'react-swipeable'
 
 import { useEffect, useState, useRef } from 'react'
 
-import { columns, priorities, notificationTypes, tasks as initialTasks } from './data/boardData'
+import { columns, priorities, tasks as initialTasks } from './data/boardData'
 import { formatDate, isTaskOverdue } from './utils/deadlineUtilities'
-import { checkDeadlineNotifications, getActualNotifications } from './utils/notificationUtilities'
 import { migrateTasks, getTasksByBoard } from './api/taskApi'
 
 import useLocalStorage from './hooks/useLocalStorage'
@@ -22,37 +21,50 @@ import TaskCardContent from './components/TaskCardContent'
 import NotificationCenter from './components/NotificationCenter'
 import SettingsModal from './components/SettingsModal'
 import type { Task } from './types/task'
-import type { Notification, NotificationFilter } from './types/notification'
-import type { NotificationConfig } from './types/board'
 import type { ActiveToast } from './types/toast'
 import Toast from './components/Toast'
 import useInstallBanner from './hooks/useInstallBanner'
 import useCrud from './hooks/useCrud'
 import useTelegramConnect from './hooks/useTelegramConnect'
+import useNotifications from './hooks/useNotifications'
 
 function App() {
   const { canInstall, installBannerDismissed, onDismiss, onInstall } = useInstallBanner()
   const { telegramCode, setTelegramCode, verifyCode, isTelegramConnected } = useTelegramConnect()
 
   const [tasks, setTasks] = useLocalStorage('tasks', initialTasks)
+  const [currentTimestamp, setCurrentTimestamp] = useState(() => Date.now())
+
+  useEffect(() => {
+    const nextDate = new Date(currentTimestamp)
+    nextDate.setDate(nextDate.getDate() + 1)
+    nextDate.setHours(0, 0, 0, 0)
+    const msLeftUntilNextMidnight = nextDate.getTime() - currentTimestamp
+    const timer = setTimeout(() => {
+      setCurrentTimestamp(Date.now())
+    }, msLeftUntilNextMidnight)
+    return () => clearTimeout(timer)
+  }, [currentTimestamp, setCurrentTimestamp])
+
+  const {
+    unreadNotifications,
+    notifications,
+    setNotifications,
+    activeNotificationFilter,
+    setActiveNotificationFilter,
+    isNotificationEnabled,
+    handleNotificationPermissionSwitch,
+  } = useNotifications({ tasks, currentTimestamp, setCurrentTimestamp })
 
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false)
   const [isConfirmDeletionModalOpen, setIsConfirmDeletionModalOpen] = useState(false)
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
-  const [activeNotificationFilter, setActiveNotificationFilter] =
-    useState<NotificationFilter>('all')
-
   const [selectedTaskId, setSelectedTaskId] = useState<Task['id'] | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
   const [selectedPriorityFilter, setSelectedPriorityFilter] = useLocalStorage('priority', '')
-
-  const [isNotificationEnabled, setIsNotificationEnabled] = useLocalStorage(
-    'isNotificationEnabled',
-    false,
-  )
 
   const [toast, setToast] = useState<ActiveToast | null>(null)
 
@@ -71,9 +83,6 @@ function App() {
 
   const selectedTask = tasks.find((task) => task.id === selectedTaskId)
 
-  const [notifications, setNotifications] = useLocalStorage<Notification[]>('notifications', [])
-  const unreadNotifications = notifications.filter((notification) => !notification.isRead)
-
   const { addTask, handleDeleteTask, handleUpdateTask, isCrudLoading } = useCrud({
     tasks,
     isTelegramConnected,
@@ -84,104 +93,6 @@ function App() {
     setSelectedTaskId,
     setIsConfirmDeletionModalOpen,
   })
-
-  const [currentDate, setCurrentDate] = useState(() => Date.now())
-
-  useEffect(() => {
-    const nextDate = new Date(currentDate)
-    nextDate.setDate(nextDate.getDate() + 1)
-    nextDate.setHours(0, 0, 0, 0)
-    const msLeftUntilNextMidnight = nextDate.getTime() - currentDate
-    const timer = setTimeout(() => {
-      setCurrentDate(Date.now())
-    }, msLeftUntilNextMidnight)
-    return () => clearTimeout(timer)
-  }, [currentDate])
-
-  async function requestNotificationPermission() {
-    if (!('Notification' in window)) return false
-    const permission = Notification.permission
-    if (permission === 'granted') return true
-    if (permission === 'denied') return false
-
-    const answer = await Notification.requestPermission()
-    return answer === 'granted' ? true : false
-  }
-
-  async function handleNotificationPermissionSwitch() {
-    if (isNotificationEnabled === true) {
-      setIsNotificationEnabled(false)
-      return
-    }
-    const allowed = await requestNotificationPermission()
-    setIsNotificationEnabled(allowed)
-  }
-
-  async function spawnNotification(title: NotificationConfig['message'], body: Task['title']) {
-    const registration = await navigator.serviceWorker.ready
-    await registration.showNotification(title, {
-      body: body,
-      icon: '/favicon.ico',
-    })
-  }
-
-  useEffect(() => {
-    let permissionStatus: PermissionStatus
-
-    function syncPermissions() {
-      if (!('Notification' in window)) return
-      if (Notification.permission !== 'granted') {
-        setIsNotificationEnabled(false)
-      }
-    }
-    function handleVisibilityChange() {
-      if (document.visibilityState === 'visible') {
-        syncPermissions()
-        if (new Date(currentDate).setHours(0, 0, 0, 0) !== new Date().setHours(0, 0, 0, 0)) {
-          setCurrentDate(Date.now())
-        }
-      }
-    }
-    async function fetchNotificationPermissionChange() {
-      try {
-        permissionStatus = await navigator.permissions.query({ name: 'notifications' })
-        permissionStatus.addEventListener('change', syncPermissions)
-      } catch {
-        return
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
-    fetchNotificationPermissionChange()
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      if (permissionStatus) {
-        permissionStatus.removeEventListener('change', syncPermissions)
-      }
-    }
-  }, [setIsNotificationEnabled, currentDate])
-
-  useEffect(() => {
-    const actualNotifications = getActualNotifications(tasks, notifications, currentDate)
-    const newNotifications = checkDeadlineNotifications(tasks, actualNotifications, currentDate)
-    if (
-      isNotificationEnabled &&
-      'Notification' in window &&
-      Notification.permission === 'granted'
-    ) {
-      newNotifications.forEach((notification) => {
-        const notificationTitle = notificationTypes[notification.type].message
-        const task = tasks.find((task) => task.id === notification.taskId)
-        if (task) {
-          spawnNotification(notificationTitle, task.title)
-        }
-      })
-    }
-    if (newNotifications.length > 0 || actualNotifications.length !== notifications.length) {
-      setNotifications([...newNotifications, ...actualNotifications])
-    }
-  }, [tasks, notifications, isNotificationEnabled, setNotifications, currentDate])
 
   const tasksRef = useRef(tasks)
   useEffect(() => {
@@ -330,7 +241,7 @@ function App() {
             setSelectedTaskId={setSelectedTaskId}
             searchQuery={searchQuery}
             Icon={activeColumn.Icon}
-            currentDate={currentDate}
+            currentTimestamp={currentTimestamp}
           />
         </div>
       ) : (
@@ -355,7 +266,7 @@ function App() {
                     setSelectedTaskId={setSelectedTaskId}
                     searchQuery={searchQuery}
                     Icon={column.Icon}
-                    currentDate={currentDate}
+                    currentTimestamp={currentTimestamp}
                   />
                 )
               })}
@@ -364,7 +275,7 @@ function App() {
               {(source) => {
                 const task = tasks.find((task) => task.id === source.id)
                 if (!task) return null
-                const isOverdue = isTaskOverdue(task, currentDate)
+                const isOverdue = isTaskOverdue(task, currentTimestamp)
                 return (
                   <div className="drag-overlay">
                     <TaskCardContent task={task} isOverdue={isOverdue} />
@@ -380,7 +291,9 @@ function App() {
         <div className="footer-info">
           <div>Всего: {tasks.length}</div>
           <div>В работе: {tasks.filter((task) => task.status === 'inProgress').length}</div>
-          <div>Просрочено: {tasks.filter((task) => isTaskOverdue(task, currentDate)).length}</div>
+          <div>
+            Просрочено: {tasks.filter((task) => isTaskOverdue(task, currentTimestamp)).length}
+          </div>
         </div>
         <div className="filter-and-settings">
           <div className="footer-filter">
