@@ -15,9 +15,9 @@ type NotificationCenterProps = {
   onClose: () => void
   setNotifications: Dispatch<SetStateAction<Notification[]>>
   isMobile: boolean
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (value: Task['id'] | null) => void
   activeNotificationFilter: NotificationFilter
-  setActiveNotificationFilter: Dispatch<SetStateAction<NotificationFilter>>
+  setActiveNotificationFilter: (value: NotificationFilter) => void
   notifications: Notification[]
   unreadNotifications: Notification[]
 }

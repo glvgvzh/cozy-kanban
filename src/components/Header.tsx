@@ -4,8 +4,8 @@ import type { Notification } from '../types/notification'
 
 type HeaderProps = {
   searchQuery: string
-  setSearchQuery: Dispatch<SetStateAction<string>>
-  setIsNewTaskModalOpen: Dispatch<SetStateAction<boolean>>
+  setSearchQuery: (value: string) => void
+  onOpenNewTaskModal: () => void
   isMobile: boolean
   setIsNotificationCenterOpen: Dispatch<SetStateAction<boolean>>
   unreadNotifications: Notification[]
@@ -14,7 +14,7 @@ type HeaderProps = {
 function Header({
   searchQuery,
   setSearchQuery,
-  setIsNewTaskModalOpen,
+  onOpenNewTaskModal,
   isMobile,
   setIsNotificationCenterOpen,
   unreadNotifications,
@@ -31,7 +31,7 @@ function Header({
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button className="button button-primary" onClick={() => setIsNewTaskModalOpen(true)}>
+      <button className="button button-primary" onClick={onOpenNewTaskModal}>
         {isMobile ? <PlusIcon size={24} /> : 'Новая задача'}
       </button>
       <button

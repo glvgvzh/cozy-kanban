@@ -1,6 +1,5 @@
 import { XIcon, CheckIcon, PencilIcon, TrashIcon } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
 import Modal from './Modal'
 import { columns, priorities } from '../data/boardData'
 import type { Task, TaskStatus, TaskUpdate, TaskPriority } from '../types/task'
@@ -8,9 +7,9 @@ import { formatDate } from '../utils/deadlineUtilities'
 
 type TaskDetailsModalProps = {
   selectedTask: Task
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (value: string | null) => void
   isConfirmDeletionModalOpen: boolean
-  setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
+  setIsConfirmDeletionModalOpen: (value: boolean) => void
   onUpdateTask: (taskId: Task['id'], taskUpdate: TaskUpdate) => Promise<boolean>
   isDisabled: boolean
 }

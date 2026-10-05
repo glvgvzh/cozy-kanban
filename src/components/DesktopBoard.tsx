@@ -1,7 +1,6 @@
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react'
 import Column from './Column'
 import type { TaskUpdate, Task } from '../types/task'
-import type { Dispatch, SetStateAction } from 'react'
 import { columns } from '../data/boardData'
 import TaskCardContent from './TaskCardContent'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
@@ -11,7 +10,7 @@ type DesktopBoardProps = {
   filteredTasks: Task[]
   isCrudLoading: boolean
   handleUpdateTask: (taskId: Task['id'], updates: TaskUpdate) => Promise<boolean>
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (id: string) => void
   searchQuery: string
   currentTimestamp: number
 }

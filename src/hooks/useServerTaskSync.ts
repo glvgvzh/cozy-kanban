@@ -1,10 +1,10 @@
-import { useRef, useEffect, type Dispatch, type SetStateAction } from 'react'
+import { useRef, useEffect } from 'react'
 import { migrateTasks, getTasksByBoard } from '../api/taskApi'
 import type { Task } from '../types/task'
 
 type UseServerTaskSyncProps = {
   tasks: Task[]
-  setTasks: Dispatch<SetStateAction<Task[]>>
+  setTasks: (value: Task[]) => void
   telegramCode: string
   verifyCode: (code: string) => Promise<boolean>
 }

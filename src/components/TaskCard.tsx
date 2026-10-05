@@ -1,11 +1,10 @@
 import { useDraggable } from '@dnd-kit/react'
 import TaskCardContent from './TaskCardContent'
 import type { Task } from '../types/task'
-import type { Dispatch, SetStateAction } from 'react'
 
 type TaskCardProps = {
   task: Task
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (id: string) => void
   isOverdue: boolean
 }
 

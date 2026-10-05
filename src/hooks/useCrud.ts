@@ -8,11 +8,11 @@ type UseCrudProps = {
   tasks: Task[]
   isTelegramConnected: boolean
   telegramCode: string
-  setToast: Dispatch<SetStateAction<ActiveToast | null>>
+  setToast: (value: ActiveToast | null) => void
   setTasks: Dispatch<SetStateAction<Task[]>>
   selectedTaskId: Task['id'] | null
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
-  setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
+  onClearSelectedTask: () => void
+  onCloseConfirmDeletionModal: () => void
 }
 
 function useCrud({
@@ -22,8 +22,8 @@ function useCrud({
   setToast,
   setTasks,
   selectedTaskId,
-  setSelectedTaskId,
-  setIsConfirmDeletionModalOpen,
+  onClearSelectedTask,
+  onCloseConfirmDeletionModal,
 }: UseCrudProps) {
   const [isCrudLoading, setIsCrudLoading] = useState(false)
   const crudLoadingRef = useRef(isCrudLoading)
@@ -66,8 +66,8 @@ function useCrud({
         }
       }
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId))
-      setIsConfirmDeletionModalOpen(false)
-      setSelectedTaskId(null)
+      onCloseConfirmDeletionModal()
+      onClearSelectedTask()
       setToast({ id: v4(), operation: 'delete', status: 'success' })
     } finally {
       updateCrudLoading(false)

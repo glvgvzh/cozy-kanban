@@ -80,8 +80,8 @@ function App() {
     setToast,
     setTasks,
     selectedTaskId,
-    setSelectedTaskId,
-    setIsConfirmDeletionModalOpen,
+    onClearSelectedTask: () => setSelectedTaskId(null),
+    onCloseConfirmDeletionModal: () => setIsConfirmDeletionModalOpen(false),
   })
 
   useServerTaskSync({ tasks, setTasks, telegramCode, verifyCode })
@@ -108,7 +108,7 @@ function App() {
       <Header
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        setIsNewTaskModalOpen={setIsNewTaskModalOpen}
+        onOpenNewTaskModal={() => setIsNewTaskModalOpen(true)}
         isMobile={isMobile}
         setIsNotificationCenterOpen={setIsNotificationCenterOpen}
         unreadNotifications={unreadNotifications}
@@ -180,7 +180,7 @@ function App() {
         currentTimestamp={currentTimestamp}
         selectedPriorityFilter={selectedPriorityFilter}
         setSelectedPriorityFilter={setSelectedPriorityFilter}
-        setIsSettingsModalOpen={setIsSettingsModalOpen}
+        onOpenSettingsModal={() => setIsSettingsModalOpen(true)}
       />
 
       {isSettingsModalOpen && (

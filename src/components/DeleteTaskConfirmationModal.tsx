@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
 import Modal from './Modal'
 
 type DeleteTaskConfirmationModalProps = {
   taskTitle: string
-  setIsConfirmDeletionModalOpen: Dispatch<SetStateAction<boolean>>
+  setIsConfirmDeletionModalOpen: (value: boolean) => void
   onDelete: () => void
   isDisabled: boolean
 }

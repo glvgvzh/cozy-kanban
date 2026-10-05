@@ -4,11 +4,10 @@ import { columns } from '../data/boardData'
 import type { Task } from '../types/task'
 import Column from './Column'
 import { DotIcon } from '@phosphor-icons/react'
-import type { Dispatch, SetStateAction } from 'react'
 
 type MobileBoardProps = {
   filteredTasks: Task[]
-  setSelectedTaskId: Dispatch<SetStateAction<Task['id'] | null>>
+  setSelectedTaskId: (id: string) => void
   searchQuery: string
   currentTimestamp: number
 }

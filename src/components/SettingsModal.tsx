@@ -1,13 +1,12 @@
 import { ToggleLeftIcon, ToggleRightIcon, XIcon } from '@phosphor-icons/react'
 import Modal from './Modal'
 import LinkTelegram from './LinkTelegram'
-import type { Dispatch, SetStateAction } from 'react'
 
 type SettingsModalProps = {
   onClose: () => void
   isNotificationEnabled: boolean
   handleNotificationPermissionSwitch: () => Promise<void>
-  setTelegramCode: Dispatch<SetStateAction<string>>
+  setTelegramCode: (value: string) => void
   isTelegramConnected: boolean
   onVerifyCode: (code: string) => Promise<boolean>
 }

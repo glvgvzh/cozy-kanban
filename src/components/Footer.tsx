@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
 import type { Task } from '../types/task'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 import { priorities } from '../data/boardData'
@@ -8,8 +7,8 @@ type FooterProps = {
   tasks: Task[]
   currentTimestamp: number
   selectedPriorityFilter: Task['priority'] | ''
-  setSelectedPriorityFilter: Dispatch<SetStateAction<Task['priority'] | ''>>
-  setIsSettingsModalOpen: Dispatch<SetStateAction<boolean>>
+  setSelectedPriorityFilter: (value: Task['priority'] | '') => void
+  onOpenSettingsModal: () => void
 }
 
 function Footer({
@@ -17,7 +16,7 @@ function Footer({
   currentTimestamp,
   selectedPriorityFilter,
   setSelectedPriorityFilter,
-  setIsSettingsModalOpen,
+  onOpenSettingsModal,
 }: FooterProps) {
   return (
     <div className="footer">
@@ -48,10 +47,7 @@ function Footer({
             </select>
           </div>
         </div>
-        <button
-          className="button button-icon settings-gear"
-          onClick={() => setIsSettingsModalOpen(true)}
-        >
+        <button className="button button-icon settings-gear" onClick={onOpenSettingsModal}>
           <GearIcon size={32} weight="duotone" />
         </button>
       </div>
