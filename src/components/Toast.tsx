@@ -8,7 +8,7 @@ type ToastProps = {
 
 export function Toast({ toast }: ToastProps) {
   return (
-    <div className={`toast ${toast.status === 'success' ? 'toast-success' : 'toast-fail'}`}>
+    <div role='status' className={`toast ${toast.status === 'success' ? 'toast-success' : 'toast-fail'}`}>
       {toast.status === 'success' ? (
         <CheckCircleIcon size={24} weight="duotone" />
       ) : (
