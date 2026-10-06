@@ -5,13 +5,13 @@ import { Modal } from './Modal'
 
 describe('Modal', () => {
   function renderModal(onClose = vi.fn()) {
-    return render(
+    render(
       <Modal onClose={onClose}>
         <div>Тест</div>
       </Modal>,
     )
   }
-  
+
   it('renders children', () => {
     renderModal()
     expect(screen.getByText('Тест')).toBeInTheDocument()

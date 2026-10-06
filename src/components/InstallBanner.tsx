@@ -12,7 +12,7 @@ export function InstallBanner({ onDismiss, onInstall }: InstallBannerProps) {
       <button className="button" onClick={onInstall}>
         Установить
       </button>
-      <button className="button-icon" onClick={onDismiss}>
+      <button className="button-icon" aria-label="Закрыть баннер установки" onClick={onDismiss}>
         <XIcon size={18} />
       </button>
     </div>
