@@ -3,7 +3,7 @@ import { useDroppable } from '@dnd-kit/react'
 import type { Column, Task } from '../types'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 
-type ColumnProps = {
+export type ColumnProps = {
   columnId: Column['id']
   columnTitle: Column['title']
   tasks: Task[]
