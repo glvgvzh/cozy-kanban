@@ -3,7 +3,7 @@ import { isTaskOverdue } from '../utils/deadlineUtilities'
 import { priorities } from '../data/boardData'
 import { GearIcon } from '@phosphor-icons/react'
 
-type FooterProps = {
+export type FooterProps = {
   tasks: Task[]
   currentTimestamp: number
   selectedPriorityFilter: Task['priority'] | ''
@@ -29,9 +29,12 @@ export function Footer({
       </div>
       <div className="filter-and-settings">
         <div className="footer-filter">
-          <div className="filter-label">Приоритет:</div>
+          <label htmlFor="priority-filter" className="filter-label">
+            Приоритет:
+          </label>
           <div className="filter">
             <select
+              id="priority-filter"
               className="select filter-select"
               value={selectedPriorityFilter}
               onChange={(e) => setSelectedPriorityFilter(e.target.value as Task['priority'] | '')}
@@ -47,7 +50,11 @@ export function Footer({
             </select>
           </div>
         </div>
-        <button className="button button-icon settings-gear" onClick={onOpenSettingsModal}>
+        <button
+          aria-label="Настройки"
+          className="button button-icon settings-gear"
+          onClick={onOpenSettingsModal}
+        >
           <GearIcon size={32} weight="duotone" />
         </button>
       </div>
