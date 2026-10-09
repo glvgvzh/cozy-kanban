@@ -5,7 +5,7 @@ import { priorities } from '../data/boardData'
 import { v4 } from 'uuid'
 import type { Task, TaskPriority } from '../types'
 
-type CreateTaskModalProps = {
+export type CreateTaskModalProps = {
   onClose: () => void
   onCreateTask: (task: Task) => Promise<boolean>
   isDisabled: boolean
@@ -78,8 +78,11 @@ export function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTas
         </div>
         <div className="deadline-and-priority-container">
           <div className="priority-container">
-            <div className="label">Приоритет</div>
+            <label htmlFor="priority-select" className="label">
+              Приоритет
+            </label>
             <select
+              id="priority-select"
               className="select"
               value={newTaskPriority}
               onChange={(e) => setNewTaskPriority(e.target.value as TaskPriority)}
@@ -94,8 +97,11 @@ export function CreateTaskModal({ onClose, onCreateTask, isDisabled }: CreateTas
             </select>
           </div>
           <div className="deadline-container">
-            <div className="label">Срок</div>
+            <label htmlFor="deadline-input" className="label">
+              Срок
+            </label>
             <input
+              id="deadline-input"
               type="date"
               className="select"
               value={newTaskDeadline}

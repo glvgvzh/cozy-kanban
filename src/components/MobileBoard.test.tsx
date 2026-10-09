@@ -3,10 +3,6 @@ import { render, screen, act } from '@testing-library/react'
 import { MobileBoard, type MobileBoardProps } from './MobileBoard'
 import { type SwipeEventData, useSwipeable } from 'react-swipeable'
 
-// изначально показывается активная колонка и только её задачи
-// свайп влево/вправо меняет активную колонку
-// свайпы не выводят индекс за границы — с первой нельзя уйти правее назад, с последней нельзя уйти дальше влево
-
 vi.mock('react-swipeable', () => {
   return {
     useSwipeable: vi.fn().mockReturnValue({}),
