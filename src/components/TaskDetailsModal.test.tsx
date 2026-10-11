@@ -33,7 +33,7 @@ function renderTaskDetailsModal(overrides: Partial<TaskDetailsModalProps> = {}) 
 describe('TaskDetailsModal', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('отображаются все данные задачи: названия, селекты, инпуты, дата создания, кнопки закрытия и удаления', () => {
+  it('renders all task details and action buttons', () => {
     renderTaskDetailsModal()
 
     expect(screen.getByText('title-1')).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('button', { name: 'Удалить задачу' })).toBeInTheDocument()
   })
 
-  it('клик вне модалки вызывает setSelectedTaskId(null)', async () => {
+  it('closes modal when overlay is clicked', async () => {
     const user = userEvent.setup()
     const setSelectedTaskId = vi.fn()
     renderTaskDetailsModal({ setSelectedTaskId })
@@ -55,7 +55,7 @@ describe('TaskDetailsModal', () => {
     expect(setSelectedTaskId).toHaveBeenCalledWith(null)
   })
 
-  it('клик по кнопке закрытия вызывает setSelectedTaskId(null) и setIsConfirmDeletionModalOpen(false)', async () => {
+  it('closes modal and resets deletion confirmation when close button is clicked', async () => {
     const user = userEvent.setup()
     const setSelectedTaskId = vi.fn()
     const setIsConfirmDeletionModalOpen = vi.fn()
@@ -66,7 +66,7 @@ describe('TaskDetailsModal', () => {
     expect(setIsConfirmDeletionModalOpen).toHaveBeenCalledWith(false)
   })
 
-  it('Esc закрывает окно, если не редактируется название/описание и isConfirmDeletionModalOpen === false, иначе окно не закрывается', async () => {
+  it('closes modal on Escape only when editing and deletion confirmation are inactive', async () => {
     const user = userEvent.setup()
     const setSelectedTaskId = vi.fn()
     const { unmount } = renderTaskDetailsModal({
@@ -89,7 +89,7 @@ describe('TaskDetailsModal', () => {
     expect(setSelectedTaskId).toHaveBeenCalledTimes(1)
   })
 
-  it('кнопка удаления вызывает setIsConfirmDeletionModalOpen(true)', async () => {
+  it('opens deletion confirmation when delete button is clicked', async () => {
     const user = userEvent.setup()
     const setIsConfirmDeletionModalOpen = vi.fn()
     renderTaskDetailsModal({ setIsConfirmDeletionModalOpen })
@@ -98,7 +98,7 @@ describe('TaskDetailsModal', () => {
     expect(setIsConfirmDeletionModalOpen).toHaveBeenCalledWith(true)
   })
 
-  it('isDisabled === true дизейблит сохранение названия, описания, статуса, приоритета, дедлайна', async () => {
+  it('disables editable controls when isDisabled === true', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal({ isDisabled: true })
 
@@ -112,7 +112,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByLabelText('Срок')).toBeDisabled()
   })
 
-  it('кнопка редактирования названия задачи открывает input и ставит на нем фокус, а также закрывает textarea редактирования описания', async () => {
+  it('opens title editor, focuses input, and closes description editor', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal()
 
@@ -124,7 +124,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.queryByRole('textbox', { name: 'Описание задачи' })).not.toBeInTheDocument()
   })
 
-  it('счетчик символов названия задачи отображается и меняет значение при изменении длины названия', async () => {
+  it('updates title character count when title changes', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal({
       selectedTask: {
@@ -144,7 +144,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByText('10/100')).toBeInTheDocument()
   })
 
-  it('кнопка подтверждения редактирования названия дизейблится если строка пустая/содержит только пробелы', async () => {
+  it('disables title save button for empty or whitespace-only title', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal()
 
@@ -161,7 +161,7 @@ describe('TaskDetailsModal', () => {
     expect(saveButton).toBeEnabled()
   })
 
-  it('при отмене редактирования названия задачи input закрывается и значение возвращается к исходному', async () => {
+  it('restores original title when title editing is canceled', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal()
 
@@ -181,7 +181,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('textbox', { name: 'Название задачи' })).toHaveValue('title-1')
   })
 
-  it('сохранение названия вызывает onUpdateTask с правильными данными, если onUpdateTask => true, input закрывается', async () => {
+  it('saves title and closes input when update succeeds', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(true)
     renderTaskDetailsModal({ onUpdateTask })
@@ -196,7 +196,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.queryByRole('textbox', { name: 'Название задачи' })).not.toBeInTheDocument()
   })
 
-  it('при сохранении названия когда onUpdateTask => false, input остается открыт', async () => {
+  it('keeps title input open when update fails', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(false)
     renderTaskDetailsModal({ onUpdateTask })
@@ -210,7 +210,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('textbox', { name: 'Название задачи' })).toBeInTheDocument()
   })
 
-  it('кнопка добавления/редактирования описания задачи отличается в зависимости от наличия описания изначально (Редактировать описание/Добавить описание)', () => {
+  it('shows edit or add description button depending on existing description', () => {
     const { unmount } = renderTaskDetailsModal({
       selectedTask: {
         id: '1',
@@ -242,7 +242,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('button', { name: 'Добавить описание' })).toBeInTheDocument()
   })
 
-  it('кнопка редактирования описания задачи открывает textarea и ставит на нем фокус, а также закрывает input редактирования названия', async () => {
+  it('opens description editor, focuses textarea, and closes title editor', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal()
 
@@ -254,7 +254,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.queryByRole('textbox', { name: 'Название задачи' })).not.toBeInTheDocument()
   })
 
-  it('при отмене редактирования описания задачи textarea закрывается и значение возвращается к исходному', async () => {
+  it('restores original description when description editing is canceled', async () => {
     const user = userEvent.setup()
     renderTaskDetailsModal()
 
@@ -274,7 +274,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('textbox', { name: 'Описание задачи' })).toHaveValue('description-1')
   })
 
-  it('сохранение описания вызывает onUpdateTask с правильными данными, если onUpdateTask => true, textarea закрывается', async () => {
+  it('saves description and closes textarea when update succeeds', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(true)
     renderTaskDetailsModal({ onUpdateTask })
@@ -289,7 +289,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.queryByRole('textbox', { name: 'Описание задачи' })).not.toBeInTheDocument()
   })
 
-  it('при сохранении описания когда onUpdateTask => false, textarea остается открыта', async () => {
+  it('keeps description textarea open when update fails', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(false)
     renderTaskDetailsModal({ onUpdateTask })
@@ -303,7 +303,7 @@ describe('TaskDetailsModal', () => {
     expect(screen.getByRole('textbox', { name: 'Описание задачи' })).toBeInTheDocument()
   })
 
-  it('изменение статуса вызывает onUpdateTask с правильными данными', async () => {
+  it('updates task status when status changes', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(true)
     renderTaskDetailsModal({ onUpdateTask })
@@ -313,7 +313,7 @@ describe('TaskDetailsModal', () => {
     expect(onUpdateTask).toHaveBeenCalledWith('1', { status: 'inProgress' })
   })
 
-  it('изменение приоритета вызывает onUpdateTask с правильными данными', async () => {
+  it('updates task priority when priority changes', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(true)
     renderTaskDetailsModal({ onUpdateTask })
@@ -323,7 +323,7 @@ describe('TaskDetailsModal', () => {
     expect(onUpdateTask).toHaveBeenCalledWith('1', { priority: 'critical' })
   })
 
-  it('изменение дедлайна вызывает onUpdateTask с правильными данными', async () => {
+  it('updates task deadline when deadline changes', async () => {
     const user = userEvent.setup()
     const onUpdateTask = vi.fn().mockResolvedValue(true)
     renderTaskDetailsModal({ onUpdateTask })
@@ -333,7 +333,7 @@ describe('TaskDetailsModal', () => {
     expect(onUpdateTask).toHaveBeenCalledWith('1', { deadline: new Date('2026-10-11').getTime() })
   })
 
-  it('очистка дедлайна вызывает onUpdateTask с пустой строкой', async () => {
+  it('clears task deadline with an empty string', async () => {
     const user = userEvent.setup()
     const selectedTask: Task = {
       id: '1',

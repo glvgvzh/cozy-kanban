@@ -5,7 +5,7 @@ import type { TaskUpdate, Task } from '../types'
 import { columns } from '../data/boardData'
 import { isTaskOverdue } from '../utils/deadlineUtilities'
 
-type DesktopBoardProps = {
+export type DesktopBoardProps = {
   tasks: Task[]
   filteredTasks: Task[]
   isCrudLoading: boolean
