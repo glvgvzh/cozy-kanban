@@ -5,7 +5,7 @@ import { columns, priorities } from '../data/boardData'
 import type { Task, TaskStatus, TaskUpdate, TaskPriority } from '../types'
 import { formatDate } from '../utils/deadlineUtilities'
 
-type TaskDetailsModalProps = {
+export type TaskDetailsModalProps = {
   selectedTask: Task
   setSelectedTaskId: (value: string | null) => void
   isConfirmDeletionModalOpen: boolean
@@ -56,7 +56,7 @@ export function TaskDetailsModal({
   }, [setSelectedTaskId, isConfirmDeletionModalOpen, isEditingTitle, isEditingDescription])
 
   function convertTime(timestamp: number): string {
-    return `${new Date(timestamp).toLocaleDateString()} в ${new Date(timestamp).toLocaleTimeString()}`
+    return `${new Date(timestamp).toLocaleDateString('ru-RU')} в ${new Date(timestamp).toLocaleTimeString('ru-RU')}`
   }
 
   return (
@@ -71,6 +71,7 @@ export function TaskDetailsModal({
         <h2 className="modal-title">
           {selectedTask.title}
           <button
+            aria-label="Редактировать название"
             className="button button-ghost edit-button"
             onClick={() => {
               setIsEditingTitle(true)
@@ -84,7 +85,8 @@ export function TaskDetailsModal({
         <div className="task-line">
           <div className="task-line-main">
             <input
-              className="create-task-input "
+              aria-label="Название задачи"
+              className="create-task-input"
               type="text"
               value={editedTask.title}
               maxLength={100}
@@ -92,6 +94,7 @@ export function TaskDetailsModal({
               onChange={(e) => setEditedTask((prev) => ({ ...prev, title: e.target.value }))}
             />
             <button
+              aria-label="Отменить редактирование названия"
               className="button button-ghost edit-button"
               onClick={() => {
                 setEditedTask((prev) => ({
@@ -104,6 +107,7 @@ export function TaskDetailsModal({
               <XIcon size={24} weight="bold" color="var(--danger)" />
             </button>
             <button
+              aria-label="Сохранить новое название"
               className="button button-ghost edit-button"
               disabled={editedTask.title.trim() === '' || isDisabled}
               onClick={async () => {
@@ -128,8 +132,11 @@ export function TaskDetailsModal({
 
       <div className="task-actions">
         <div className="modal-status">
-          <div className="label">Статус</div>
+          <label htmlFor="status-select" className="label">
+            Статус
+          </label>
           <select
+            id="status-select"
             className="select"
             disabled={isDisabled}
             value={selectedTask.status}
@@ -147,8 +154,11 @@ export function TaskDetailsModal({
           </select>
         </div>
         <div className="priority-container">
-          <div className="label">Приоритет</div>
+          <label htmlFor="priority-select" className="label">
+            Приоритет
+          </label>
           <select
+            id="priority-select"
             className="select"
             disabled={isDisabled}
             value={selectedTask.priority}
@@ -166,8 +176,11 @@ export function TaskDetailsModal({
           </select>
         </div>
         <div className="deadline-container">
-          <div className="label">Срок</div>
+          <label htmlFor="deadline-input" className="label">
+            Срок
+          </label>
           <input
+            id="deadline-input"
             type="date"
             className="select"
             disabled={isDisabled}
@@ -195,6 +208,7 @@ export function TaskDetailsModal({
         ) : (
           <div className="action-buttons">
             <button
+              aria-label="Отменить редактирование описания"
               className="button button-ghost edit-button"
               onClick={() => {
                 setEditedTask((prev) => ({
@@ -207,6 +221,7 @@ export function TaskDetailsModal({
               <XIcon size={32} weight="bold" color="var(--danger)" />
             </button>
             <button
+              aria-label="Сохранить новое описание"
               className="button button-ghost edit-button"
               disabled={isDisabled}
               onClick={async () => {
@@ -230,6 +245,7 @@ export function TaskDetailsModal({
           ref={descriptionTextareaRef}
           name="task-description-textarea"
           id="task-description-textarea"
+          aria-label="Описание задачи"
           placeholder="Описание задачи"
           value={editedTask.description}
           onChange={(e) => setEditedTask((prev) => ({ ...prev, description: e.target.value }))}
@@ -237,6 +253,7 @@ export function TaskDetailsModal({
       )}
 
       <button
+        title="Закрыть окно"
         className="button-icon close-modal-button"
         onClick={() => {
           setSelectedTaskId(null)
