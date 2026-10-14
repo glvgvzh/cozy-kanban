@@ -35,4 +35,21 @@ describe('useLocalStorage', () => {
     expect(str).not.toBeNull()
     expect(JSON.parse(str!)).toStrictEqual(tasks)
   })
+
+  it('returns initial value when JSON is broken', () => {
+    localStorage.setItem('tasks', 'broken-json')
+    const tasks = [{ id: 1 }]
+
+    const hookObject = renderHook(() => useLocalStorage<Task[]>('tasks', []))
+    expect(hookObject.result.current[0]).toStrictEqual([])
+
+    const setValue = hookObject.result.current[1]
+    act(() => {
+      setValue(tasks)
+    })
+
+    const str = localStorage.getItem('tasks')
+    expect(str).not.toBeNull()
+    expect(JSON.parse(str!)).toStrictEqual(tasks)
+  })
 })
