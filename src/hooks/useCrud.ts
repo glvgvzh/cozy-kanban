@@ -4,7 +4,7 @@ import { createTask, deleteTask, updateTask } from '../api/taskApi'
 import type { Task, TaskUpdate } from '../types/task'
 import type { ActiveToast } from '../types/toast'
 
-type UseCrudProps = {
+export type UseCrudProps = {
   tasks: Task[]
   isTelegramConnected: boolean
   telegramCode: string

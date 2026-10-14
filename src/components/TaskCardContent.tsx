@@ -24,7 +24,7 @@ export function TaskCardContent({ task, isOverdue }: TaskCardContentProps) {
         </div>
         {task.deadline && (
           <div className={`task-deadline ${isOverdue ? 'overdue' : ''}`}>
-            срок: {new Date(task.deadline).toLocaleDateString()}
+            срок: {new Date(task.deadline).toLocaleDateString('ru-RU')}
           </div>
         )}
       </div>

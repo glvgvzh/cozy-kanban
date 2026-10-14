@@ -5,7 +5,7 @@ import type { Task } from '../types'
 import { Column } from './Column'
 import { DotIcon } from '@phosphor-icons/react'
 
-type MobileBoardProps = {
+export type MobileBoardProps = {
   filteredTasks: Task[]
   setSelectedTaskId: (id: string) => void
   searchQuery: string

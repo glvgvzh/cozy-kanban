@@ -2,7 +2,7 @@ import { KanbanIcon, PlusIcon, BellIcon } from '@phosphor-icons/react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { Notification } from '../types'
 
-type HeaderProps = {
+export type HeaderProps = {
   searchQuery: string
   setSearchQuery: (value: string) => void
   onOpenNewTaskModal: () => void
@@ -31,10 +31,15 @@ export function Header({
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button className="button button-primary" onClick={onOpenNewTaskModal}>
+      <button
+        className="button button-primary"
+        aria-label="Новая задача"
+        onClick={onOpenNewTaskModal}
+      >
         {isMobile ? <PlusIcon size={24} /> : 'Новая задача'}
       </button>
       <button
+        aria-label="Уведомления"
         className="button button-icon bell-icon has-badge"
         onClick={() => setIsNotificationCenterOpen((prev) => !prev)}
       >

@@ -9,7 +9,7 @@ import { notificationTypes } from '../data/boardData'
 import type { Task, Notification, NotificationFilter } from '../types'
 import type { Dispatch, SetStateAction } from 'react'
 
-type NotificationCenterProps = {
+export type NotificationCenterProps = {
   tasks: Task[]
   onClose: () => void
   setNotifications: Dispatch<SetStateAction<Notification[]>>
@@ -36,8 +36,12 @@ export function NotificationCenter({
     activeNotificationFilter === 'all' ? notifications : unreadNotifications
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal notification-center" onClick={(e) => e.stopPropagation()}>
+    <div data-testid="modal-overlay" className="modal-overlay" onClick={onClose}>
+      <div
+        data-testid="modal"
+        className="modal notification-center"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="notification-center-header">
           <div className="notification-center-title">
             <BellIcon size={32} weight="duotone" />
@@ -81,7 +85,9 @@ export function NotificationCenter({
           >
             Непрочитанные
             {unreadNotifications.length !== 0 && (
-              <span className="badge">{unreadNotifications.length}</span>
+              <span aria-hidden="true" className="badge">
+                {unreadNotifications.length}
+              </span>
             )}
           </button>
         </div>
@@ -96,6 +102,7 @@ export function NotificationCenter({
               const ButtonReadIcon = notification.isRead ? EnvelopeIcon : EnvelopeOpenIcon
               return (
                 <div
+                  data-testid="notification-card"
                   key={notification.id}
                   className={`notification-card ${!notification.isRead ? 'unread-card' : ''}`}
                   onClick={() => {
@@ -122,7 +129,7 @@ export function NotificationCenter({
                       {notificationConfig.message}
                     </div>
                     <div className="notification-task-title">{task.title}</div>
-                    <div className="task-deadline">{`${task.deadline === '' ? 'без срока' : `срок до ${new Date(task.deadline).toLocaleDateString()}`}`}</div>
+                    <div className="task-deadline">{`${task.deadline === '' ? 'без срока' : `срок до ${new Date(task.deadline).toLocaleDateString('ru-RU')}`}`}</div>
                   </div>
                   <div className="notification-actions">
                     <button

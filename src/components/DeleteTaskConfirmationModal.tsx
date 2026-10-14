@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Modal } from './Modal'
 
-type DeleteTaskConfirmationModalProps = {
+export type DeleteTaskConfirmationModalProps = {
   taskTitle: string
   setIsConfirmDeletionModalOpen: (value: boolean) => void
   onDelete: () => void
