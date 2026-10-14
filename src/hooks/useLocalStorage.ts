@@ -7,7 +7,12 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<S
     if (storedValue === null) {
       return initialValue
     }
-    return JSON.parse(storedValue) ?? initialValue
+    try {
+      const parsedStorageValue: T = JSON.parse(storedValue)
+      return parsedStorageValue ?? initialValue
+    } catch {
+      return initialValue
+    }
   })
   useEffect(() => localStorage.setItem(key, JSON.stringify(value)), [value, key])
   return [value, setValue]
