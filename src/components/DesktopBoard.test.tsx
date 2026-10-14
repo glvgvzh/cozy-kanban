@@ -42,6 +42,7 @@ function createDesktopBoard(overrides: Partial<DesktopBoardProps> = {}): Desktop
     setSelectedTaskId: vi.fn(),
     searchQuery: '',
     currentTimestamp: 0,
+    selectedPriorityFilter: '',
     ...overrides,
   }
 }

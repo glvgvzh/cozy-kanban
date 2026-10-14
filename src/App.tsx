@@ -161,6 +161,7 @@ function App() {
           setSelectedTaskId={setSelectedTaskId}
           searchQuery={searchQuery}
           currentTimestamp={currentTimestamp}
+          selectedPriorityFilter={selectedPriorityFilter}
         />
       ) : (
         <DesktopBoard
@@ -171,6 +172,7 @@ function App() {
           setSelectedTaskId={setSelectedTaskId}
           searchQuery={searchQuery}
           currentTimestamp={currentTimestamp}
+          selectedPriorityFilter={selectedPriorityFilter}
         />
       )}
 

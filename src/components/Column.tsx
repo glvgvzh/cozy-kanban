@@ -11,6 +11,7 @@ export type ColumnProps = {
   searchQuery: string
   Icon: Column['Icon']
   currentTimestamp: number
+  selectedPriorityFilter: Task['priority'] | ''
 }
 
 export function Column({
@@ -21,6 +22,7 @@ export function Column({
   searchQuery,
   Icon,
   currentTimestamp,
+  selectedPriorityFilter,
 }: ColumnProps) {
   const { ref, isDropTarget } = useDroppable({
     id: columnId,
@@ -47,7 +49,7 @@ export function Column({
       </div>
 
       {tasks.length === 0 ? (
-        searchQuery.trim() === '' ? (
+        (searchQuery.trim() === '' && selectedPriorityFilter === '') ? (
           <div className="empty-column-message">Пока тут тихо</div>
         ) : (
           <div className="empty-column-message">Ничего не найдено</div>

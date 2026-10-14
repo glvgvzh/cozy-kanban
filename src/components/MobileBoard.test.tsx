@@ -34,6 +34,7 @@ function createMobileBoard(overrides: Partial<MobileBoardProps> = {}): MobileBoa
     setSelectedTaskId: vi.fn(),
     searchQuery: '',
     currentTimestamp: 0,
+    selectedPriorityFilter: '',
     ...overrides,
   }
 }

@@ -31,6 +31,7 @@ function createColumn(overrides: Partial<ColumnProps> = {}): ColumnProps {
     searchQuery: '',
     Icon: NotePencilIcon,
     currentTimestamp: 0,
+    selectedPriorityFilter: '',
     ...overrides,
   }
 }
@@ -60,6 +61,15 @@ describe('Column', () => {
 
     expect(screen.getByText('Запланировано')).toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
+    expect(screen.getByText('Ничего не найдено')).toBeInTheDocument()
+  })
+
+  it('displays filtered empty state when priority filter is active', () => {
+    renderColumn({
+      tasks: [],
+      selectedPriorityFilter: 'critical',
+    })
+
     expect(screen.getByText('Ничего не найдено')).toBeInTheDocument()
   })
 

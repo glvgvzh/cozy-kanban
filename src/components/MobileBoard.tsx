@@ -10,6 +10,7 @@ export type MobileBoardProps = {
   setSelectedTaskId: (id: string) => void
   searchQuery: string
   currentTimestamp: number
+  selectedPriorityFilter: Task['priority'] | ''
 }
 
 export function MobileBoard({
@@ -17,6 +18,7 @@ export function MobileBoard({
   setSelectedTaskId,
   searchQuery,
   currentTimestamp,
+  selectedPriorityFilter,
 }: MobileBoardProps) {
   const [activeColumnIndex, setActiveColumnIndex] = useLocalStorage('mobileActiveColumnIndex', 0)
   const activeColumn = columns[activeColumnIndex]
@@ -58,6 +60,7 @@ export function MobileBoard({
         searchQuery={searchQuery}
         Icon={activeColumn.Icon}
         currentTimestamp={currentTimestamp}
+        selectedPriorityFilter={selectedPriorityFilter}
       />
     </div>
   )

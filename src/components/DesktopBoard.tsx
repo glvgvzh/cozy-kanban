@@ -13,6 +13,7 @@ export type DesktopBoardProps = {
   setSelectedTaskId: (id: string) => void
   searchQuery: string
   currentTimestamp: number
+  selectedPriorityFilter: Task['priority'] | ''
 }
 
 export function DesktopBoard({
@@ -23,6 +24,7 @@ export function DesktopBoard({
   setSelectedTaskId,
   searchQuery,
   currentTimestamp,
+  selectedPriorityFilter,
 }: DesktopBoardProps) {
   return (
     <DragDropProvider
@@ -46,6 +48,7 @@ export function DesktopBoard({
               searchQuery={searchQuery}
               Icon={column.Icon}
               currentTimestamp={currentTimestamp}
+              selectedPriorityFilter={selectedPriorityFilter}
             />
           )
         })}
